@@ -16,7 +16,7 @@ namespace zizany {
               magic_int_2(),
               magic_int_3(),
               unity_version(),
-              endianness(),
+              file_endianness(),
               artifact_data() {
     }
 }

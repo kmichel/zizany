@@ -16,6 +16,7 @@
 #include <sstream>
 #include <stdexcept>
 #include <sys/stat.h>
+#include <cstring>
 
 static
 std::string
@@ -143,7 +144,7 @@ int
 main(const int argc, char **argv) {
     try {
         zizany::program_options options(zizany::program_options::parse(argc, argv));
-        switch (options.command) {
+        switch (options.program_command) {
             case zizany::program_options::command::show_help:
                 show_help();
                 break;

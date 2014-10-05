@@ -12,14 +12,14 @@
 
 namespace zizany {
     unity_file_parser::unity_file_parser(unity_file &file_)
-            : file(file_), range_checker() {
+            : file(file_), checker() {
     }
 
     void
     unity_file_parser::parse(std::istream &stream, range_checker::overlapping_ranges_callback overlapping_ranges_callback) {
         parse_header(stream);
         {
-            stream_parser parser(stream, file.endianness, range_checker);
+            stream_parser parser(stream, file.file_endianness, checker);
             // normal files have a value of -2, released files have a value of 4 or 5
             // released files do not contain type definition and use a different
             // structure when serializing objects of known type.
@@ -37,8 +37,8 @@ namespace zizany {
             for (std::uint32_t index = 0; index < file.previews.size(); ++index)
                 parse_preview_data(parser, file.previews.at(index));
         }
-        range_checker.check([&stream](std::int64_t start, std::int64_t end) {
-            stream.seekg(start, std::ios_base::seekdir::beg);
+        checker.check([&stream](std::int64_t start, std::int64_t end) {
+            stream.seekg(start, std::ios_base::beg);
             const std::size_t size(static_cast<std::size_t>(end - start));
             std::unique_ptr<char[]> buffer(new char[size]);
             stream.read(buffer.get(), end - start);
@@ -50,14 +50,14 @@ namespace zizany {
 
     void
     unity_file_parser::parse_header(std::istream &stream) {
-        stream_parser big_endian_parser(stream, endianness::big_endian, range_checker);
+        stream_parser big_endian_parser(stream, endianness::big_endian, checker);
         file.artifact_data.metadata_size = big_endian_parser.parse<std::uint32_t>();
         file.artifact_data.previews_start = big_endian_parser.parse<std::uint32_t>();
         file.magic_int_1 = big_endian_parser.parse<std::int32_t>();
         if (file.magic_int_1 != 9)
             throw parser_exception("magic_int_1 value should be 9");
         file.artifact_data.assets_start = big_endian_parser.parse<std::uint32_t>();
-        file.endianness = big_endian_parser.parse<bool>() ? endianness::big_endian : endianness::little_endian;
+        file.file_endianness = big_endian_parser.parse<bool>() ? endianness::big_endian : endianness::little_endian;
         big_endian_parser.align(4);
         file.unity_version = big_endian_parser.parse_string();
     }

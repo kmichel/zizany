@@ -6,7 +6,7 @@
 
 namespace zizany {
     class json_writer {
-        enum class state {
+        enum class writer_state {
             after_start,
             after_composite_start,
             after_value,
@@ -17,7 +17,7 @@ namespace zizany {
 
         int indent_level;
         int inline_level;
-        state state;
+        writer_state state;
 
         void insert_separator_if_needed();
 

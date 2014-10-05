@@ -8,6 +8,7 @@
 #include "unity_type.hpp"
 #include "values/unity_value.hpp"
 
+#include <algorithm>
 #include <cstdio>
 
 namespace zizany {
@@ -46,7 +47,7 @@ namespace zizany {
         writer.add_key("unity_version");
         writer.add_string(file.unity_version);
         writer.add_key("is_big_endian");
-        writer.add_bool(file.endianness == zizany::endianness::big_endian);
+        writer.add_bool(file.file_endianness == zizany::endianness::big_endian);
         writer.add_key("assets_start");
         writer.add_number(file.artifact_data.assets_start);
         writer.add_key("previews_start");

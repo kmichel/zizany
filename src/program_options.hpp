@@ -6,16 +6,19 @@
 #include <string>
 
 namespace zizany {
-    struct program_options {
+    class program_options {
+    public:
         enum class command {
             show_help,
             dump,
             extract_previews
         };
-        command command;
+        command program_command;
         unity_file_printer_options printer_options;
         std::vector<std::string> filenames;
         std::string output_dir;
+
+        program_options();
 
         static
         program_options parse(int argc, char **argv);

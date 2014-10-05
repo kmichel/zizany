@@ -21,7 +21,7 @@ namespace zizany {
 
     class unity_file_parser {
         unity_file &file;
-        range_checker range_checker;
+        range_checker checker;
     public:
         explicit unity_file_parser(unity_file &file_);
 

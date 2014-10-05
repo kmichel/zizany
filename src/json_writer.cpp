@@ -2,6 +2,7 @@
 
 #include <limits>
 #include <cmath>
+#include <cinttypes>
 
 // TODO: test putc_unlocked (EOF) and snprintf (length if unlimited) output
 namespace zizany {
@@ -17,57 +18,57 @@ namespace zizany {
               indent_width(indent_width_),
               indent_level(0),
               inline_level(std::numeric_limits<int>::max()),
-              state(state::after_start) {
+              state(writer_state::after_start) {
     }
 
     void
     json_writer::add_string(const std::string &value) {
         insert_separator_if_needed();
         print_quoted_string(value);
-        state = state::after_value;
+        state = writer_state::after_value;
     }
 
     void
     json_writer::add_string(const char *chars, const std::size_t length) {
         insert_separator_if_needed();
         print_quoted_string(chars, length);
-        state = state::after_value;
+        state = writer_state::after_value;
     }
 
     void
     json_writer::add_number(std::int32_t value) {
         insert_separator_if_needed();
         char buffer[64];
-        snprintf(buffer, 64, "%i", value);
+        snprintf(buffer, 64, "%" PRIi32, value);
         fputs_unlocked_(buffer, output);
-        state = state::after_value;
+        state = writer_state::after_value;
     }
 
     void
     json_writer::add_number(std::uint32_t value) {
         insert_separator_if_needed();
         char buffer[64];
-        snprintf(buffer, 64, "%u", value);
+        snprintf(buffer, 64, "%" PRIu32, value);
         fputs_unlocked_(buffer, output);
-        state = state::after_value;
+        state = writer_state::after_value;
     }
 
     void
     json_writer::add_number(std::int64_t value) {
         insert_separator_if_needed();
         char buffer[64];
-        snprintf(buffer, 64, "%lli", value);
+        snprintf(buffer, 64, "%" PRIi64, value);
         fputs_unlocked_(buffer, output);
-        state = state::after_value;
+        state = writer_state::after_value;
     }
 
     void
     json_writer::add_number(std::uint64_t value) {
         insert_separator_if_needed();
         char buffer[64];
-        snprintf(buffer, 64, "%llu", value);
+        snprintf(buffer, 64, "%" PRIu64, value);
         fputs_unlocked_(buffer, output);
-        state = state::after_value;
+        state = writer_state::after_value;
     }
 
     void
@@ -80,7 +81,7 @@ namespace zizany {
             snprintf(buffer, 64, "%f", value);
             fputs_unlocked_(buffer, output);
         }
-        state = state::after_value;
+        state = writer_state::after_value;
     }
 
     void
@@ -93,21 +94,21 @@ namespace zizany {
             snprintf(buffer, 64, "%lf", value);
             fputs_unlocked_(buffer, output);
         }
-        state = state::after_value;
+        state = writer_state::after_value;
     }
 
     void
     json_writer::add_bool(bool value) {
         insert_separator_if_needed();
         fputs_unlocked_(value ? "true" : "false", output);
-        state = state::after_value;
+        state = writer_state::after_value;
     }
 
     void
     json_writer::add_null() {
         insert_separator_if_needed();
         fputs_unlocked_("null", output);
-        state = state::after_value;
+        state = writer_state::after_value;
     }
 
     void
@@ -120,7 +121,7 @@ namespace zizany {
         insert_separator_if_needed();
         print_quoted_string(key);
         fputs_unlocked_(": ", output);
-        state = state::after_key;
+        state = writer_state::after_key;
     }
 
     void
@@ -128,7 +129,7 @@ namespace zizany {
         insert_separator_if_needed();
         print_quoted_string(key);
         fputs_unlocked_(": ", output);
-        state = state::after_key;
+        state = writer_state::after_key;
     }
 
     void
@@ -149,7 +150,7 @@ namespace zizany {
     void
     json_writer::reset() {
         indent_level = 0;
-        state = state::after_start;
+        state = writer_state::after_start;
     }
 
     void
@@ -159,28 +160,28 @@ namespace zizany {
         if (force_inline)
             inline_level = std::min(inline_level, indent_level);
         indent_level += 1;
-        state = state::after_composite_start;
+        state = writer_state::after_composite_start;
     }
 
     void
     json_writer::end_composite(char marker) {
         indent_level -= 1;
-        if (state == state::after_value && indent_level < inline_level)
+        if (state == writer_state::after_value && indent_level < inline_level)
             insert_newline();
         putc_unlocked(marker, output);
-        state = state::after_value;
+        state = writer_state::after_value;
         if (indent_level == inline_level)
             inline_level = std::numeric_limits<int>::max();
     }
 
     void
     json_writer::insert_separator_if_needed() {
-        if (state == state::after_value)
+        if (state == writer_state::after_value)
             putc_unlocked(',', output);
-        if (state != state::after_key) {
-            if (state != state::after_start && indent_level < inline_level)
+        if (state != writer_state::after_key) {
+            if (state != writer_state::after_start && indent_level < inline_level)
                 insert_newline();
-            else if (state == state::after_value)
+            else if (state == writer_state::after_value)
                 putc_unlocked(' ', output);
         }
     }

@@ -4,21 +4,28 @@
 #include <stdexcept>
 
 namespace zizany {
+    program_options::program_options()
+            : program_command(),
+              printer_options(),
+              filenames(),
+              output_dir() {
+    }
+
     program_options
     program_options::parse(int argc, char **argv) {
-        program_options options{};
+        program_options options;
 
         if (argc < 2) {
-            options.command = command::show_help;
+            options.program_command = program_options::command::show_help;
         } else {
             const std::string command(argv[1]);
             if (command == "help") {
-                options.command = command::show_help;
+                options.program_command = program_options::command::show_help;
             } else if (command == "dump") {
-                options.command = command::dump;
+                options.program_command = program_options::command::dump;
                 parse_dump_options(options, argc - 2, argv + 2);
             } else if (command == "extract_previews") {
-                options.command = command::extract_previews;
+                options.program_command = program_options::command::extract_previews;
                 parse_extract_previews_options(options, argc - 2, argv + 2);
             } else {
                 std::stringstream buffer;
