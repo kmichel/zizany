@@ -7,7 +7,7 @@
 namespace zizany {
     static
     void
-    fputs_unlocked(const char *str, FILE *output) {
+    fputs_unlocked_(const char *str, FILE *output) {
         while (*str != 0)
             putc_unlocked(*str++, output);
     }
@@ -39,7 +39,7 @@ namespace zizany {
         insert_separator_if_needed();
         char buffer[64];
         snprintf(buffer, 64, "%i", value);
-        fputs_unlocked(buffer, output);
+        fputs_unlocked_(buffer, output);
         state = state::after_value;
     }
 
@@ -48,7 +48,7 @@ namespace zizany {
         insert_separator_if_needed();
         char buffer[64];
         snprintf(buffer, 64, "%u", value);
-        fputs_unlocked(buffer, output);
+        fputs_unlocked_(buffer, output);
         state = state::after_value;
     }
 
@@ -57,7 +57,7 @@ namespace zizany {
         insert_separator_if_needed();
         char buffer[64];
         snprintf(buffer, 64, "%lli", value);
-        fputs_unlocked(buffer, output);
+        fputs_unlocked_(buffer, output);
         state = state::after_value;
     }
 
@@ -66,7 +66,7 @@ namespace zizany {
         insert_separator_if_needed();
         char buffer[64];
         snprintf(buffer, 64, "%llu", value);
-        fputs_unlocked(buffer, output);
+        fputs_unlocked_(buffer, output);
         state = state::after_value;
     }
 
@@ -74,11 +74,11 @@ namespace zizany {
     json_writer::add_number(float value) {
         insert_separator_if_needed();
         if (std::isnan(value) || std::isinf(value))
-            fputs_unlocked("null", output);
+            fputs_unlocked_("null", output);
         else {
             char buffer[64];
             snprintf(buffer, 64, "%f", value);
-            fputs_unlocked(buffer, output);
+            fputs_unlocked_(buffer, output);
         }
         state = state::after_value;
     }
@@ -87,11 +87,11 @@ namespace zizany {
     json_writer::add_number(double value) {
         insert_separator_if_needed();
         if (std::isnan(value) || std::isinf(value))
-            fputs_unlocked("null", output);
+            fputs_unlocked_("null", output);
         else {
             char buffer[64];
             snprintf(buffer, 64, "%lf", value);
-            fputs_unlocked(buffer, output);
+            fputs_unlocked_(buffer, output);
         }
         state = state::after_value;
     }
@@ -99,14 +99,14 @@ namespace zizany {
     void
     json_writer::add_bool(bool value) {
         insert_separator_if_needed();
-        fputs_unlocked(value ? "true" : "false", output);
+        fputs_unlocked_(value ? "true" : "false", output);
         state = state::after_value;
     }
 
     void
     json_writer::add_null() {
         insert_separator_if_needed();
-        fputs_unlocked("null", output);
+        fputs_unlocked_("null", output);
         state = state::after_value;
     }
 
@@ -119,7 +119,7 @@ namespace zizany {
     json_writer::add_key(const char *key) {
         insert_separator_if_needed();
         print_quoted_string(key);
-        fputs_unlocked(": ", output);
+        fputs_unlocked_(": ", output);
         state = state::after_key;
     }
 
@@ -127,7 +127,7 @@ namespace zizany {
     json_writer::add_key(const std::string &key) {
         insert_separator_if_needed();
         print_quoted_string(key);
-        fputs_unlocked(": ", output);
+        fputs_unlocked_(": ", output);
         state = state::after_key;
     }
 
