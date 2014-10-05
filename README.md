@@ -40,6 +40,7 @@ $ zizany dump [-tarpdlm] <filename>
      Dump attributes related to the internal layout of the file.
  - `-m`, `--magic`  
      Dump attributes whose meaning is not yet known.
+
 ### Extract previews as png files
 
 ```shellsession
