@@ -56,6 +56,12 @@ namespace zizany {
                         options.printer_options.print_file_references = true;
                     else if (option_name == "previews")
                         options.printer_options.print_previews = true;
+                    else if (option_name == "type-defaults")
+                        options.printer_options.print_defaults = true;
+                    else if (option_name == "file-layout")
+                        options.printer_options.print_layout = true;
+                    else if (option_name == "magic")
+                        options.printer_options.print_magic = true;
                     else {
                         std::stringstream buffer;
                         buffer << "invalid argument: '" << argument << '\'';
@@ -75,6 +81,15 @@ namespace zizany {
                                 break;
                             case 'p':
                                 options.printer_options.print_previews = true;
+                                break;
+                            case 'd':
+                                options.printer_options.print_defaults = true;
+                                break;
+                            case 'l':
+                                options.printer_options.print_layout = true;
+                                break;
+                            case 'm':
+                                options.printer_options.print_magic = true;
                                 break;
                             default: {
                                 std::stringstream buffer;

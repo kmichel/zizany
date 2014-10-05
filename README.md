@@ -22,7 +22,7 @@ $ sudo make install
 ### Dump file content as a json object
 
 ```shellsession
-$ zizany dump [-tarp] <filename>
+$ zizany dump [-tarpdlm] <filename>
 ```
 
 #### Options :
@@ -34,7 +34,12 @@ $ zizany dump [-tarp] <filename>
      Dump value of the file references.
  - `-p`, `--previews`  
      Dump value of the stored previews.
-
+ - `-d`, `--type-defaults`  
+     Dump type attributes even if they are equal to their default value.
+ - `-l`, `--file-layout`  
+     Dump attributes related to the internal layout of the file.
+ - `-m`, `--magic`  
+     Dump attributes whose meaning is not yet known.
 ### Extract previews as png files
 
 ```shellsession

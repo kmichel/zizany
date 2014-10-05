@@ -24,7 +24,7 @@ namespace zizany {
 
     static
     void
-    print_hexdump(json_writer &writer, const std::vector<char>& data) {
+    print_hexdump(json_writer &writer, const std::vector<char> &data) {
         writer.start_array();
         char line_buffer[40];
         int line_index(0);
@@ -48,18 +48,22 @@ namespace zizany {
         writer.add_string(file.unity_version);
         writer.add_key("is_big_endian");
         writer.add_bool(file.file_endianness == zizany::endianness::big_endian);
-        writer.add_key("assets_start");
-        writer.add_number(file.artifact_data.assets_start);
-        writer.add_key("previews_start");
-        writer.add_number(file.artifact_data.previews_start);
-        writer.add_key("metadata_size");
-        writer.add_number(file.artifact_data.metadata_size);
-        writer.add_key("magic_int_1");
-        writer.add_number(file.magic_int_1);
-        writer.add_key("magic_int_2");
-        writer.add_number(file.magic_int_2);
-        writer.add_key("magic_int_3");
-        writer.add_number(file.magic_int_3);
+        if (options.print_layout) {
+            writer.add_key("assets_start");
+            writer.add_number(file.artifact_data.assets_start);
+            writer.add_key("previews_start");
+            writer.add_number(file.artifact_data.previews_start);
+            writer.add_key("metadata_size");
+            writer.add_number(file.artifact_data.metadata_size);
+        }
+        if (options.print_magic) {
+            writer.add_key("magic_int_1");
+            writer.add_number(file.magic_int_1);
+            writer.add_key("magic_int_2");
+            writer.add_number(file.magic_int_2);
+            writer.add_key("magic_int_3");
+            writer.add_number(file.magic_int_3);
+        }
         if (options.print_types) {
             writer.add_key("types");
             writer.start_array();
@@ -68,7 +72,7 @@ namespace zizany {
                 writer.add_key("id");
                 writer.add_number(file.types.get_id_at(index));
                 writer.add_key("definition");
-                print_type(writer, file.types.at(index));
+                print_type(writer, file.types.at(index), options.print_defaults, options.print_magic);
                 writer.end_object();
             }
             writer.end_array();
@@ -85,10 +89,12 @@ namespace zizany {
                 writer.add_number(asset.type_id);
                 writer.add_key("type_id_2");
                 writer.add_number(asset.type_id_2);
-                writer.add_key("offset");
-                writer.add_number(asset.artifact_data.offset);
-                writer.add_key("size");
-                writer.add_number(asset.artifact_data.size);
+                if (options.print_layout) {
+                    writer.add_key("offset");
+                    writer.add_number(asset.artifact_data.offset);
+                    writer.add_key("size");
+                    writer.add_number(asset.artifact_data.size);
+                }
                 if (asset.value) {
                     writer.add_key("value");
                     asset.value->print(writer);
@@ -113,10 +119,12 @@ namespace zizany {
                 print_guid(writer, file_reference.guid.a, file_reference.guid.b, file_reference.guid.c, file_reference.guid.d);
                 writer.add_key("path");
                 writer.add_string(file_reference.path);
-                writer.add_key("magic_byte_1");
-                writer.add_number(file_reference.magic_byte_1);
-                writer.add_key("magic_int_2");
-                writer.add_number(file_reference.magic_int_2);
+                if (options.print_magic) {
+                    writer.add_key("magic_byte_1");
+                    writer.add_number(file_reference.magic_byte_1);
+                    writer.add_key("magic_int_2");
+                    writer.add_number(file_reference.magic_int_2);
+                }
                 writer.end_object();
             }
             writer.end_array();
@@ -129,16 +137,20 @@ namespace zizany {
                 writer.start_object();
                 writer.add_key("object_id");
                 writer.add_number(preview.object_id);
-                writer.add_key("offset");
-                writer.add_number(preview.artifact_data.offset);
-                writer.add_key("size");
-                writer.add_number(preview.artifact_data.size);
-                writer.add_key("magic_int_1");
-                writer.add_number(preview.magic_int_1);
-                writer.add_key("magic_int_2");
-                writer.add_number(preview.magic_int_2);
-                writer.add_key("magic_int_3");
-                writer.add_number(preview.magic_int_3);
+                if (options.print_layout) {
+                    writer.add_key("offset");
+                    writer.add_number(preview.artifact_data.offset);
+                    writer.add_key("size");
+                    writer.add_number(preview.artifact_data.size);
+                }
+                if (options.print_magic) {
+                    writer.add_key("magic_int_1");
+                    writer.add_number(preview.magic_int_1);
+                    writer.add_key("magic_int_2");
+                    writer.add_number(preview.magic_int_2);
+                    writer.add_key("magic_int_3");
+                    writer.add_number(preview.magic_int_3);
+                }
                 writer.add_key("data");
                 writer.start_array(true);
                 for (std::size_t data_index = 0; data_index < preview.data.size(); ++data_index)
@@ -152,25 +164,33 @@ namespace zizany {
     }
 
     void
-    print_type(json_writer &writer, const unity_type &type) {
+    print_type(json_writer &writer, const unity_type &type, bool print_defaults, bool print_magic) {
         writer.start_object();
         writer.add_key("name");
         writer.add_string(type.member_name);
         writer.add_key("type");
         writer.add_string(type.type_name);
-        writer.add_key("is_array");
-        writer.add_bool(type.is_array);
-        writer.add_key("size");
-        writer.add_number(type.type_size);
-        writer.add_key("magic_int_1");
-        writer.add_number(type.magic_int_1);
-        writer.add_key("magic_bitset_2");
-        writer.add_number(type.magic_bitset_2);
-        writer.add_key("members");
-        writer.start_array();
-        for (std::size_t index = 0; index < type.members.size(); ++index)
-            print_type(writer, type.members.at(index));
-        writer.end_array();
+        if (type.is_array || print_defaults) {
+            writer.add_key("is_array");
+            writer.add_bool(type.is_array);
+        }
+        if (type.type_size != -1 || print_defaults) {
+            writer.add_key("size");
+            writer.add_number(type.type_size);
+        }
+        if (print_magic) {
+            writer.add_key("magic_int_1");
+            writer.add_number(type.magic_int_1);
+            writer.add_key("magic_bitset_2");
+            writer.add_number(type.magic_bitset_2);
+        }
+        if (type.members.size() > 0 || print_defaults) {
+            writer.add_key("members");
+            writer.start_array();
+            for (std::size_t index = 0; index < type.members.size(); ++index)
+                print_type(writer, type.members.at(index), print_defaults, print_magic);
+            writer.end_array();
+        }
         writer.end_object();
     }
 }
