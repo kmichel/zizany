@@ -1,0 +1,6 @@
+*
+!.gitignore
+!CMakeLists.txt
+!download.cmake
+!fix_header.sh
+!LICENSE.txt

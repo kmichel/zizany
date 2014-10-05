@@ -4,13 +4,29 @@
 #include <cmath>
 #include <cinttypes>
 
-// TODO: test putc_unlocked (EOF) and snprintf (length if unlimited) output
+#include "../libs/gdtoa/gdtoa.h"
+
+// TODO: test putc_unlocked (EOF), snprintf, g_ffmt and g_dfmt (length if unlimited) output
 namespace zizany {
     static
     void
     fputs_unlocked_(const char *str, FILE *output) {
         while (*str != 0)
             putc_unlocked(*str++, output);
+    }
+
+    static
+    void
+    print_with_leading_zero(const char *buffer, FILE *output) {
+        if (buffer[0] == '-' && buffer[1] == '.') {
+            putc_unlocked('-', output);
+            putc_unlocked('0', output);
+            fputs_unlocked_(buffer + 1, output);
+        } else {
+            if (buffer[0] == '.')
+                putc_unlocked('0', output);
+            fputs_unlocked_(buffer, output);
+        }
     }
 
     json_writer::json_writer(FILE *output_, const int indent_width_)
@@ -77,9 +93,9 @@ namespace zizany {
         if (std::isnan(value) || std::isinf(value))
             fputs_unlocked_("null", output);
         else {
-            char buffer[64];
-            snprintf(buffer, 64, "%f", value);
-            fputs_unlocked_(buffer, output);
+            char buffer[32];
+            g_ffmt(buffer, &value, -1, sizeof(buffer));
+            print_with_leading_zero(buffer, output);
         }
         state = writer_state::after_value;
     }
@@ -90,9 +106,9 @@ namespace zizany {
         if (std::isnan(value) || std::isinf(value))
             fputs_unlocked_("null", output);
         else {
-            char buffer[64];
-            snprintf(buffer, 64, "%lf", value);
-            fputs_unlocked_(buffer, output);
+            char buffer[32];
+            g_dfmt(buffer, &value, -1, sizeof(buffer));
+            print_with_leading_zero(buffer, output);
         }
         state = writer_state::after_value;
     }

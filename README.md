@@ -73,4 +73,7 @@ In `.git/config`:
 
 ## License
 
-Code released under the MIT License.
+This project is licensed under the terms of the MIT license.
+
+The gdtoa library is copyrighted by Lucent Technologies and distributed
+ under the terms specified in the file `libs/gdtoa/LICENSE.txt`.

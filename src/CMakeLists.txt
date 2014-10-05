@@ -29,7 +29,7 @@ set(SOURCE_FILES
     values/unity_string_value.cpp
     values/unity_value.cpp
 )
-add_executable(zizany ${SOURCE_FILES})
+add_executable(zizany ${SOURCE_FILES} $<TARGET_OBJECTS:gdtoa>)
 
 install(TARGETS zizany RUNTIME DESTINATION bin)
 
