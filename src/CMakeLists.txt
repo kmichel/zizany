@@ -31,6 +31,8 @@ set(SOURCE_FILES
 )
 add_executable(zizany ${SOURCE_FILES})
 
+install(TARGETS zizany RUNTIME DESTINATION bin)
+
 # Workaround for headers missing from project in CLion
 # See: https://youtrack.jetbrains.com/issue/CPP-270
 file(GLOB_RECURSE ALL_HEADER_FILES ${CMAKE_CURRENT_SOURCE_DIR}/*.hpp)
