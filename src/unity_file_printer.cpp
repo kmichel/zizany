@@ -15,9 +15,9 @@ namespace zizany {
 
     static
     void
-    print_guid(json_writer &writer, const std::uint32_t a, const std::uint32_t b, const std::uint32_t c, const std::uint32_t d) {
+    print_guid(json_writer &writer, const guid& guid) {
         char buffer[33];
-        std::snprintf(buffer, sizeof(buffer), "%08x%08x%08x%08x", d, c, b, a);
+        std::snprintf(buffer, sizeof(buffer), "%08x%08x%08x%08x", guid.d, guid.c, guid.b, guid.a);
         std::reverse(buffer, buffer + 32);
         writer.add_string(buffer, 32);
     }
@@ -116,7 +116,7 @@ namespace zizany {
                 writer.add_key("id");
                 writer.add_number(file_reference_id);
                 writer.add_key("guid");
-                print_guid(writer, file_reference.guid.a, file_reference.guid.b, file_reference.guid.c, file_reference.guid.d);
+                print_guid(writer, file_reference.file_guid);
                 writer.add_key("path");
                 writer.add_string(file_reference.path);
                 if (options.print_magic) {

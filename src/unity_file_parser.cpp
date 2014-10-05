@@ -137,10 +137,10 @@ namespace zizany {
         file_reference->magic_byte_1 = parser.parse<unsigned char>();
         if (file_reference->magic_byte_1 != 0)
             throw parser_exception("magic_byte_1 value should be zero");
-        file_reference->guid.a = parser.parse<std::uint32_t>();
-        file_reference->guid.b = parser.parse<std::uint32_t>();
-        file_reference->guid.c = parser.parse<std::uint32_t>();
-        file_reference->guid.d = parser.parse<std::uint32_t>();
+        file_reference->file_guid.a = parser.parse<std::uint32_t>();
+        file_reference->file_guid.b = parser.parse<std::uint32_t>();
+        file_reference->file_guid.c = parser.parse<std::uint32_t>();
+        file_reference->file_guid.d = parser.parse<std::uint32_t>();
         file_reference->magic_int_2 = parser.parse<std::int32_t>();
         file_reference->path = parser.parse_string();
         return file_reference;

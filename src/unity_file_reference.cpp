@@ -3,7 +3,7 @@
 namespace zizany {
     unity_file_reference::unity_file_reference()
             : path(),
-              guid(),
+              file_guid(),
               magic_int_2(),
               magic_byte_1() {
     }
