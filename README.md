@@ -38,7 +38,7 @@ $ zizany dump [-tarp] <filename>
 ### Extract previews as png files
 
 ```shellsession
-zizany extract_previews [-o <path>] [<filename> ...]
+$ zizany extract_previews [-o <path>] [<filename> ...]
 ```
 
 #### Options :
@@ -65,3 +65,7 @@ In `.git/config`:
     textconv = zizany dump -tarp
     binary = true
 ```
+
+## License
+
+Code released under the MIT License.
