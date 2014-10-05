@@ -2,6 +2,21 @@
 
 Parse and extract information from Unity binary assets files, for debugging, diffing or mere curiosity.
 
+## Installation
+
+### Requirements
+
+ - cmake
+ - clang++ or g++
+
+### Instructions
+
+```shellsession
+$ cmake .
+$ make
+$ sudo make install
+```
+
 ## Commands
 
 ### Dump file content as a json object
