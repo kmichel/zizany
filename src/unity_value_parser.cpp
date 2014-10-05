@@ -5,6 +5,7 @@
 #include "unity_type.hpp"
 #include "values/unity_value.hpp"
 #include "values/unity_array_value.hpp"
+#include "values/unity_asset_reference_value.hpp"
 #include "values/unity_dense_array_value.hpp"
 #include "values/unity_composite_value.hpp"
 #include "values/unity_multiline_string_value.hpp"
@@ -156,6 +157,12 @@ namespace zizany {
                 parser.align(4);
             }
             ret = std::move(string_value);
+        } else if (type.type_name.find("PPtr<") == 0 && type.type_name.at(type.type_name.size() -1) == '>') {
+            // XXX: we should check that the type named "PPtr<*>" is actually what we expect
+            std::unique_ptr<unity_asset_reference_value> asset_reference_value(new unity_asset_reference_value(type, parent));
+            asset_reference_value->file_reference_id = parser.parse<std::int32_t>();
+            asset_reference_value->asset_id = parser.parse<std::int32_t>();
+            ret = std::move(asset_reference_value);
         } else {
             ret = parse_composite(parser, type, parent);
         }

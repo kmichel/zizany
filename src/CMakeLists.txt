@@ -24,6 +24,7 @@ set(SOURCE_FILES
     unity_type.cpp
     unity_value_parser.cpp
     values/unity_array_value.cpp
+    values/unity_asset_reference_value.cpp
     values/unity_composite_value.cpp
     values/unity_multiline_string_value.cpp
     values/unity_string_value.cpp
