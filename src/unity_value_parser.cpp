@@ -6,8 +6,9 @@
 #include "values/unity_value.hpp"
 #include "values/unity_array_value.hpp"
 #include "values/unity_asset_reference_value.hpp"
-#include "values/unity_dense_array_value.hpp"
 #include "values/unity_composite_value.hpp"
+#include "values/unity_guid_value.hpp"
+#include "values/unity_dense_array_value.hpp"
 #include "values/unity_multiline_string_value.hpp"
 #include "values/unity_simple_value.hpp"
 #include "values/unity_string_value.hpp"
@@ -157,6 +158,14 @@ namespace zizany {
                 parser.align(4);
             }
             ret = std::move(string_value);
+        } else if (type.type_name == "GUID") {
+            // XXX: we should check that the type named "GUID" is actually what we expect
+            std::unique_ptr<unity_guid_value> guid_value(new unity_guid_value(type, parent));
+            guid_value->value.a = parser.parse<std::uint32_t>();
+            guid_value->value.b = parser.parse<std::uint32_t>();
+            guid_value->value.c = parser.parse<std::uint32_t>();
+            guid_value->value.d = parser.parse<std::uint32_t>();
+            ret = std::move(guid_value);
         } else if (type.type_name.find("PPtr<") == 0 && type.type_name.at(type.type_name.size() -1) == '>') {
             // XXX: we should check that the type named "PPtr<*>" is actually what we expect
             std::unique_ptr<unity_asset_reference_value> asset_reference_value(new unity_asset_reference_value(type, parent));

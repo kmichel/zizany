@@ -8,20 +8,9 @@
 #include "unity_type.hpp"
 #include "values/unity_value.hpp"
 
-#include <algorithm>
 #include <cstdio>
 
 namespace zizany {
-
-    static
-    void
-    print_guid(json_writer &writer, const guid& guid) {
-        char buffer[33];
-        std::snprintf(buffer, sizeof(buffer), "%08x%08x%08x%08x", guid.d, guid.c, guid.b, guid.a);
-        std::reverse(buffer, buffer + 32);
-        writer.add_string(buffer, 32);
-    }
-
     static
     void
     print_hexdump(json_writer &writer, const std::vector<char> &data) {
@@ -29,7 +18,7 @@ namespace zizany {
         char line_buffer[40];
         int line_index(0);
         for (std::size_t buffer_index = 0; buffer_index < data.size(); ++buffer_index) {
-            snprintf(line_buffer + line_index, 3, "%02x", data[buffer_index]);
+            std::snprintf(line_buffer + line_index, 3, "%02x", data[buffer_index]);
             line_index += 2;
             if (buffer_index % 2 == 1)
                 line_buffer[line_index++] = ' ';
@@ -116,7 +105,7 @@ namespace zizany {
                 writer.add_key("id");
                 writer.add_number(file_reference_id);
                 writer.add_key("guid");
-                print_guid(writer, file_reference.file_guid);
+                file_reference.file_guid.print(writer);
                 writer.add_key("path");
                 writer.add_string(file_reference.path);
                 if (options.print_magic) {
@@ -186,7 +175,7 @@ namespace zizany {
         if (type.members.size() > 0 || print_defaults) {
             writer.add_key("members");
             writer.start_array();
-            for (const unity_type& member_type : type.members)
+            for (const unity_type &member_type : type.members)
                 print_type(writer, member_type, print_defaults, print_magic);
             writer.end_array();
         }

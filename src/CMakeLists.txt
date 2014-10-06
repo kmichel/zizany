@@ -27,6 +27,7 @@ set(SOURCE_FILES
     values/unity_array_value.cpp
     values/unity_asset_reference_value.cpp
     values/unity_composite_value.cpp
+    values/unity_guid_value.cpp
     values/unity_multiline_string_value.cpp
     values/unity_string_value.cpp
     values/unity_value.cpp
