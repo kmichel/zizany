@@ -34,7 +34,7 @@ namespace zizany {
     void
     unity_value_members::print(json_writer &writer) const {
         writer.start_object();
-        for (const unity_value_member& member : members) {
+        for (const unity_value_member &member : members) {
             writer.add_key(member.name);
             member.value->print(writer);
         }

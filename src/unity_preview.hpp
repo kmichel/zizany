@@ -4,6 +4,8 @@
 #include <vector>
 
 namespace zizany {
+    class json_writer;
+
     class unity_preview {
     public:
         std::int32_t asset_id;
@@ -18,8 +20,6 @@ namespace zizany {
 
         unity_preview();
 
-        unity_preview(const unity_preview &) = delete;
-
-        unity_preview &operator=(const unity_preview &) = delete;
+        void print(json_writer &writer, bool print_layout, bool print_magic) const;
     };
 }

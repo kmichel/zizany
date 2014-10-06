@@ -9,7 +9,7 @@ namespace zizany {
             : runtime_error(what_) {
     }
 
-    const char*
+    const char *
     parser_exception::what() const noexcept {
         return runtime_error::what();
     }

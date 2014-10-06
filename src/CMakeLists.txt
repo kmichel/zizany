@@ -8,6 +8,35 @@ if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra")
 endif()
 set(SOURCE_FILES
+    delta_store.cpp
+    deltas/delta.cpp
+    deltas/asset_added_delta.cpp
+    deltas/asset_changed_delta.cpp
+    deltas/asset_member_added_delta.cpp
+    deltas/asset_member_removed_delta.cpp
+    deltas/asset_removed_delta.cpp
+    deltas/file_endianness_changed_delta.cpp
+    deltas/file_layout_changed_delta.cpp
+    deltas/file_magic_changed_delta.cpp
+    deltas/file_reference_added_delta.cpp
+    deltas/file_reference_changed_delta.cpp
+    deltas/file_reference_removed_delta.cpp
+    deltas/preview_added_delta.cpp
+    deltas/preview_changed_delta.cpp
+    deltas/preview_removed_delta.cpp
+    deltas/type_added_delta.cpp
+    deltas/type_changed_delta.cpp
+    deltas/type_member_added_delta.cpp
+    deltas/type_member_removed_delta.cpp
+    deltas/type_removed_delta.cpp
+    deltas/unity_version_modified_delta.cpp
+    diff/file_comparer.cpp
+    diff/file_reference_comparer.cpp
+    diff/identified_type.cpp
+    diff/member_path.cpp
+    diff/preview_comparer.cpp
+    diff/type_comparer.cpp
+    diff/type_identity.cpp
     file_lock.cpp
     guid.cpp
     json_writer.cpp
@@ -15,6 +44,8 @@ set(SOURCE_FILES
     parse_exception.cpp
     program_options.cpp
     range_checker.cpp
+    reverse_delta_store.cpp
+    simple_delta_store.cpp
     stream_parser.cpp
     unity_asset.cpp
     unity_file.cpp
@@ -27,11 +58,13 @@ set(SOURCE_FILES
     unity_value_members.cpp
     unity_value_parser.cpp
     values/unity_array_value.cpp
-    values/unity_bool_value.cpp
-    values/unity_bool_array_value.cpp
     values/unity_asset_reference_value.cpp
+    values/unity_bool_value.cpp
+    values/unity_double_value.cpp
     values/unity_composite_value.cpp
+    values/unity_float_value.cpp
     values/unity_guid_value.cpp
+    values/unity_inline_array_value.cpp
     values/unity_multiline_string_value.cpp
     values/unity_string_value.cpp
     values/unity_value.cpp

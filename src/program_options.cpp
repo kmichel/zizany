@@ -27,6 +27,9 @@ namespace zizany {
             } else if (command == "extract_previews") {
                 options.program_command = program_options::command::extract_previews;
                 parse_extract_previews_options(options, argc - 2, argv + 2);
+            } else if (command == "diff") {
+                options.program_command = program_options::command::diff;
+                parse_diff_options(options, argc - 2, argv + 2);
             } else {
                 std::stringstream buffer;
                 buffer
@@ -107,7 +110,38 @@ namespace zizany {
             }
         }
         if (options.filenames.size() != 1)
-            throw std::runtime_error("dump command only takes one file parameter");
+            throw std::runtime_error("dump command takes exactly one file parameter");
+    }
+
+    void
+    program_options::parse_diff_options(program_options &options, int argc, char **argv) {
+        bool allow_options(true);
+        for (int argument_index = 0; argument_index < argc; ++argument_index) {
+            const std::string argument(argv[argument_index]);
+            if (allow_options && argument.find('-') == 0 && argument.size() > 1) {
+                if (argument.at(1) == '-') {
+                    const std::string option_name = argument.substr(2, std::string::npos);
+                    if (option_name.size() == 0)
+                        allow_options = false;
+                    else {
+                        std::stringstream buffer;
+                        buffer << "invalid argument: '" << argument << '\'';
+                        throw std::runtime_error(buffer.str());
+                    }
+                } else {
+                    std::stringstream buffer;
+                    buffer << "invalid argument: ";
+                    if (argument.size() != 2)
+                        buffer << '\'' << argument.at(1) << "' in ";
+                    buffer << '\'' << argument << '\'';
+                    throw std::runtime_error(buffer.str());
+                }
+            } else {
+                options.filenames.push_back(argument);
+            }
+        }
+        if (options.filenames.size() != 2)
+            throw std::runtime_error("diff command takes exactly two file parameters");
     }
 
     void

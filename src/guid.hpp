@@ -14,5 +14,5 @@ namespace zizany {
         void print(json_writer &writer) const;
     };
 
-    bool operator==(const guid& lhs, const guid& rhs);
+    bool operator==(const guid &lhs, const guid &rhs);
 }

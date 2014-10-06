@@ -12,5 +12,14 @@ namespace zizany {
         unity_composite_value();
 
         virtual void print(json_writer &writer) const;
+
+        virtual bool equals(const unity_value &value) const;
+
+        virtual bool member_equals(const std::string &member_name, const unity_value &value) const;
+
+        virtual void compare(const unity_value &value, delta_store &store) const;
+
+        virtual void compare(const unity_composite_value &value, delta_store &store) const;
+
     };
 }

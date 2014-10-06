@@ -14,9 +14,5 @@ namespace zizany {
         unsigned char magic_byte_1;
 
         unity_file_reference();
-
-        unity_file_reference(const unity_file_reference &) = delete;
-
-        unity_file_reference &operator=(const unity_file_reference &) = delete;
     };
 }

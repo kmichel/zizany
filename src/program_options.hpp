@@ -11,6 +11,7 @@ namespace zizany {
         enum class command {
             show_help,
             dump,
+            diff,
             extract_previews
         };
         command program_command;
@@ -25,6 +26,9 @@ namespace zizany {
 
         static
         void parse_dump_options(program_options &options, int argc, char **argv);
+
+        static
+        void parse_diff_options(program_options &options, int argc, char **argv);
 
         static
         void parse_extract_previews_options(program_options &options, int argc, char **argv);

@@ -1,7 +1,10 @@
+#include "deltas/delta.hpp"
+#include "diff/file_comparer.hpp"
 #include "file_lock.hpp"
 #include "json_writer.hpp"
 #include "parser_exception.hpp"
 #include "program_options.hpp"
+#include "simple_delta_store.hpp"
 #include "unity_asset.hpp"
 #include "unity_file.hpp"
 #include "unity_file_printer.hpp"
@@ -89,6 +92,23 @@ dump_file(const std::string &filename, zizany::unity_file_printer_options option
 }
 
 static
+void diff_files(const std::string &base_filename, const std::string &other_filename) {
+    zizany::unity_file base_unity_file;
+    parse_file(base_filename, base_unity_file);
+    zizany::unity_file other_unity_file;
+    parse_file(other_filename, other_unity_file);
+
+    zizany::simple_delta_store store;
+    zizany::compare_files(base_unity_file, other_unity_file, store);
+
+    const zizany::file_lock file_lock(stdout);
+    zizany::json_writer writer(stdout);
+    store.print(writer);
+    fputc('\n', stdout);
+    fflush(stdout);
+}
+
+static
 void
 extract_previews(const std::string &output_dir, const std::string &filename) {
     zizany::unity_file unity_file;
@@ -137,6 +157,8 @@ show_help() {
             << "                Dump attributes related to the internal layout of the file.\n"
             << "            -m, --magic\n"
             << "                Dump attributes whose meaning is not yet known.\n"
+            << "    zizany diff <base_filename> <other_filename>\n"
+            << "        Compare two files and print a list of differences.\n"
             << "    zizany extract_previews [-o <path>] [<filename> ...]\n"
             << "        Extract previews as png files.\n"
             << "        Options:\n"
@@ -157,6 +179,9 @@ main(const int argc, char **argv) {
             case zizany::program_options::command::dump:
                 dump_file(options.filenames.at(0), options.printer_options);
                 break;
+            case zizany::program_options::command::diff:
+                diff_files(options.filenames.at(0), options.filenames.at(1));
+                break;
             case zizany::program_options::command::extract_previews:
                 create_path(options.output_dir);
                 for (std::size_t filename_index = 0; filename_index < options.filenames.size(); ++filename_index)
@@ -164,8 +189,8 @@ main(const int argc, char **argv) {
                 break;
         }
         return 0;
-    } catch (const std::exception& error) {
-        std::cerr << error.what() << std::endl;
+    } catch (const std::exception &error) {
+        std::cerr << "error: " << error.what() << std::endl;
         return -1;
     }
 }

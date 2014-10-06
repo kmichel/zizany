@@ -39,6 +39,12 @@ $ zizany dump [-tarpdlm] <filename>
  - `-m`, `--magic`  
      Dump attributes whose meaning is not yet known.
 
+### Compare two files and print a list of differences
+
+```shellsession
+$ zizany diff <base_filename> <other_filename>
+```
+
 ### Extract previews as png files
 
 ```shellsession

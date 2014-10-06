@@ -10,5 +10,9 @@ namespace zizany {
         unity_bool_value(bool value_);
 
         virtual void print(json_writer &writer) const;
+
+        virtual bool equals(const unity_value &value_) const;
+
+        virtual bool equals(bool value_) const;
     };
 }

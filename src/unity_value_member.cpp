@@ -1,6 +1,5 @@
 #include "unity_value_member.hpp"
 
-#include "json_writer.hpp"
 #include "values/unity_value.hpp"
 
 namespace zizany {
