@@ -4,8 +4,8 @@
 #include "../unity_type.hpp"
 
 namespace zizany {
-    unity_composite_value::unity_composite_value(const unity_type &type_, unity_value *parent_)
-            : unity_value(type_, parent_), members() {
+    unity_composite_value::unity_composite_value(const unity_type &type_)
+            : unity_value(type_), members() {
     }
 
     void

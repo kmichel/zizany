@@ -9,5 +9,5 @@ namespace zizany {
 
     class unity_value;
 
-    std::unique_ptr<unity_value> parse_value(stream_parser &parser, const unity_type &type, unity_value *parent);
+    std::unique_ptr<unity_value> parse_value(stream_parser &parser, const unity_type &type);
 }

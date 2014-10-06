@@ -8,9 +8,8 @@ namespace zizany {
     class unity_value {
     public:
         const unity_type &type;
-        unity_value *parent;
 
-        unity_value(const unity_type &type_, unity_value *parent_);
+        unity_value(const unity_type &type_);
 
         unity_value(const unity_value &) = delete;
 

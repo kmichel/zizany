@@ -5,8 +5,8 @@
 #include <algorithm>
 
 namespace zizany {
-    unity_multiline_string_value::unity_multiline_string_value(const unity_type &type_, unity_value *parent_)
-            : unity_string_value(type_, parent_) {
+    unity_multiline_string_value::unity_multiline_string_value(const unity_type &type_)
+            : unity_string_value(type_) {
     }
 
     void

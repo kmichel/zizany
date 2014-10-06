@@ -3,8 +3,8 @@
 #include "../json_writer.hpp"
 
 namespace zizany {
-    unity_array_value::unity_array_value(const unity_type &type_, unity_value *parent_)
-            : unity_value(type_, parent_), elements() {
+    unity_array_value::unity_array_value(const unity_type &type_)
+            : unity_value(type_), elements() {
     }
 
     void

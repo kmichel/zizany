@@ -32,9 +32,9 @@ namespace zizany {
             parse_file_references(parser);
             parse_previews(parser);
             // moved at the end because asset_value and preview_data require many seeks to parse
-            for (unity_asset& asset : file.assets)
+            for (unity_asset &asset : file.assets)
                 parse_asset_value(parser, asset);
-            for (unity_preview& preview : file.previews)
+            for (unity_preview &preview : file.previews)
                 parse_preview_data(parser, preview);
         }
         checker.check([&stream](std::int64_t start, std::int64_t end) {
@@ -118,7 +118,7 @@ namespace zizany {
     unity_file_parser::parse_asset_value(stream_parser &parser, unity_asset &asset) {
         parser.seek(file.artifact_data.assets_start + asset.artifact_data.offset);
         if (file.types.has_id(asset.type_id))
-            asset.value = parse_value(parser, file.types.get_by_id(asset.type_id), nullptr);
+            asset.value = parse_value(parser, file.types.get_by_id(asset.type_id));
         else
             parser.parse(asset.unparsed_value, asset.artifact_data.size);
     }
