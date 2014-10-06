@@ -32,10 +32,10 @@ namespace zizany {
             parse_file_references(parser);
             parse_previews(parser);
             // moved at the end because asset_value and preview_data require many seeks to parse
-            for (std::uint32_t index = 0; index < file.assets.size(); ++index)
-                parse_asset_value(parser, file.assets.at(index));
-            for (std::uint32_t index = 0; index < file.previews.size(); ++index)
-                parse_preview_data(parser, file.previews.at(index));
+            for (unity_asset& asset : file.assets)
+                parse_asset_value(parser, asset);
+            for (unity_preview& preview : file.previews)
+                parse_preview_data(parser, preview);
         }
         checker.check([&stream](std::int64_t start, std::int64_t end) {
             stream.seekg(start, std::ios_base::beg);

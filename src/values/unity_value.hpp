@@ -7,10 +7,10 @@ namespace zizany {
 
     class unity_value {
     public:
-        unity_type &type;
+        const unity_type &type;
         unity_value *parent;
 
-        unity_value(unity_type &type_, unity_value *parent_);
+        unity_value(const unity_type &type_, unity_value *parent_);
 
         unity_value(const unity_value &) = delete;
 

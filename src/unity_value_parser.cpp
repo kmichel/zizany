@@ -16,7 +16,7 @@ namespace zizany {
 
     static
     std::unique_ptr<unity_value>
-    parse_simple_value(stream_parser &parser, unity_type &type, unity_value *parent) {
+    parse_simple_value(stream_parser &parser, const unity_type &type, unity_value *parent) {
         if (type.type_name == "bool") {
             return make_simple_value(type, parent, parser.parse<bool>());
         } else if (type.type_name == "char") {
@@ -56,7 +56,7 @@ namespace zizany {
 
     template<typename element_type>
     std::unique_ptr<unity_dense_array_value<element_type>>
-    parse_dense_array_(const std::size_t length, stream_parser &parser, unity_type &type, unity_value *parent) {
+    parse_dense_array_(const std::size_t length, stream_parser &parser, const unity_type &type, unity_value *parent) {
         std::unique_ptr<unity_dense_array_value<element_type>> elements_value(make_dense_array_value<element_type>(type, parent));
         parser.parse(elements_value->elements, length);
         return elements_value;
@@ -64,7 +64,7 @@ namespace zizany {
 
     static
     std::unique_ptr<unity_value>
-    parse_dense_array(unity_type &element_type, const std::size_t length, stream_parser &parser, unity_type &type, unity_value *parent) {
+    parse_dense_array(const unity_type &element_type, const std::size_t length, stream_parser &parser, const unity_type &type, unity_value *parent) {
         if (element_type.type_name == "bool") {
             return parse_dense_array_<bool>(length, parser, type, parent);
         } else if (element_type.type_name == "char") {
@@ -104,7 +104,7 @@ namespace zizany {
 
     static
     std::unique_ptr<unity_array_value>
-    parse_array(unity_type &element_type, const std::size_t length, stream_parser &parser, unity_type &type, unity_value *parent) {
+    parse_array(const unity_type &element_type, const std::size_t length, stream_parser &parser, const unity_type &type, unity_value *parent) {
         std::unique_ptr<unity_array_value> elements_value(new unity_array_value(type, parent));
         if (length > 0) {
             elements_value->elements.reserve(length);
@@ -116,28 +116,28 @@ namespace zizany {
 
     static
     std::unique_ptr<unity_composite_value>
-    parse_composite(stream_parser &parser, unity_type &type, unity_value *parent) {
+    parse_composite(stream_parser &parser, const unity_type &type, unity_value *parent) {
         std::unique_ptr<unity_composite_value> composite_value(new unity_composite_value(type, parent));
         const std::size_t members_count(type.members.size());
         if (members_count > 0) {
             composite_value->members.reserve(members_count);
-            for (std::size_t index = 0; index < members_count; ++index)
-                composite_value->members.add(parse_value(parser, type.members.at(index), composite_value.get()));
+            for (const unity_type &member_type : type.members)
+                composite_value->members.add(parse_value(parser,member_type, composite_value.get()));
         }
         return composite_value;
     }
 
 
     std::unique_ptr<unity_value>
-    parse_value(stream_parser &parser, unity_type &type, unity_value *parent) {
+    parse_value(stream_parser &parser, const unity_type &type, unity_value *parent) {
         std::unique_ptr<unity_value> ret;
         if (type.is_array) {
-            unity_type &length_type(type.members.at(0));
+            const unity_type &length_type(type.members.at(0));
             if (length_type.type_name != "int" && length_type.type_name != "SInt32")
                 throw parser_exception("type of length for array should be int or SInt32");
             const std::uint32_t length(parser.parse<std::uint32_t>());
 
-            unity_type &element_type(type.members.at(1));
+            const unity_type &element_type(type.members.at(1));
             if (element_type.is_simple())
                 ret = parse_dense_array(element_type, length, parser, type, parent);
             else

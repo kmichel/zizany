@@ -8,7 +8,7 @@ namespace zizany {
         int file_reference_id;
         int asset_id;
 
-        unity_asset_reference_value(unity_type &type_, unity_value *parent_);
+        unity_asset_reference_value(const unity_type &type_, unity_value *parent_);
 
         virtual void print(json_writer &writer) const;
     };

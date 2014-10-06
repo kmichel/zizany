@@ -132,8 +132,7 @@ namespace zizany {
         if (options.print_previews) {
             writer.add_key("previews");
             writer.start_array();
-            for (std::size_t index = 0; index < file.previews.size(); ++index) {
-                const zizany::unity_preview &preview(file.previews.at(index));
+            for (const unity_preview &preview : file.previews) {
                 writer.start_object();
                 writer.add_key("object_id");
                 writer.add_number(preview.object_id);
@@ -153,8 +152,8 @@ namespace zizany {
                 }
                 writer.add_key("data");
                 writer.start_array(true);
-                for (std::size_t data_index = 0; data_index < preview.data.size(); ++data_index)
-                    writer.add_number(preview.data[index]);
+                for (const unsigned char byte : preview.data)
+                    writer.add_number(byte);
                 writer.end_array();
                 writer.end_object();
             }
@@ -187,8 +186,8 @@ namespace zizany {
         if (type.members.size() > 0 || print_defaults) {
             writer.add_key("members");
             writer.start_array();
-            for (std::size_t index = 0; index < type.members.size(); ++index)
-                print_type(writer, type.members.at(index), print_defaults, print_magic);
+            for (const unity_type& member_type : type.members)
+                print_type(writer, member_type, print_defaults, print_magic);
             writer.end_array();
         }
         writer.end_object();

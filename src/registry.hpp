@@ -71,5 +71,63 @@ namespace zizany {
         size() const {
             return entries.size();
         }
+
+        class iterator {
+            typename owning_vector<entry_type>::iterator entries_iterator;
+        public:
+            iterator(typename owning_vector<entry_type>::iterator entries_iterator_)
+                    : entries_iterator(entries_iterator_) {
+            }
+
+            entry_type &operator*() const {
+                return *entries_iterator;
+            }
+
+            bool operator!=(const iterator &rhs) const {
+                return entries_iterator != rhs.entries_iterator;
+            }
+
+            const iterator &operator++() {
+                ++entries_iterator;
+                return *this;
+            }
+        };
+
+        class const_iterator {
+            typename owning_vector<entry_type>::const_iterator entries_iterator;
+        public:
+            const_iterator(typename owning_vector<entry_type>::const_iterator entries_iterator_)
+                    : entries_iterator(entries_iterator_) {
+            }
+
+            const entry_type &operator*() const {
+                return *entries_iterator;
+            }
+
+            bool operator!=(const const_iterator &rhs) const {
+                return entries_iterator != rhs.entries_iterator;
+            }
+
+            const const_iterator &operator++() {
+                ++entries_iterator;
+                return *this;
+            }
+        };
+
+        iterator begin() {
+            return iterator(entries.begin());
+        }
+
+        iterator end() {
+            return iterator(entries.end());
+        }
+
+        const_iterator begin() const {
+            return const_iterator(entries.begin());
+        }
+
+        const_iterator end() const {
+            return const_iterator(entries.end());
+        }
     };
 }

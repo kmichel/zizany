@@ -8,7 +8,7 @@ namespace zizany {
     public:
         owning_vector<unity_value> elements;
 
-        unity_array_value(unity_type &type_, unity_value *parent_);
+        unity_array_value(const unity_type &type_, unity_value *parent_);
 
         virtual void print(json_writer &writer) const;
     };

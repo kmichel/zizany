@@ -44,14 +44,13 @@ namespace zizany {
         });
         std::set<std::size_t> active_ranges;
         std::int64_t unused_area_start(0);
-        for (std::size_t index = 0; index < events.size(); ++index) {
-            const event &event(events[index]);
+        for (const event &event : events) {
             if (event.is_start) {
                 if (active_ranges.empty() && unused_area_start != event.position)
                     unused_range_callback(unused_area_start, event.position);
                 const range &added_range(ranges.at(event.range_id));
-                for (auto it = active_ranges.begin(); it != active_ranges.end(); ++it) {
-                    const range &active_range(ranges.at(*it));
+                for (std::size_t range_index : active_ranges) {
+                    const range &active_range(ranges.at(range_index));
                     overlapping_ranges_callback(active_range.start, active_range.end, added_range.start, added_range.end);
                 }
                 active_ranges.insert(event.range_id);
