@@ -9,6 +9,7 @@ if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
 endif()
 set(SOURCE_FILES
     file_lock.cpp
+    guid.cpp
     json_writer.cpp
     main.cpp
     parse_exception.cpp

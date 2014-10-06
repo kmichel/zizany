@@ -9,4 +9,6 @@ namespace zizany {
         std::uint32_t c;
         std::uint32_t d;
     };
+
+    bool operator==(const guid& lhs, const guid& rhs);
 }
