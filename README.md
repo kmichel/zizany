@@ -2,14 +2,12 @@
 
 Parse and extract information from Unity binary assets files, for debugging, diffing or mere curiosity.
 
-## Installation
-
-### Requirements
+## Requirements
 
  - cmake
  - clang++ or g++
 
-### Instructions
+## Installation
 
 ```shellsession
 $ cmake .
