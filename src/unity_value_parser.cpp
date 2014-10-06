@@ -4,6 +4,8 @@
 #include "parser_exception.hpp"
 #include "unity_type.hpp"
 #include "values/unity_value.hpp"
+#include "values/unity_bool_value.hpp"
+#include "values/unity_bool_array_value.hpp"
 #include "values/unity_array_value.hpp"
 #include "values/unity_asset_reference_value.hpp"
 #include "values/unity_composite_value.hpp"
@@ -19,7 +21,7 @@ namespace zizany {
     std::unique_ptr<unity_value>
     parse_simple_value(stream_parser &parser, const unity_type &type) {
         if (type.type_name == "bool") {
-            return make_simple_value(type, parser.parse<bool>());
+            return std::unique_ptr<unity_bool_value>(new unity_bool_value(type, parser.parse<bool>()));
         } else if (type.type_name == "char") {
             return make_simple_value(type, parser.parse<char>());
         } else if (type.type_name == "unsigned char") {
@@ -67,7 +69,9 @@ namespace zizany {
     std::unique_ptr<unity_value>
     parse_dense_array(const unity_type &element_type, const std::size_t length, stream_parser &parser, const unity_type &type) {
         if (element_type.type_name == "bool") {
-            return parse_dense_array_<bool>(length, parser, type);
+            std::unique_ptr<unity_bool_array_value> bool_array_value(new unity_bool_array_value(type));
+            parser.parse(bool_array_value->elements, length);
+            return std::move(bool_array_value);
         } else if (element_type.type_name == "char") {
             return parse_dense_array_<char>(length, parser, type);
         } else if (element_type.type_name == "unsigned char") {

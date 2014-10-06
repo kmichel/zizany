@@ -18,12 +18,6 @@ namespace zizany {
         }
     };
 
-    template<>
-    inline void
-    unity_simple_value<bool>::print(json_writer &writer) const {
-        writer.add_bool(value);
-    }
-
     template<typename value_type>
     std::unique_ptr<unity_simple_value<value_type>>
     make_simple_value(const unity_type &type, value_type value) {

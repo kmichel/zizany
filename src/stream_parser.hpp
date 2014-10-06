@@ -52,6 +52,8 @@ namespace zizany {
             }
         }
 
+        void parse(std::vector<bool> &values, const std::size_t count);
+
         std::string parse_string();
 
         void align(const int stride);
@@ -62,16 +64,4 @@ namespace zizany {
 
         void seek_from_end(std::int64_t position);
     };
-
-    template<>
-    inline void
-    stream_parser::parse<bool>(typename std::vector<bool> &values, const std::vector<bool>::size_type count) {
-        // This is slower than the default implementation but required
-        // since std::vector<bool> is so special...
-        if (count > 0) {
-            values.resize(count);
-            for (std::vector<bool>::size_type index = 0; index < count; ++index)
-                values.at(index) = parse<bool>();
-        }
-    }
 }

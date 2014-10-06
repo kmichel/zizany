@@ -25,6 +25,17 @@ namespace zizany {
         checker.add_range(last_seek, tell());
     }
 
+    void
+    stream_parser::parse(std::vector<bool> &values, const std::size_t count) {
+        // This is slower than the default implementation but required
+        // since std::vector<bool> is so special...
+        if (count > 0) {
+            values.resize(count);
+            for (std::vector<bool>::size_type index = 0; index < count; ++index)
+                values.at(index) = parse<bool>();
+        }
+    }
+
     std::string
     stream_parser::parse_string() {
         std::string string;

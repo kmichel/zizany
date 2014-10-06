@@ -17,22 +17,11 @@ namespace zizany {
 
         virtual void print(json_writer &writer) const {
             writer.start_array(/*force_inline:*/true);
-            for (const element_type &element : elements)
-                print_element(writer, element);
+            for (element_type element : elements)
+                writer.add_number(element);
             writer.end_array();
         }
-
-    private:
-        static void print_element(json_writer &writer, const element_type element) {
-            writer.add_number(element);
-        }
     };
-
-    template<>
-    inline void
-    unity_dense_array_value<bool>::print_element(json_writer &writer, const bool element) {
-        writer.add_bool(element);
-    }
 
     template<typename value_type>
     std::unique_ptr<unity_dense_array_value<value_type>>
