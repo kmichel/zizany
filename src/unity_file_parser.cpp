@@ -68,13 +68,13 @@ namespace zizany {
         for (std::uint32_t index = 0; index < types_count; ++index) {
             std::int32_t type_id(parser.parse<std::int32_t>());
             std::int32_t expected_definition_index(0);
-            file.types.add(type_id, parse_type(parser, nullptr, expected_definition_index));
+            file.types.add(type_id, parse_type(parser, expected_definition_index));
         }
     }
 
     std::unique_ptr<unity_type>
-    unity_file_parser::parse_type(stream_parser &parser, unity_type *parent, std::int32_t &expected_definition_index) {
-        std::unique_ptr<unity_type> type(new unity_type(parent));
+    unity_file_parser::parse_type(stream_parser &parser, std::int32_t &expected_definition_index) {
+        std::unique_ptr<unity_type> type(new unity_type());
         type->type_name = parser.parse_string();
         type->member_name = parser.parse_string();
         type->type_size = parser.parse<std::int32_t>();
@@ -89,7 +89,7 @@ namespace zizany {
         if (members_count > 0) {
             type->members.reserve(members_count);
             for (std::uint32_t index = 0; index < members_count; ++index)
-                type->members.add(parse_type(parser, type.get(), expected_definition_index));
+                type->members.add(parse_type(parser, expected_definition_index));
         }
         return type;
     }

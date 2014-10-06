@@ -10,7 +10,6 @@
 namespace zizany {
     class unity_type {
     public:
-        unity_type *parent;
         owning_vector<unity_type> members;
         std::string type_name;
         std::string member_name;
@@ -19,7 +18,7 @@ namespace zizany {
         std::uint32_t magic_bitset_2;
         bool is_array;
 
-        unity_type(unity_type *parent_);
+        unity_type();
 
         unity_type(const unity_type &) = delete;
 

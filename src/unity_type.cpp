@@ -1,9 +1,8 @@
 #include "unity_type.hpp"
 
 namespace zizany {
-    unity_type::unity_type(unity_type *parent_)
-            : parent(parent_),
-              members(),
+    unity_type::unity_type()
+            : members(),
               type_name(),
               member_name(),
               type_size(),

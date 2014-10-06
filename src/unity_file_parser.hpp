@@ -35,7 +35,7 @@ namespace zizany {
 
         void parse_types(stream_parser &parser);
 
-        std::unique_ptr<unity_type> parse_type(stream_parser &parser, unity_type *parent, std::int32_t &expected_definition_index);
+        std::unique_ptr<unity_type> parse_type(stream_parser &parser, std::int32_t &expected_definition_index);
 
         void parse_assets(stream_parser &parser);
 
