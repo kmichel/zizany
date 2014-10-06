@@ -33,7 +33,7 @@ namespace zizany {
         }
 
         bool
-        has_id(const id_type id) {
+        has_id(const id_type id) const {
             return id_index.find(id) != id_index.end();
         }
 
