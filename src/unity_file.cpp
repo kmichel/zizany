@@ -16,6 +16,6 @@ namespace zizany {
               magic_int_2(),
               magic_int_3(),
               unity_version(),
-              artifact_data() {
+              file_layout() {
     }
 }

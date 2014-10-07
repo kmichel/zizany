@@ -7,6 +7,6 @@ namespace zizany {
               magic_int_2(),
               magic_int_3(),
               data(),
-              artifact_data() {
+              file_layout() {
     }
 }

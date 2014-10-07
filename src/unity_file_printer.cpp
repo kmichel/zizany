@@ -37,13 +37,13 @@ namespace zizany {
         writer.add_string(file.unity_version);
         if (options.print_layout) {
             writer.add_key("is_big_endian");
-            writer.add_bool(file.artifact_data.file_endianness == zizany::endianness::big_endian);
+            writer.add_bool(file.file_layout.file_endianness == zizany::endianness::big_endian);
             writer.add_key("assets_start");
-            writer.add_number(file.artifact_data.assets_start);
+            writer.add_number(file.file_layout.assets_start);
             writer.add_key("previews_start");
-            writer.add_number(file.artifact_data.previews_start);
+            writer.add_number(file.file_layout.previews_start);
             writer.add_key("metadata_size");
-            writer.add_number(file.artifact_data.metadata_size);
+            writer.add_number(file.file_layout.metadata_size);
         }
         if (options.print_magic) {
             writer.add_key("magic_int_1");
@@ -80,9 +80,9 @@ namespace zizany {
                 writer.add_number(asset.type_id_2);
                 if (options.print_layout) {
                     writer.add_key("offset");
-                    writer.add_number(asset.artifact_data.offset);
+                    writer.add_number(asset.file_layout.offset);
                     writer.add_key("size");
-                    writer.add_number(asset.artifact_data.size);
+                    writer.add_number(asset.file_layout.size);
                 }
                 if (asset.value) {
                     writer.add_key("value");
@@ -127,9 +127,9 @@ namespace zizany {
                 writer.add_number(preview.asset_id);
                 if (options.print_layout) {
                     writer.add_key("offset");
-                    writer.add_number(preview.artifact_data.offset);
+                    writer.add_number(preview.file_layout.offset);
                     writer.add_key("size");
-                    writer.add_number(preview.artifact_data.size);
+                    writer.add_number(preview.file_layout.size);
                 }
                 if (options.print_magic) {
                     writer.add_key("magic_int_1");

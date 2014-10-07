@@ -8,6 +8,6 @@ namespace zizany {
               type_id_2(),
               value(),
               unparsed_value(),
-              artifact_data() {
+              file_layout() {
     }
 }

@@ -30,7 +30,7 @@ namespace zizany {
             std::uint32_t previews_start;
             std::uint32_t assets_start;
             endianness file_endianness;
-        } artifact_data;
+        } file_layout;
 
         unity_file();
 

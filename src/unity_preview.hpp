@@ -14,7 +14,7 @@ namespace zizany {
         struct {
             std::uint32_t offset;
             std::uint32_t size;
-        } artifact_data;
+        } file_layout;
 
         unity_preview();
 

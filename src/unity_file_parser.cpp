@@ -19,7 +19,7 @@ namespace zizany {
     unity_file_parser::parse(std::istream &stream, range_checker::overlapping_ranges_callback overlapping_ranges_callback) {
         parse_header(stream);
         {
-            stream_parser parser(stream, file.artifact_data.file_endianness, checker);
+            stream_parser parser(stream, file.file_layout.file_endianness, checker);
             // normal files have a value of -2, released files have a value of 4 or 5
             // released files do not contain type definition and use a different
             // structure when serializing objects of known type.
@@ -51,13 +51,13 @@ namespace zizany {
     void
     unity_file_parser::parse_header(std::istream &stream) {
         stream_parser big_endian_parser(stream, endianness::big_endian, checker);
-        file.artifact_data.metadata_size = big_endian_parser.parse<std::uint32_t>();
-        file.artifact_data.previews_start = big_endian_parser.parse<std::uint32_t>();
+        file.file_layout.metadata_size = big_endian_parser.parse<std::uint32_t>();
+        file.file_layout.previews_start = big_endian_parser.parse<std::uint32_t>();
         file.magic_int_1 = big_endian_parser.parse<std::int32_t>();
         if (file.magic_int_1 != 9)
             throw parser_exception("magic_int_1 value should be 9");
-        file.artifact_data.assets_start = big_endian_parser.parse<std::uint32_t>();
-        file.artifact_data.file_endianness = big_endian_parser.parse<bool>() ? endianness::big_endian : endianness::little_endian;
+        file.file_layout.assets_start = big_endian_parser.parse<std::uint32_t>();
+        file.file_layout.file_endianness = big_endian_parser.parse<bool>() ? endianness::big_endian : endianness::little_endian;
         big_endian_parser.align(4);
         file.unity_version = big_endian_parser.parse_string();
     }
@@ -106,8 +106,8 @@ namespace zizany {
     std::unique_ptr<unity_asset>
     unity_file_parser::parse_asset(stream_parser &parser) {
         std::unique_ptr<unity_asset> asset(new unity_asset);
-        asset->artifact_data.offset = parser.parse<std::uint32_t>();
-        asset->artifact_data.size = parser.parse<std::uint32_t>();
+        asset->file_layout.offset = parser.parse<std::uint32_t>();
+        asset->file_layout.size = parser.parse<std::uint32_t>();
         asset->type_id = parser.parse<std::int32_t>();
         // usually type_id == type_id_2, except for monobehavior, type_id < 0 && type_id_2 = 114
         asset->type_id_2 = parser.parse<std::int32_t>();
@@ -116,11 +116,11 @@ namespace zizany {
 
     void
     unity_file_parser::parse_asset_value(stream_parser &parser, unity_asset &asset) {
-        parser.seek(file.artifact_data.assets_start + asset.artifact_data.offset);
+        parser.seek(file.file_layout.assets_start + asset.file_layout.offset);
         if (file.types.has_id(asset.type_id))
             asset.value = parse_value(parser, file.types.get_by_id(asset.type_id));
         else
-            parser.parse(asset.unparsed_value, asset.artifact_data.size);
+            parser.parse(asset.unparsed_value, asset.file_layout.size);
     }
 
     void
@@ -149,7 +149,7 @@ namespace zizany {
     void
     unity_file_parser::parse_previews(stream_parser &parser) {
         parser.seek_from_end(0);
-        if (file.artifact_data.previews_start != parser.tell()) {
+        if (file.file_layout.previews_start != parser.tell()) {
             const char expected_marker[] = "PreviewAssetData";
             const std::size_t marker_length(sizeof(expected_marker) - 1);
             const std::size_t count_length(sizeof(std::int32_t));
@@ -175,14 +175,14 @@ namespace zizany {
         preview->magic_int_1 = parser.parse<std::int32_t>();
         preview->magic_int_2 = parser.parse<std::int32_t>();
         preview->magic_int_3 = parser.parse<std::int32_t>();
-        preview->artifact_data.size = parser.parse<std::uint32_t>();
-        preview->artifact_data.offset = parser.parse<std::uint32_t>();
+        preview->file_layout.size = parser.parse<std::uint32_t>();
+        preview->file_layout.offset = parser.parse<std::uint32_t>();
         return preview;
     }
 
     void
     unity_file_parser::parse_preview_data(stream_parser &parser, unity_preview &preview) {
-        parser.seek(preview.artifact_data.offset);
-        parser.parse(preview.data, preview.artifact_data.size);
+        parser.seek(preview.file_layout.offset);
+        parser.parse(preview.data, preview.file_layout.size);
     }
 }
