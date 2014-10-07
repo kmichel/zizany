@@ -25,11 +25,11 @@ namespace zizany {
         std::int32_t magic_int_2;
         std::int32_t magic_int_3;
         std::string unity_version;
-        endianness file_endianness;
         struct {
             std::uint32_t metadata_size;
             std::uint32_t previews_start;
             std::uint32_t assets_start;
+            endianness file_endianness;
         } artifact_data;
 
         unity_file();

@@ -35,9 +35,9 @@ namespace zizany {
         writer.start_object();
         writer.add_key("unity_version");
         writer.add_string(file.unity_version);
-        writer.add_key("is_big_endian");
-        writer.add_bool(file.file_endianness == zizany::endianness::big_endian);
         if (options.print_layout) {
+            writer.add_key("is_big_endian");
+            writer.add_bool(file.artifact_data.file_endianness == zizany::endianness::big_endian);
             writer.add_key("assets_start");
             writer.add_number(file.artifact_data.assets_start);
             writer.add_key("previews_start");

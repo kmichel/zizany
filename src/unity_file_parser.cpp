@@ -19,7 +19,7 @@ namespace zizany {
     unity_file_parser::parse(std::istream &stream, range_checker::overlapping_ranges_callback overlapping_ranges_callback) {
         parse_header(stream);
         {
-            stream_parser parser(stream, file.file_endianness, checker);
+            stream_parser parser(stream, file.artifact_data.file_endianness, checker);
             // normal files have a value of -2, released files have a value of 4 or 5
             // released files do not contain type definition and use a different
             // structure when serializing objects of known type.
@@ -57,7 +57,7 @@ namespace zizany {
         if (file.magic_int_1 != 9)
             throw parser_exception("magic_int_1 value should be 9");
         file.artifact_data.assets_start = big_endian_parser.parse<std::uint32_t>();
-        file.file_endianness = big_endian_parser.parse<bool>() ? endianness::big_endian : endianness::little_endian;
+        file.artifact_data.file_endianness = big_endian_parser.parse<bool>() ? endianness::big_endian : endianness::little_endian;
         big_endian_parser.align(4);
         file.unity_version = big_endian_parser.parse_string();
     }
