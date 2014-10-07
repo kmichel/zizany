@@ -61,7 +61,7 @@ namespace zizany {
                 writer.add_key("id");
                 writer.add_number(file.types.get_id_at(index));
                 writer.add_key("definition");
-                print_type(writer, file.types.at(index), options.print_defaults, options.print_magic);
+                file.types.at(index).print(writer, options.print_defaults, options.print_magic);
                 writer.end_object();
             }
             writer.end_array();
@@ -146,37 +146,6 @@ namespace zizany {
                 writer.end_array();
                 writer.end_object();
             }
-            writer.end_array();
-        }
-        writer.end_object();
-    }
-
-    void
-    print_type(json_writer &writer, const unity_type &type, bool print_defaults, bool print_magic) {
-        writer.start_object();
-        writer.add_key("name");
-        writer.add_string(type.member_name);
-        writer.add_key("type");
-        writer.add_string(type.type_name);
-        if (type.is_array || print_defaults) {
-            writer.add_key("is_array");
-            writer.add_bool(type.is_array);
-        }
-        if (type.type_size != -1 || print_defaults) {
-            writer.add_key("size");
-            writer.add_number(type.type_size);
-        }
-        if (print_magic) {
-            writer.add_key("magic_int_1");
-            writer.add_number(type.magic_int_1);
-            writer.add_key("magic_bitset_2");
-            writer.add_number(type.magic_bitset_2);
-        }
-        if (type.members.size() > 0 || print_defaults) {
-            writer.add_key("members");
-            writer.start_array();
-            for (const unity_type &member_type : type.members)
-                print_type(writer, member_type, print_defaults, print_magic);
             writer.end_array();
         }
         writer.end_object();

@@ -1,13 +1,15 @@
 #pragma once
 
+#include "owning_vector.hpp"
+
 #include <cstdint>
 #include <memory>
 #include <string>
 #include <vector>
 
-#include "owning_vector.hpp"
-
 namespace zizany {
+    class json_writer;
+
     class unity_type {
     public:
         owning_vector<unity_type> members;
@@ -24,12 +26,10 @@ namespace zizany {
 
         unity_type &operator=(const unity_type &) = delete;
 
-        bool requires_padding() const {
-            return (magic_bitset_2 & 0x4000) != 0;
-        }
+        bool requires_padding() const;
 
-        bool is_simple() const {
-            return members.size() == 0 && type_size != 0;
-        }
+        bool is_simple() const;
+
+        void print(json_writer &writer, bool print_defauts, bool print_magic) const;
     };
 }
