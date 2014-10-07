@@ -171,7 +171,7 @@ namespace zizany {
     std::unique_ptr<unity_preview>
     unity_file_parser::parse_preview(stream_parser &parser) {
         std::unique_ptr<unity_preview> preview(new unity_preview);
-        preview->object_id = parser.parse<std::int32_t>();
+        preview->asset_id = parser.parse<std::int32_t>();
         preview->magic_int_1 = parser.parse<std::int32_t>();
         preview->magic_int_2 = parser.parse<std::int32_t>();
         preview->magic_int_3 = parser.parse<std::int32_t>();

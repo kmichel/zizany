@@ -102,7 +102,7 @@ extract_previews(const std::string &output_dir, const std::string &filename) {
             previews_filename << '/';
         previews_filename << get_filename_without_extension(filename)
                 << "_" << unity_file.previews.get_id_at(index)
-                << "_" << preview.object_id << ".png";
+                << "_" << preview.asset_id << ".png";
         std::fstream preview_stream(previews_filename.str(), std::ios_base::out | std::ios_base::binary);
         const std::vector<unsigned char> &data(unity_file.previews.at(index).data);
         preview_stream.write(reinterpret_cast<const char *>(data.data()), static_cast<long>(data.size()));

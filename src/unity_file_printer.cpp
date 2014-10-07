@@ -123,8 +123,8 @@ namespace zizany {
             writer.start_array();
             for (const unity_preview &preview : file.previews) {
                 writer.start_object();
-                writer.add_key("object_id");
-                writer.add_number(preview.object_id);
+                writer.add_key("asset_id");
+                writer.add_number(preview.asset_id);
                 if (options.print_layout) {
                     writer.add_key("offset");
                     writer.add_number(preview.artifact_data.offset);
