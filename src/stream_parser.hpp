@@ -38,17 +38,13 @@ namespace zizany {
         void
         parse(typename std::vector<value_type> &values, const std::size_t count) {
             if (count > 0) {
+                const std::size_t value_size(sizeof(value_type));
                 values.resize(count);
-                if (sizeof(value_type) > 1 && must_swap_bytes) {
-                    for (std::size_t index = 0; index < count; ++index) {
-                        char *const buffer(reinterpret_cast<char *>(values.data() + index));
-                        stream.read(buffer, sizeof(value_type));
-                        std::reverse(buffer, buffer + sizeof(value_type));
-                    }
-                } else {
-                    char *const buffer(reinterpret_cast<char *>(values.data()));
-                    stream.read(buffer, static_cast<long>(count) * static_cast<long>(sizeof(value_type)));
-                }
+                char *const buffer(reinterpret_cast<char *>(values.data()));
+                stream.read(buffer, static_cast<long>(count) * static_cast<long>(value_size));
+                if (value_size > 1 && must_swap_bytes)
+                    for (std::size_t index = 0; index < count; ++index)
+                        std::reverse(buffer + index * value_size, buffer + index * value_size + value_size);
             }
         }
 
