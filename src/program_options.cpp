@@ -114,7 +114,7 @@ namespace zizany {
     program_options::parse_extract_previews_options(program_options &options, int argc, char **argv) {
         bool allow_options(true);
         bool expecting_output_dir(false);
-        for (int argument_index = 2; argument_index < argc; ++argument_index) {
+        for (int argument_index = 0; argument_index < argc; ++argument_index) {
             const std::string argument(argv[argument_index]);
             if (expecting_output_dir) {
                 options.output_dir = argument;
