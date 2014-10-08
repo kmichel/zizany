@@ -9,7 +9,7 @@ namespace zizany {
     public:
         unity_value_members members;
 
-        unity_composite_value(const unity_type &type_);
+        unity_composite_value();
 
         virtual void print(json_writer &writer) const;
     };

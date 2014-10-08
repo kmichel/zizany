@@ -9,7 +9,7 @@ namespace zizany {
     public:
         std::vector<bool> elements;
 
-        unity_bool_array_value(const unity_type &type_);
+        unity_bool_array_value();
 
         virtual void print(json_writer &writer) const;
     };

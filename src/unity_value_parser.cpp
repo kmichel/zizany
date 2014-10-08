@@ -21,37 +21,37 @@ namespace zizany {
     std::unique_ptr<unity_value>
     parse_simple_value(stream_parser &parser, const unity_type &type) {
         if (type.name == "bool") {
-            return std::unique_ptr<unity_bool_value>(new unity_bool_value(type, parser.parse<bool>()));
+            return std::unique_ptr<unity_bool_value>(new unity_bool_value(parser.parse<bool>()));
         } else if (type.name == "char") {
-            return make_simple_value(type, parser.parse<char>());
+            return make_simple_value(parser.parse<char>());
         } else if (type.name == "unsigned char") {
-            return make_simple_value(type, parser.parse<unsigned char>());
+            return make_simple_value(parser.parse<unsigned char>());
         } else if (type.name == "byte"
                 || type.name == "SInt8") {
-            return make_simple_value(type, parser.parse<std::int8_t>());
+            return make_simple_value(parser.parse<std::int8_t>());
         } else if (type.name == "unsigned byte"
                 || type.name == "UInt8") {
-            return make_simple_value(type, parser.parse<std::uint8_t>());
+            return make_simple_value(parser.parse<std::uint8_t>());
         } else if (type.name == "short"
                 || type.name == "SInt16") {
-            return make_simple_value(type, parser.parse<std::int16_t>());
+            return make_simple_value(parser.parse<std::int16_t>());
         } else if (type.name == "unsigned short"
                 || type.name == "UInt16") {
-            return make_simple_value(type, parser.parse<std::uint16_t>());
+            return make_simple_value(parser.parse<std::uint16_t>());
         } else if (type.name == "int"
                 || type.name == "SInt32") {
-            return make_simple_value(type, parser.parse<std::int32_t>());
+            return make_simple_value(parser.parse<std::int32_t>());
         } else if (type.name == "unsigned int"
                 || type.name == "UInt32") {
-            return make_simple_value(type, parser.parse<std::uint32_t>());
+            return make_simple_value(parser.parse<std::uint32_t>());
         } else if (type.name == "SInt64") {
-            return make_simple_value(type, parser.parse<std::int64_t>());
+            return make_simple_value(parser.parse<std::int64_t>());
         } else if (type.name == "UInt64") {
-            return make_simple_value(type, parser.parse<std::uint64_t>());
+            return make_simple_value(parser.parse<std::uint64_t>());
         } else if (type.name == "float") {
-            return make_simple_value(type, parser.parse<float>());
+            return make_simple_value(parser.parse<float>());
         } else if (type.name == "double") {
-            return make_simple_value(type, parser.parse<double>());
+            return make_simple_value(parser.parse<double>());
         } else {
             throw parser_exception("unexpected simple type");
         }
@@ -59,49 +59,49 @@ namespace zizany {
 
     template<typename element_type>
     std::unique_ptr<unity_dense_array_value<element_type>>
-    parse_dense_array_(const std::size_t length, stream_parser &parser, const unity_type &type) {
-        std::unique_ptr<unity_dense_array_value<element_type>> elements_value(make_dense_array_value<element_type>(type));
+    parse_dense_array_(const std::size_t length, stream_parser &parser) {
+        std::unique_ptr<unity_dense_array_value<element_type>> elements_value(make_dense_array_value<element_type>());
         parser.parse(elements_value->elements, length);
         return elements_value;
     }
 
     static
     std::unique_ptr<unity_value>
-    parse_dense_array(const unity_type &element_type, const std::size_t length, stream_parser &parser, const unity_type &type) {
+    parse_dense_array(const unity_type &element_type, const std::size_t length, stream_parser &parser) {
         if (element_type.name == "bool") {
-            std::unique_ptr<unity_bool_array_value> bool_array_value(new unity_bool_array_value(type));
+            std::unique_ptr<unity_bool_array_value> bool_array_value(new unity_bool_array_value());
             parser.parse(bool_array_value->elements, length);
             return std::move(bool_array_value);
         } else if (element_type.name == "char") {
-            return parse_dense_array_<char>(length, parser, type);
+            return parse_dense_array_<char>(length, parser);
         } else if (element_type.name == "unsigned char") {
-            return parse_dense_array_<unsigned char>(length, parser, type);
+            return parse_dense_array_<unsigned char>(length, parser);
         } else if (element_type.name == "byte"
                 || element_type.name == "SInt8") {
-            return parse_dense_array_<std::int8_t>(length, parser, type);
+            return parse_dense_array_<std::int8_t>(length, parser);
         } else if (element_type.name == "unsigned byte"
                 || element_type.name == "UInt8") {
-            return parse_dense_array_<std::uint8_t>(length, parser, type);
+            return parse_dense_array_<std::uint8_t>(length, parser);
         } else if (element_type.name == "short"
                 || element_type.name == "SInt16") {
-            return parse_dense_array_<std::int16_t>(length, parser, type);
+            return parse_dense_array_<std::int16_t>(length, parser);
         } else if (element_type.name == "unsigned short"
                 || element_type.name == "UInt16") {
-            return parse_dense_array_<std::uint16_t>(length, parser, type);
+            return parse_dense_array_<std::uint16_t>(length, parser);
         } else if (element_type.name == "int"
                 || element_type.name == "SInt32") {
-            return parse_dense_array_<std::int32_t>(length, parser, type);
+            return parse_dense_array_<std::int32_t>(length, parser);
         } else if (element_type.name == "unsigned int"
                 || element_type.name == "UInt32") {
-            return parse_dense_array_<std::uint32_t>(length, parser, type);
+            return parse_dense_array_<std::uint32_t>(length, parser);
         } else if (element_type.name == "SInt64") {
-            return parse_dense_array_<std::int64_t>(length, parser, type);
+            return parse_dense_array_<std::int64_t>(length, parser);
         } else if (element_type.name == "UInt64") {
-            return parse_dense_array_<std::uint64_t>(length, parser, type);
+            return parse_dense_array_<std::uint64_t>(length, parser);
         } else if (element_type.name == "float") {
-            return parse_dense_array_<float>(length, parser, type);
+            return parse_dense_array_<float>(length, parser);
         } else if (element_type.name == "double") {
-            return parse_dense_array_<double>(length, parser, type);
+            return parse_dense_array_<double>(length, parser);
         } else {
             throw parser_exception("unexpected simple type");
         }
@@ -109,8 +109,8 @@ namespace zizany {
 
     static
     std::unique_ptr<unity_array_value>
-    parse_array(const unity_type &element_type, const std::size_t length, stream_parser &parser, const unity_type &type) {
-        std::unique_ptr<unity_array_value> elements_value(new unity_array_value(type));
+    parse_array(const unity_type &element_type, const std::size_t length, stream_parser &parser) {
+        std::unique_ptr<unity_array_value> elements_value(new unity_array_value());
         if (length > 0) {
             elements_value->elements.reserve(length);
             for (std::size_t index = 0; index < length; ++index)
@@ -122,7 +122,7 @@ namespace zizany {
     static
     std::unique_ptr<unity_composite_value>
     parse_composite(stream_parser &parser, const unity_type &type) {
-        std::unique_ptr<unity_composite_value> composite_value(new unity_composite_value(type));
+        std::unique_ptr<unity_composite_value> composite_value(new unity_composite_value());
         const std::size_t members_count(type.members.size());
         if (members_count > 0) {
             composite_value->members.reserve(members_count);
@@ -144,18 +144,18 @@ namespace zizany {
 
             const unity_type &element_type(type.members.at(1).type);
             if (element_type.is_simple())
-                ret = parse_dense_array(element_type, length, parser, type);
+                ret = parse_dense_array(element_type, length, parser);
             else
-                ret = parse_array(element_type, length, parser, type);
+                ret = parse_array(element_type, length, parser);
         } else if (type.is_simple()) {
             ret = parse_simple_value(parser, type);
         } else if (type.name == "string") {
             // XXX: we should check that the type named "string" is actually what we expect
             std::unique_ptr<unity_string_value> string_value;
             if (member_name == "m_Script")
-                string_value.reset(new unity_multiline_string_value(type));
+                string_value.reset(new unity_multiline_string_value());
             else
-                string_value.reset(new unity_string_value(type));
+                string_value.reset(new unity_string_value());
             const std::uint32_t length(parser.parse<std::uint32_t>());
             if (length > 0) {
                 parser.parse(string_value->chars, length);
@@ -164,7 +164,7 @@ namespace zizany {
             ret = std::move(string_value);
         } else if (type.name == "GUID") {
             // XXX: we should check that the type named "GUID" is actually what we expect
-            std::unique_ptr<unity_guid_value> guid_value(new unity_guid_value(type));
+            std::unique_ptr<unity_guid_value> guid_value(new unity_guid_value());
             guid_value->value.a = parser.parse<std::uint32_t>();
             guid_value->value.b = parser.parse<std::uint32_t>();
             guid_value->value.c = parser.parse<std::uint32_t>();
@@ -172,7 +172,7 @@ namespace zizany {
             ret = std::move(guid_value);
         } else if (type.name.find("PPtr<") == 0 && type.name.at(type.name.size() - 1) == '>') {
             // XXX: we should check that the type named "PPtr<*>" is actually what we expect
-            std::unique_ptr<unity_asset_reference_value> asset_reference_value(new unity_asset_reference_value(type));
+            std::unique_ptr<unity_asset_reference_value> asset_reference_value(new unity_asset_reference_value());
             asset_reference_value->file_reference_id = parser.parse<std::int32_t>();
             asset_reference_value->asset_id = parser.parse<std::int32_t>();
             ret = std::move(asset_reference_value);

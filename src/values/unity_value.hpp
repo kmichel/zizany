@@ -3,13 +3,9 @@
 namespace zizany {
     class json_writer;
 
-    class unity_type;
-
     class unity_value {
     public:
-        const unity_type &type;
-
-        unity_value(const unity_type &type_);
+        unity_value();
 
         unity_value(const unity_value &) = delete;
 

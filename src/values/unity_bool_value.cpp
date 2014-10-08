@@ -4,8 +4,8 @@
 
 namespace zizany {
 
-    unity_bool_value::unity_bool_value(const unity_type &type_, bool value_)
-            : unity_value(type_), value(value_) {
+    unity_bool_value::unity_bool_value(bool value_)
+            : unity_value(), value(value_) {
     }
 
     void

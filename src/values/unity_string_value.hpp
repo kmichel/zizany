@@ -9,7 +9,7 @@ namespace zizany {
     public:
         std::vector<char> chars;
 
-        unity_string_value(const unity_type &type_);
+        unity_string_value();
 
         virtual void print(json_writer &writer) const;
     };

@@ -11,8 +11,8 @@ namespace zizany {
     public:
         std::vector<element_type> elements;
 
-        unity_dense_array_value(const unity_type &type_)
-                : unity_value(type_), elements() {
+        unity_dense_array_value()
+                : unity_value(), elements() {
         }
 
         virtual void print(json_writer &writer) const {
@@ -25,8 +25,8 @@ namespace zizany {
 
     template<typename value_type>
     std::unique_ptr<unity_dense_array_value<value_type>>
-    make_dense_array_value(const unity_type &type) {
+    make_dense_array_value() {
         return std::unique_ptr<unity_dense_array_value<value_type>>
-                (new unity_dense_array_value<value_type>(type));
+                (new unity_dense_array_value<value_type>());
     }
 }

@@ -3,8 +3,8 @@
 #include "../json_writer.hpp"
 
 namespace zizany {
-    unity_bool_array_value::unity_bool_array_value(const unity_type &type_)
-            : unity_value(type_), elements() {
+    unity_bool_array_value::unity_bool_array_value()
+            : unity_value(), elements() {
     }
 
     void unity_bool_array_value::print(json_writer &writer) const {

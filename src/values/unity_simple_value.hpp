@@ -9,8 +9,8 @@ namespace zizany {
     public:
         value_type value;
 
-        unity_simple_value(const unity_type &type_, value_type value_)
-                : unity_value(type_), value(value_) {
+        unity_simple_value(value_type value_)
+                : unity_value(), value(value_) {
         }
 
         virtual void print(json_writer &writer) const {
@@ -20,9 +20,9 @@ namespace zizany {
 
     template<typename value_type>
     std::unique_ptr<unity_simple_value<value_type>>
-    make_simple_value(const unity_type &type, value_type value) {
+    make_simple_value(value_type value) {
         return std::unique_ptr<unity_simple_value<value_type>>
-                (new unity_simple_value<value_type>(type, value));
+                (new unity_simple_value<value_type>(value));
     }
 
 

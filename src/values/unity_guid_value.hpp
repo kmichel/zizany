@@ -9,7 +9,7 @@ namespace zizany {
     public:
         guid value;
 
-        unity_guid_value(const unity_type &type_);
+        unity_guid_value();
 
         virtual void print(json_writer &writer) const;
     };

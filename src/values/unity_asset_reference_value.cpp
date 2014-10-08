@@ -3,10 +3,8 @@
 #include "../json_writer.hpp"
 
 namespace zizany {
-    unity_asset_reference_value::unity_asset_reference_value(const unity_type &type_)
-            : unity_value(type_),
-              file_reference_id(),
-              asset_id() {
+    unity_asset_reference_value::unity_asset_reference_value()
+            : unity_value(), file_reference_id(), asset_id() {
     }
 
     void
