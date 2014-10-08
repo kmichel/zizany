@@ -78,9 +78,9 @@ namespace zizany {
     unity_type_member
     unity_file_parser::parse_type_member(stream_parser &parser, std::int32_t &expected_definition_index) {
         unity_type_member type_member;
-        type_member.type.type_name = parser.parse_string();
+        type_member.type.name = parser.parse_string();
         type_member.name = parser.parse_string();
-        type_member.type.type_size = parser.parse<std::int32_t>();
+        type_member.type.size = parser.parse<std::int32_t>();
         std::int32_t definition_index(parser.parse<std::int32_t>());
         if (definition_index != expected_definition_index)
             throw parser_exception("unexpected definition index");

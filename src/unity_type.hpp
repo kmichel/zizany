@@ -15,8 +15,8 @@ namespace zizany {
     class unity_type {
     public:
         std::vector<unity_type_member> members;
-        std::string type_name;
-        std::int32_t type_size;
+        std::string name;
+        std::int32_t size;
         std::int32_t magic_int_1;
         std::uint32_t magic_bitset_2;
         bool is_array;

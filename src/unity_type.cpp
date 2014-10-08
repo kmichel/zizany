@@ -5,8 +5,8 @@
 namespace zizany {
     unity_type::unity_type()
             : members(),
-              type_name(),
-              type_size(),
+              name(),
+              size(),
               magic_int_1(),
               magic_bitset_2() {
     }
@@ -18,21 +18,21 @@ namespace zizany {
 
     bool
     unity_type::is_simple() const {
-        return members.size() == 0 && type_size != 0;
+        return members.size() == 0 && size != 0;
     }
 
     void
     unity_type::print(json_writer &writer, bool print_defaults, bool print_magic) const {
         writer.start_object();
         writer.add_key("name");
-        writer.add_string(type_name);
+        writer.add_string(name);
         if (is_array || print_defaults) {
             writer.add_key("is_array");
             writer.add_bool(is_array);
         }
-        if (type_size != -1 || print_defaults) {
+        if (size != -1 || print_defaults) {
             writer.add_key("size");
-            writer.add_number(type_size);
+            writer.add_number(size);
         }
         if (print_magic) {
             writer.add_key("magic_int_1");
