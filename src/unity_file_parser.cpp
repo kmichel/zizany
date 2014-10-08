@@ -68,30 +68,33 @@ namespace zizany {
         for (std::uint32_t index = 0; index < types_count; ++index) {
             std::int32_t type_id(parser.parse<std::int32_t>());
             std::int32_t expected_definition_index(0);
-            file.types.add(type_id, parse_type(parser, expected_definition_index));
+            unity_type_member type_member(parse_type_member(parser, expected_definition_index));
+            if (type_member.name != "Base")
+                throw parser_exception("unexpected name for base type");
+            file.types.add(type_id, std::unique_ptr<unity_type>(new unity_type(type_member.type)));
         }
     }
 
-    std::unique_ptr<unity_type>
-    unity_file_parser::parse_type(stream_parser &parser, std::int32_t &expected_definition_index) {
-        std::unique_ptr<unity_type> type(new unity_type());
-        type->type_name = parser.parse_string();
-        type->member_name = parser.parse_string();
-        type->type_size = parser.parse<std::int32_t>();
+    unity_type_member
+    unity_file_parser::parse_type_member(stream_parser &parser, std::int32_t &expected_definition_index) {
+        unity_type_member type_member;
+        type_member.type.type_name = parser.parse_string();
+        type_member.name = parser.parse_string();
+        type_member.type.type_size = parser.parse<std::int32_t>();
         std::int32_t definition_index(parser.parse<std::int32_t>());
         if (definition_index != expected_definition_index)
             throw parser_exception("unexpected definition index");
         ++expected_definition_index;
-        type->is_array = parser.parse<std::int32_t>() != 0;
-        type->magic_int_1 = parser.parse<std::int32_t>();
-        type->magic_bitset_2 = parser.parse<std::uint32_t>();
+        type_member.type.is_array = parser.parse<std::int32_t>() != 0;
+        type_member.type.magic_int_1 = parser.parse<std::int32_t>();
+        type_member.type.magic_bitset_2 = parser.parse<std::uint32_t>();
         const std::uint32_t members_count(parser.parse<std::uint32_t>());
         if (members_count > 0) {
-            type->members.reserve(members_count);
+            type_member.type.members.reserve(members_count);
             for (std::uint32_t index = 0; index < members_count; ++index)
-                type->members.add(parse_type(parser, expected_definition_index));
+                type_member.type.members.push_back(parse_type_member(parser, expected_definition_index));
         }
-        return type;
+        return type_member;
     }
 
     void
@@ -118,7 +121,7 @@ namespace zizany {
     unity_file_parser::parse_asset_value(stream_parser &parser, unity_asset &asset) {
         parser.seek(file.file_layout.assets_start + asset.file_layout.offset);
         if (file.types.has_id(asset.type_id))
-            asset.value = parse_value(parser, file.types.get_by_id(asset.type_id));
+            asset.value = parse_value(parser, file.types.get_by_id(asset.type_id), "");
         else
             parser.parse(asset.unparsed_value, asset.file_layout.size);
     }

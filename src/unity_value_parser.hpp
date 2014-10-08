@@ -1,6 +1,7 @@
 #pragma once
 
 #include <memory>
+#include <string>
 
 namespace zizany {
     class stream_parser;
@@ -9,5 +10,5 @@ namespace zizany {
 
     class unity_value;
 
-    std::unique_ptr<unity_value> parse_value(stream_parser &parser, const unity_type &type);
+    std::unique_ptr<unity_value> parse_value(stream_parser &parser, const unity_type &type, const std::string &member_name);
 }

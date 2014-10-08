@@ -19,6 +19,8 @@ namespace zizany {
 
     class unity_type;
 
+    class unity_type_member;
+
     class unity_file_parser {
         unity_file &file;
         range_checker checker;
@@ -35,7 +37,7 @@ namespace zizany {
 
         void parse_types(stream_parser &parser);
 
-        std::unique_ptr<unity_type> parse_type(stream_parser &parser, std::int32_t &expected_definition_index);
+        unity_type_member parse_type_member(stream_parser &parser, std::int32_t &expected_definition_index);
 
         void parse_assets(stream_parser &parser);
 

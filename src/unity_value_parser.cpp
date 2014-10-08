@@ -114,7 +114,7 @@ namespace zizany {
         if (length > 0) {
             elements_value->elements.reserve(length);
             for (std::size_t index = 0; index < length; ++index)
-                elements_value->elements.add(parse_value(parser, element_type));
+                elements_value->elements.add(parse_value(parser, element_type, ""));
         }
         return elements_value;
     }
@@ -126,23 +126,23 @@ namespace zizany {
         const std::size_t members_count(type.members.size());
         if (members_count > 0) {
             composite_value->members.reserve(members_count);
-            for (const unity_type &member_type : type.members)
-                composite_value->members.add(parse_value(parser, member_type));
+            for (const unity_type_member &member : type.members)
+                composite_value->members.add(parse_value(parser, member.type, member.name));
         }
         return composite_value;
     }
 
 
     std::unique_ptr<unity_value>
-    parse_value(stream_parser &parser, const unity_type &type) {
+    parse_value(stream_parser &parser, const unity_type &type, const std::string &member_name) {
         std::unique_ptr<unity_value> ret;
         if (type.is_array) {
-            const unity_type &length_type(type.members.at(0));
+            const unity_type &length_type(type.members.at(0).type);
             if (length_type.type_name != "int" && length_type.type_name != "SInt32")
                 throw parser_exception("type of length for array should be int or SInt32");
             const std::uint32_t length(parser.parse<std::uint32_t>());
 
-            const unity_type &element_type(type.members.at(1));
+            const unity_type &element_type(type.members.at(1).type);
             if (element_type.is_simple())
                 ret = parse_dense_array(element_type, length, parser, type);
             else
@@ -152,7 +152,7 @@ namespace zizany {
         } else if (type.type_name == "string") {
             // XXX: we should check that the type named "string" is actually what we expect
             std::unique_ptr<unity_string_value> string_value;
-            if (type.member_name == "m_Script")
+            if (member_name == "m_Script")
                 string_value.reset(new unity_multiline_string_value(type));
             else
                 string_value.reset(new unity_string_value(type));

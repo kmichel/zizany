@@ -11,9 +11,9 @@ namespace zizany {
     void
     unity_composite_value::print(json_writer &writer) const {
         writer.start_object();
-        for (const unity_value& member : members) {
-            writer.add_key(member.type.member_name);
-            member.print(writer);
+        for (std::size_t member_index = 0; member_index < type.members.size(); ++member_index) {
+            writer.add_key(type.members.at(member_index).name);
+            members.at(member_index).print(writer);
         }
         writer.end_object();
     }
