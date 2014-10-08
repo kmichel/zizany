@@ -23,6 +23,8 @@ set(SOURCE_FILES
     unity_file_reference.cpp
     unity_preview.cpp
     unity_type.cpp
+    unity_value_member.cpp
+    unity_value_members.cpp
     unity_value_parser.cpp
     values/unity_array_value.cpp
     values/unity_bool_value.cpp

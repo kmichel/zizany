@@ -127,7 +127,7 @@ namespace zizany {
         if (members_count > 0) {
             composite_value->members.reserve(members_count);
             for (const unity_type_member &member : type.members)
-                composite_value->members.add(parse_value(parser, member.type, member.name));
+                composite_value->members.add(member.name, parse_value(parser, member.type, member.name));
         }
         return composite_value;
     }
