@@ -1,6 +1,5 @@
 #include "unity_value.hpp"
 
-#include "../deltas/asset_changed_delta.hpp"
 #include "unity_composite_value.hpp"
 #include "../delta_store.hpp"
 

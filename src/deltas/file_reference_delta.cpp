@@ -1,13 +1,13 @@
-#include "file_reference_changed_delta.hpp"
+#include "file_reference_delta.hpp"
 #include "../json_writer.hpp"
 
 namespace zizany {
-    file_reference_changed_delta::file_reference_changed_delta(const unity_file_reference &old_reference_, const unity_file_reference &new_reference_)
+    file_reference_delta::file_reference_delta(const unity_file_reference &old_reference_, const unity_file_reference &new_reference_)
             : delta("change file reference"), old_reference(old_reference_), new_reference(new_reference_) {
     }
 
     void
-    file_reference_changed_delta::print_details(json_writer &writer) const {
+    file_reference_delta::print_details(json_writer &writer) const {
         // XXX: guids MUST be equal, they shouldn't appear twice
         writer.start_object();
         writer.add_key("old_reference");

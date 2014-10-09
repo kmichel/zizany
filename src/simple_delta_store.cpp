@@ -2,19 +2,19 @@
 
 #include "deltas/delta.hpp"
 #include "deltas/assets_delta.hpp"
-#include "deltas/asset_changed_delta.hpp"
+#include "deltas/asset_delta.hpp"
 #include "deltas/asset_members_delta.hpp"
-#include "deltas/file_endianness_changed_delta.hpp"
-#include "deltas/file_layout_changed_delta.hpp"
-#include "deltas/file_magic_changed_delta.hpp"
+#include "deltas/file_endianness_delta.hpp"
+#include "deltas/file_layout_delta.hpp"
+#include "deltas/file_magic_delta.hpp"
 #include "deltas/file_references_delta.hpp"
-#include "deltas/file_reference_changed_delta.hpp"
+#include "deltas/file_reference_delta.hpp"
 #include "deltas/previews_delta.hpp"
-#include "deltas/preview_changed_delta.hpp"
+#include "deltas/preview_delta.hpp"
 #include "deltas/types_delta.hpp"
-#include "deltas/type_changed_delta.hpp"
+#include "deltas/type_delta.hpp"
 #include "deltas/type_members_delta.hpp"
-#include "deltas/unity_version_modified_delta.hpp"
+#include "deltas/unity_version_delta.hpp"
 #include "json_writer.hpp"
 
 namespace zizany {
@@ -24,23 +24,23 @@ namespace zizany {
 
     void
     simple_delta_store::modify_unity_version(const std::string &old_version, const std::string &new_version) {
-        deltas.add(new unity_version_modified_delta(old_version, new_version));
+        deltas.add(new unity_version_delta(old_version, new_version));
     }
 
 
     void
     simple_delta_store::modify_file_magic(const int magic_id, const int old_value, const int new_value) {
-        deltas.add(new file_magic_changed_delta(magic_id, old_value, new_value));
+        deltas.add(new file_magic_delta(magic_id, old_value, new_value));
     }
 
     void
     simple_delta_store::modifiy_endianness(const endianness old_endianness, const endianness new_endianness) {
-        deltas.add(new file_endianness_changed_delta(old_endianness, new_endianness));
+        deltas.add(new file_endianness_delta(old_endianness, new_endianness));
     }
 
     void
     simple_delta_store::mark_modified_layout() {
-        deltas.add(new file_layout_changed_delta());
+        deltas.add(new file_layout_delta());
     }
 
     void
@@ -75,7 +75,7 @@ namespace zizany {
 
     void
     simple_delta_store::modify_value(const unity_value &old_value, const unity_value &new_value) {
-        deltas.add(new asset_changed_delta(current_asset_id, path, old_value, new_value));
+        deltas.add(new asset_delta(current_asset_id, path, old_value, new_value));
     }
 
     void
@@ -100,7 +100,7 @@ namespace zizany {
 
     void
     simple_delta_store::modify_type(const unity_type &old_type, const unity_type &new_type) {
-        deltas.add(new type_changed_delta(current_type, path, old_type, new_type));
+        deltas.add(new type_delta(current_type, path, old_type, new_type));
     }
 
     void
@@ -125,7 +125,7 @@ namespace zizany {
 
     void
     simple_delta_store::modify_file_reference(const unity_file_reference &old_reference, const unity_file_reference &new_reference) {
-        deltas.add(new file_reference_changed_delta(old_reference, new_reference));
+        deltas.add(new file_reference_delta(old_reference, new_reference));
     }
 
     void
@@ -140,7 +140,7 @@ namespace zizany {
 
     void
     simple_delta_store::modify_preview(const unity_preview &old_preview, const unity_preview &new_preview) {
-        deltas.add(new preview_changed_delta(old_preview, new_preview));
+        deltas.add(new preview_delta(old_preview, new_preview));
     }
 
     void
