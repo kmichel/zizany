@@ -83,7 +83,7 @@ namespace zizany {
                         layout_modified = true;
                     }
                 } else {
-                    store.add_asset(base_asset_id, get_type_identity(base, base_asset.type_id), *base_asset.value);
+                    store.remove_asset(base_asset_id, get_type_identity(base, base_asset.type_id), *base_asset.value);
                 }
             }
 
@@ -91,7 +91,7 @@ namespace zizany {
                 const int other_asset_id(other.assets.get_id_at(other_asset_index));
                 const unity_asset &other_asset(other.assets.at(other_asset_index));
                 if (!base.assets.has_id(other_asset_id))
-                    store.remove_asset(other_asset_id, get_type_identity(other, other_asset.type_id), *other_asset.value);
+                    store.add_asset(other_asset_id, get_type_identity(other, other_asset.type_id), *other_asset.value);
             }
         }
 

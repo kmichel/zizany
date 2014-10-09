@@ -1,5 +1,4 @@
 #include "asset_changed_delta.hpp"
-
 #include "../values/unity_value.hpp"
 #include "../json_writer.hpp"
 

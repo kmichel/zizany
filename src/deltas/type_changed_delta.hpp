@@ -1,5 +1,6 @@
-#include "delta.hpp"
+#pragma once
 
+#include "delta.hpp"
 #include "../diff/member_path.hpp"
 #include "../diff/type_identity.hpp"
 

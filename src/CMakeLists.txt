@@ -10,25 +10,19 @@ endif()
 set(SOURCE_FILES
     delta_store.cpp
     deltas/delta.cpp
-    deltas/asset_added_delta.cpp
+    deltas/assets_delta.cpp
     deltas/asset_changed_delta.cpp
-    deltas/asset_member_added_delta.cpp
-    deltas/asset_member_removed_delta.cpp
-    deltas/asset_removed_delta.cpp
+    deltas/asset_members_delta.cpp
     deltas/file_endianness_changed_delta.cpp
     deltas/file_layout_changed_delta.cpp
     deltas/file_magic_changed_delta.cpp
-    deltas/file_reference_added_delta.cpp
+    deltas/file_references_delta.cpp
     deltas/file_reference_changed_delta.cpp
-    deltas/file_reference_removed_delta.cpp
-    deltas/preview_added_delta.cpp
+    deltas/previews_delta.cpp
     deltas/preview_changed_delta.cpp
-    deltas/preview_removed_delta.cpp
-    deltas/type_added_delta.cpp
+    deltas/types_delta.cpp
     deltas/type_changed_delta.cpp
-    deltas/type_member_added_delta.cpp
-    deltas/type_member_removed_delta.cpp
-    deltas/type_removed_delta.cpp
+    deltas/type_members_delta.cpp
     deltas/unity_version_modified_delta.cpp
     diff/file_comparer.cpp
     diff/file_reference_comparer.cpp

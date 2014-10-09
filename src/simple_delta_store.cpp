@@ -1,25 +1,19 @@
 #include "simple_delta_store.hpp"
 
 #include "deltas/delta.hpp"
-#include "deltas/asset_added_delta.hpp"
+#include "deltas/assets_delta.hpp"
 #include "deltas/asset_changed_delta.hpp"
-#include "deltas/asset_member_added_delta.hpp"
-#include "deltas/asset_member_removed_delta.hpp"
-#include "deltas/asset_removed_delta.hpp"
+#include "deltas/asset_members_delta.hpp"
 #include "deltas/file_endianness_changed_delta.hpp"
 #include "deltas/file_layout_changed_delta.hpp"
 #include "deltas/file_magic_changed_delta.hpp"
-#include "deltas/file_reference_added_delta.hpp"
+#include "deltas/file_references_delta.hpp"
 #include "deltas/file_reference_changed_delta.hpp"
-#include "deltas/file_reference_removed_delta.hpp"
-#include "deltas/preview_added_delta.hpp"
+#include "deltas/previews_delta.hpp"
 #include "deltas/preview_changed_delta.hpp"
-#include "deltas/preview_removed_delta.hpp"
-#include "deltas/type_added_delta.hpp"
+#include "deltas/types_delta.hpp"
 #include "deltas/type_changed_delta.hpp"
-#include "deltas/type_member_added_delta.hpp"
-#include "deltas/type_member_removed_delta.hpp"
-#include "deltas/type_removed_delta.hpp"
+#include "deltas/type_members_delta.hpp"
 #include "deltas/unity_version_modified_delta.hpp"
 #include "json_writer.hpp"
 
@@ -71,12 +65,12 @@ namespace zizany {
 
     void
     simple_delta_store::add_asset(const int asset_id, const type_identity &type, const unity_value &value) {
-        deltas.add(new asset_added_delta(asset_id, type, value));
+        deltas.add(new assets_delta(delta_set_operation::add, asset_id, type, value));
     }
 
     void
     simple_delta_store::remove_asset(const int asset_id, const type_identity &type, const unity_value &value) {
-        deltas.add(new asset_removed_delta(asset_id, type, value));
+        deltas.add(new assets_delta(delta_set_operation::remove, asset_id, type, value));
     }
 
     void
@@ -86,22 +80,22 @@ namespace zizany {
 
     void
     simple_delta_store::add_value_member(const std::string &member_name, const unity_value &value) {
-        deltas.add(new asset_member_added_delta(current_asset_id, path.join(member_name), value));
+        deltas.add(new asset_members_delta(delta_set_operation::add, current_asset_id, path.join(member_name), value));
     }
 
     void
     simple_delta_store::remove_value_member(const std::string &member_name, const unity_value &value) {
-        deltas.add(new asset_member_removed_delta(current_asset_id, path.join(member_name), value));
+        deltas.add(new asset_members_delta(delta_set_operation::remove, current_asset_id, path.join(member_name), value));
     }
 
     void
     simple_delta_store::add_type(const type_identity &identity, const unity_type &type) {
-        deltas.add(new type_added_delta(identity, type));
+        deltas.add(new types_delta(delta_set_operation::add, identity, type));
     }
 
     void
     simple_delta_store::remove_type(const type_identity &identity, const unity_type &type) {
-        deltas.add(new type_removed_delta(identity, type));
+        deltas.add(new types_delta(delta_set_operation::remove, identity, type));
     }
 
     void
@@ -111,22 +105,22 @@ namespace zizany {
 
     void
     simple_delta_store::add_type_member(const std::string &member_name, const unity_type &type) {
-        deltas.add(new type_member_added_delta(current_type, path.join(member_name), type));
+        deltas.add(new type_members_delta(delta_set_operation::add, current_type, path.join(member_name), type));
     }
 
     void
     simple_delta_store::remove_type_member(const std::string &member_name, const unity_type &type) {
-        deltas.add(new type_member_removed_delta(current_type, path.join(member_name), type));
+        deltas.add(new type_members_delta(delta_set_operation::remove, current_type, path.join(member_name), type));
     }
 
     void
     simple_delta_store::add_file_reference(const unity_file_reference &reference) {
-        deltas.add(new file_reference_added_delta(reference));
+        deltas.add(new file_references_delta(delta_set_operation::add, reference));
     }
 
     void
     simple_delta_store::remove_file_reference(const unity_file_reference &reference) {
-        deltas.add(new file_reference_removed_delta(reference));
+        deltas.add(new file_references_delta(delta_set_operation::remove, reference));
     }
 
     void
@@ -136,12 +130,12 @@ namespace zizany {
 
     void
     simple_delta_store::add_preview(const unity_preview &preview) {
-        deltas.add(new preview_added_delta(preview));
+        deltas.add(new previews_delta(delta_set_operation::add, preview));
     }
 
     void
     simple_delta_store::remove_preview(const unity_preview &preview) {
-        deltas.add(new preview_removed_delta(preview));
+        deltas.add(new previews_delta(delta_set_operation::remove, preview));
     }
 
     void
