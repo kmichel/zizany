@@ -3,7 +3,12 @@
 
 namespace zizany {
     file_reference_delta::file_reference_delta(const unity_file_reference &old_reference_, const unity_file_reference &new_reference_)
-            : delta("change file reference"), old_reference(old_reference_), new_reference(new_reference_) {
+            : delta(), old_reference(old_reference_), new_reference(new_reference_) {
+    }
+
+    void
+    file_reference_delta::print_action(json_writer &writer) const {
+        writer.add_string("change file reference");
     }
 
     void

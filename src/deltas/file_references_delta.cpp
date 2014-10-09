@@ -3,9 +3,14 @@
 
 namespace zizany {
     file_references_delta::file_references_delta(delta_set_operation operation_, const unity_file_reference &reference_)
-            : delta(operation_ == delta_set_operation::add ? "add file reference" : "remove file reference"),
+            : delta(),
               operation(operation_),
               reference(reference_) {
+    }
+
+    void
+    file_references_delta::print_action(json_writer &writer) const {
+        writer.add_string(operation == delta_set_operation::add ? "add file reference" : "remove file reference");
     }
 
     void

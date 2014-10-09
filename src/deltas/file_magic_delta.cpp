@@ -4,7 +4,12 @@
 
 namespace zizany {
     file_magic_delta::file_magic_delta(const int magic_id_, const int old_value_, const int new_value_)
-            : delta("change file magic"), magic_id(magic_id_), old_value(old_value_), new_value(new_value_) {
+            : delta(), magic_id(magic_id_), old_value(old_value_), new_value(new_value_) {
+    }
+
+    void
+    file_magic_delta::print_action(json_writer &writer) const {
+        writer.add_string("change file magic");
     }
 
     void

@@ -9,11 +9,16 @@ namespace zizany {
             const member_path &path_,
             const unity_type &old_definition_,
             const unity_type &new_definition_)
-            : delta("change type"),
+            : delta(),
               identity(identity_),
               path(path_),
               old_definition(old_definition_),
               new_definition(new_definition_) {
+    }
+
+    void
+    type_delta::print_action(json_writer &writer) const {
+        writer.add_string("change type");
     }
 
     void

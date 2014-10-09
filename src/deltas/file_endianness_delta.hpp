@@ -11,6 +11,8 @@ namespace zizany {
 
         file_endianness_delta(const endianness old_endianness_, const endianness new_endianness_);
 
+        virtual void print_action(json_writer &action) const;
+
         virtual void print_details(json_writer &writer) const;
     };
 

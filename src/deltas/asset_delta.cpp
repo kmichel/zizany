@@ -8,14 +8,20 @@ namespace zizany {
             const member_path &path_,
             const unity_value &old_value_,
             const unity_value &new_value_)
-            : delta("change asset"),
+            : delta(),
               asset_id(asset_id_),
               path(path_),
               old_value(old_value_),
               new_value(new_value_) {
     }
 
-    void asset_delta::print_details(json_writer &writer) const {
+    void
+    asset_delta::print_action(json_writer &writer) const {
+        writer.add_string("change asset");
+    }
+
+    void
+    asset_delta::print_details(json_writer &writer) const {
         writer.start_object();
         writer.add_key("asset_id");
         writer.add_number(asset_id);

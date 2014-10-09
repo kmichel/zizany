@@ -5,7 +5,12 @@
 namespace zizany {
     unity_version_delta::unity_version_delta(
             const std::string &old_version_, const std::string &new_version_)
-            : delta("change unity version"), old_version(old_version_), new_version(new_version_) {
+            : delta(), old_version(old_version_), new_version(new_version_) {
+    }
+
+    void
+    unity_version_delta::print_action(json_writer &writer) const {
+        writer.add_string("change unity version");
     }
 
     void

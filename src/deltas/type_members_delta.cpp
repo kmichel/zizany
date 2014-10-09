@@ -6,10 +6,16 @@
 namespace zizany {
 
     type_members_delta::type_members_delta(const delta_set_operation operation_, const type_identity &identity_, const member_path &path_, const unity_type &added_type_)
-            : delta(operation_ == delta_set_operation::add ? "add type member" : "remove type member"),
+            : delta(),
+              operation(operation_),
               identity(identity_),
               path(path_),
               added_type(added_type_) {
+    }
+
+    void
+    type_members_delta::print_action(json_writer &writer) const {
+        writer.add_string(operation == delta_set_operation::add ? "add type member" : "remove type member");
     }
 
     void

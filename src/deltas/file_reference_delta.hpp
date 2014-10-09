@@ -11,6 +11,8 @@ namespace zizany {
 
         file_reference_delta(const unity_file_reference &old_reference_, const unity_file_reference &new_reference_);
 
+        virtual void print_action(json_writer &action) const;
+
         virtual void print_details(json_writer &writer) const;
     };
 }
