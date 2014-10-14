@@ -53,6 +53,7 @@ set(SOURCE_FILES
     unity_value_parser.cpp
     values/unity_array_value.cpp
     values/unity_asset_reference_value.cpp
+    values/unity_blob_value.cpp
     values/unity_bool_value.cpp
     values/unity_double_value.cpp
     values/unity_composite_value.cpp

@@ -12,7 +12,6 @@ namespace zizany {
         std::int32_t type_id;
         std::int32_t type_id_2;
         std::unique_ptr<unity_value> value;
-        std::vector<char> unparsed_value;
         struct {
             std::uint32_t offset;
             std::uint32_t size;

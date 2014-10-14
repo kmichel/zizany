@@ -56,6 +56,11 @@ namespace zizany {
     }
 
     bool
+    unity_value::equals(const std::vector<char> &/*value*/) const {
+        return false;
+    }
+
+    bool
     unity_value::member_equals(const std::string &/*member_name*/, const unity_value &/*value*/) const {
         return false;
     }

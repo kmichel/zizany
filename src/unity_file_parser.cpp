@@ -9,6 +9,7 @@
 #include "unity_type.hpp"
 #include "unity_value_parser.hpp"
 #include "values/unity_value.hpp"
+#include "values/unity_blob_value.hpp"
 
 namespace zizany {
     unity_file_parser::unity_file_parser(unity_file &file_)
@@ -122,8 +123,11 @@ namespace zizany {
         parser.seek(file.file_layout.assets_start + asset.file_layout.offset);
         if (file.types.has_id(asset.type_id))
             asset.value = parse_value(parser, file.types.get_by_id(asset.type_id), "");
-        else
-            parser.parse(asset.unparsed_value, asset.file_layout.size);
+        else {
+            std::unique_ptr<unity_blob_value> blob(new unity_blob_value);
+            parser.parse(blob->data, asset.file_layout.size);
+            asset.value = std::move(blob);
+        }
     }
 
     void

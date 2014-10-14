@@ -50,6 +50,8 @@ namespace zizany {
 
         virtual bool equals(const asset_reference &value) const;
 
+        virtual bool equals(const std::vector<char> &value) const;
+
         // XXX: this api is not enough, we are missing extra members from the "other" side
         virtual bool member_equals(const std::string &member_name, const unity_value &value) const;
 

@@ -12,7 +12,6 @@ namespace zizany {
     class unity_type;
 
     struct type_identity {
-        // XXX: we should remove this dangerous reference
         bool is_script;
         int type_id;
         struct {

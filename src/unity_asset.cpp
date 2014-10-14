@@ -7,7 +7,6 @@ namespace zizany {
             : type_id(),
               type_id_2(),
               value(),
-              unparsed_value(),
               file_layout() {
     }
 }

@@ -11,25 +11,6 @@
 #include <cstdio>
 
 namespace zizany {
-    static
-    void
-    print_hexdump(json_writer &writer, const std::vector<char> &data) {
-        writer.start_array();
-        char line_buffer[40];
-        int line_index(0);
-        for (std::size_t buffer_index = 0; buffer_index < data.size(); ++buffer_index) {
-            std::snprintf(line_buffer + line_index, 3, "%02x", data[buffer_index]);
-            line_index += 2;
-            if (buffer_index % 2 == 1)
-                line_buffer[line_index++] = ' ';
-            if (line_index == sizeof(line_buffer)) {
-                writer.add_string(line_buffer, sizeof(line_buffer) - 1);
-                line_index = 0;
-            }
-        }
-        writer.end_array();
-    }
-
     void
     print_file(json_writer &writer, const unity_file &file, unity_file_printer_options options) {
         writer.start_object();
@@ -84,13 +65,11 @@ namespace zizany {
                     writer.add_key("size");
                     writer.add_number(asset.file_layout.size);
                 }
-                if (asset.value) {
-                    writer.add_key("value");
+                writer.add_key("value");
+                if (asset.value)
                     asset.value->print(writer);
-                } else {
-                    writer.add_key("unparsed_value");
-                    print_hexdump(writer, asset.unparsed_value);
-                }
+                else
+                    writer.add_null();
                 writer.end_object();
             }
             writer.end_array();

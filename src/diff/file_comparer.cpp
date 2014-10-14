@@ -70,6 +70,8 @@ namespace zizany {
         }
 
         { // assets
+            // XXX: for release files, we don't have type structure, which means we can't
+            // read the m_script value, and can't generate a durable type_identity.
             for (std::size_t base_asset_index = 0; base_asset_index < base.assets.size(); ++base_asset_index) {
                 const int base_asset_id(base.assets.get_id_at(base_asset_index));
                 const unity_asset &base_asset(base.assets.at(base_asset_index));
