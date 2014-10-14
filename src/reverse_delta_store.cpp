@@ -59,6 +59,16 @@ namespace zizany {
     }
 
     void
+    reverse_delta_store::insert_sequence_item(const int position, const unity_value &value) {
+        delegate_store.remove_sequence_item(position, value);
+    }
+
+    void
+    reverse_delta_store::remove_sequence_item(const int position, const unity_value &value) {
+        delegate_store.insert_sequence_item(position, value);
+    }
+
+    void
     reverse_delta_store::add_type(const type_identity &identity, const unity_type &type) {
         delegate_store.remove_type(identity, type);
     }

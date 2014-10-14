@@ -1,5 +1,6 @@
 #include "unity_value.hpp"
 
+#include "unity_array_value.hpp"
 #include "unity_composite_value.hpp"
 #include "../delta_store.hpp"
 
@@ -77,6 +78,12 @@ namespace zizany {
 
     void
     unity_value::compare(const unity_value &value, delta_store &store) const {
+        if (!equals(value))
+            store.modify_value(*this, value);
+    }
+
+    void
+    unity_value::compare(const unity_array_value &value, delta_store &store) const {
         if (!equals(value))
             store.modify_value(*this, value);
     }

@@ -49,6 +49,10 @@ namespace zizany {
 
         virtual void remove_value_member(const std::string &member_name, const unity_value &value) = 0;
 
+        virtual void insert_sequence_item(const int position, const unity_value &value) = 0;
+
+        virtual void remove_sequence_item(const int position, const unity_value &value) = 0;
+
         virtual void add_type(const type_identity &identity, const unity_type &type) = 0;
 
         virtual void remove_type(const type_identity &identity, const unity_type &type) = 0;

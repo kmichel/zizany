@@ -20,6 +20,7 @@ set(SOURCE_FILES
     deltas/file_references_delta.cpp
     deltas/preview_delta.cpp
     deltas/previews_delta.cpp
+    deltas/sequence_delta.cpp
     deltas/type_delta.cpp
     deltas/type_members_delta.cpp
     deltas/types_delta.cpp
@@ -29,6 +30,7 @@ set(SOURCE_FILES
     diff/identified_type.cpp
     diff/member_path.cpp
     diff/preview_comparer.cpp
+    diff/sequence_comparer.cpp
     diff/type_comparer.cpp
     diff/type_identity.cpp
     file_lock.cpp

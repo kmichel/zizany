@@ -11,6 +11,7 @@
 #include "deltas/file_reference_delta.hpp"
 #include "deltas/previews_delta.hpp"
 #include "deltas/preview_delta.hpp"
+#include "deltas/sequence_delta.hpp"
 #include "deltas/types_delta.hpp"
 #include "deltas/type_delta.hpp"
 #include "deltas/type_members_delta.hpp"
@@ -86,6 +87,16 @@ namespace zizany {
     void
     simple_delta_store::remove_value_member(const std::string &member_name, const unity_value &value) {
         deltas.add(new asset_members_delta(delta_set_operation::remove, current_asset_id, path.join(member_name), value));
+    }
+
+    void
+    simple_delta_store::insert_sequence_item(const int position, const unity_value &value) {
+        deltas.add(new sequence_delta(delta_sequence_operation::insert, current_asset_id, path, position, value));
+    }
+
+    void
+    simple_delta_store::remove_sequence_item(const int position, const unity_value &value) {
+        deltas.add(new sequence_delta(delta_sequence_operation::remove, current_asset_id, path, position, value));
     }
 
     void

@@ -14,6 +14,8 @@ namespace zizany {
 
     class json_writer;
 
+    class unity_array_value;
+
     class unity_composite_value;
 
     class unity_value {
@@ -62,6 +64,8 @@ namespace zizany {
         /* delta generation double dispatch */
 
         virtual void compare(const unity_value &value, delta_store &store) const;
+
+        virtual void compare(const unity_array_value &value, delta_store &store) const;
 
         virtual void compare(const unity_composite_value &value, delta_store &store) const;
     };

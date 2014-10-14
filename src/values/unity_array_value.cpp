@@ -1,6 +1,8 @@
 #include "unity_array_value.hpp"
 
 #include "../json_writer.hpp"
+#include "../diff/sequence_comparer.hpp"
+#include "../reverse_delta_store.hpp"
 
 namespace zizany {
     unity_array_value::unity_array_value()
@@ -33,5 +35,16 @@ namespace zizany {
     bool
     unity_array_value::item_equals(std::size_t index, const unity_value &value) const {
         return elements.at(index).equals(value);
+    }
+
+    void
+    unity_array_value::compare(const unity_value &value, delta_store &store) const {
+        reverse_delta_store reverse_store(store);
+        value.compare(*this, reverse_store);
+    }
+
+    void
+    unity_array_value::compare(const unity_array_value &value, delta_store &store) const {
+        compare_sequences(*this, value, store);
     }
 }
