@@ -3,7 +3,6 @@
 #include "../json_writer.hpp"
 #include "../unity_asset.hpp"
 #include "../unity_file.hpp"
-#include "../unity_file_reference.hpp"
 #include "../unity_type.hpp"
 #include "../unity_value.hpp"
 #include "../values/unity_asset_reference_value.hpp"
@@ -80,8 +79,7 @@ namespace zizany {
                 const unity_value *asset_script(find_member_named(*asset->value, "m_Script"));
                 if (asset_script != nullptr) {
                     const unity_asset_reference_value *asset_script_reference(dynamic_cast<const unity_asset_reference_value *>(asset_script));
-                    const unity_file_reference &file_reference(file.file_references.get_by_id(asset_script_reference->value.file_reference_id));
-                    return type_identity(file_reference.file_guid, asset_script_reference->value.asset_id);
+                    return type_identity(asset_script_reference->value.file_guid, asset_script_reference->value.asset_id);
                 }
             }
         }

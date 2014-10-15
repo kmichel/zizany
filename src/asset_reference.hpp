@@ -1,8 +1,12 @@
 #pragma once
 
+#include "guid.hpp"
+
 namespace zizany {
     struct asset_reference {
-        int file_reference_id;
+    public:
+        bool is_local;
+        guid file_guid;
         int asset_id;
     };
 }

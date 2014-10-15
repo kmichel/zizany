@@ -14,6 +14,7 @@ namespace zizany {
     struct type_identity {
         bool is_script;
         int type_id;
+        // TODO: use asset_reference
         struct {
             guid file_guid;
             int asset_id;

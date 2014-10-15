@@ -2,6 +2,7 @@
 
 #include "stream_parser.hpp"
 #include "parser_exception.hpp"
+#include "unity_file_reference.hpp"
 #include "unity_type.hpp"
 #include "unity_value.hpp"
 #include "values/unity_array_value.hpp"
@@ -68,7 +69,7 @@ namespace zizany {
 
     static
     std::unique_ptr<unity_array_value>
-    parse_array(const unity_type &element_type, const std::size_t length, stream_parser &parser) {
+    parse_array(const unity_type &element_type, const std::size_t length, stream_parser &parser, const registry<unity_file_reference> &file_references) {
         std::unique_ptr<unity_array_value> elements_value;
         if (element_type.is_simple())
             elements_value.reset(new unity_inline_array_value());
@@ -77,27 +78,27 @@ namespace zizany {
         if (length > 0) {
             elements_value->elements.reserve(length);
             for (std::size_t index = 0; index < length; ++index)
-                elements_value->elements.add(parse_value(parser, element_type, ""));
+                elements_value->elements.add(parse_value(parser, element_type, "", file_references));
         }
         return elements_value;
     }
 
     static
     std::unique_ptr<unity_composite_value>
-    parse_composite(stream_parser &parser, const unity_type &type) {
+    parse_composite(stream_parser &parser, const unity_type &type, const registry<unity_file_reference> &file_references) {
         std::unique_ptr<unity_composite_value> composite_value(new unity_composite_value());
         const std::size_t members_count(type.members.size());
         if (members_count > 0) {
             composite_value->members.reserve(members_count);
             for (const unity_type_member &member : type.members)
-                composite_value->members.add(member.name, parse_value(parser, member.type, member.name));
+                composite_value->members.add(member.name, parse_value(parser, member.type, member.name, file_references));
         }
         return composite_value;
     }
 
 
     std::unique_ptr<unity_value>
-    parse_value(stream_parser &parser, const unity_type &type, const std::string &member_name) {
+    parse_value(stream_parser &parser, const unity_type &type, const std::string &member_name, const registry<unity_file_reference> &file_references) {
         std::unique_ptr<unity_value> ret;
         if (type.is_array) {
             const unity_type &length_type(type.members.at(0).type);
@@ -106,7 +107,7 @@ namespace zizany {
             const std::uint32_t length(parser.parse<std::uint32_t>());
 
             const unity_type &element_type(type.members.at(1).type);
-            ret = parse_array(element_type, length, parser);
+            ret = parse_array(element_type, length, parser, file_references);
         } else if (type.is_simple()) {
             ret = parse_simple_value(parser, type);
         } else if (type.name == "string") {
@@ -133,11 +134,17 @@ namespace zizany {
         } else if (type.name.find("PPtr<") == 0 && type.name.at(type.name.size() - 1) == '>') {
             // XXX: we should check that the type named "PPtr<*>" is actually what we expect
             std::unique_ptr<unity_asset_reference_value> asset_reference_value(new unity_asset_reference_value());
-            asset_reference_value->value.file_reference_id = parser.parse<std::int32_t>();
+            const std::int32_t file_reference_id = parser.parse<std::int32_t>();
+            if (file_reference_id == 0)
+                asset_reference_value->value.is_local = true;
+            else {
+                asset_reference_value->value.is_local = false;
+                asset_reference_value->value.file_guid = file_references.get_by_id(file_reference_id).file_guid;
+            }
             asset_reference_value->value.asset_id = parser.parse<std::int32_t>();
             ret = std::move(asset_reference_value);
         } else {
-            ret = parse_composite(parser, type);
+            ret = parse_composite(parser, type, file_references);
         }
         if (type.requires_padding())
             parser.align(4);

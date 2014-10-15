@@ -32,7 +32,9 @@ namespace zizany {
             parse_assets(parser);
             parse_file_references(parser);
             parse_previews(parser);
-            // moved at the end because asset_value and preview_data require many seeks to parse
+            // moved at the end because :
+            // - asset_value and preview_data require many seeks to parse
+            // - parsing asset values requires file_references
             for (unity_asset &asset : file.assets)
                 parse_asset_value(parser, asset);
             for (unity_preview &preview : file.previews)
@@ -122,7 +124,7 @@ namespace zizany {
     unity_file_parser::parse_asset_value(stream_parser &parser, unity_asset &asset) {
         parser.seek(file.file_layout.assets_start + asset.file_layout.offset);
         if (file.types.has_id(asset.type_id))
-            asset.value = parse_value(parser, file.types.get_by_id(asset.type_id), "");
+            asset.value = parse_value(parser, file.types.get_by_id(asset.type_id), "", file.file_references);
         else {
             std::unique_ptr<unity_blob_value> blob(new unity_blob_value);
             parser.parse(blob->data, asset.file_layout.size);
