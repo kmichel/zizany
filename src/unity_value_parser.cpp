@@ -119,7 +119,7 @@ namespace zizany {
                 string_value.reset(new unity_string_value());
             const std::uint32_t length(parser.parse<std::uint32_t>());
             if (length > 0) {
-                parser.parse(string_value->chars, length);
+                parser.parse(string_value->data, length);
                 parser.align(4);
             }
             ret = std::move(string_value);

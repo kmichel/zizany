@@ -46,8 +46,6 @@ namespace zizany {
 
         virtual bool equals(double value) const;
 
-        virtual bool equals(const std::string &value) const;
-
         virtual bool equals(const guid &value) const;
 
         virtual bool equals(const asset_reference &value) const;

@@ -12,8 +12,8 @@ namespace zizany {
     void
     unity_multiline_string_value::print(json_writer &writer) const {
         writer.start_array();
-        std::vector<char>::const_iterator iter(chars.begin());
-        const std::vector<char>::const_iterator end(chars.end());
+        std::vector<char>::const_iterator iter(data.begin());
+        const std::vector<char>::const_iterator end(data.end());
         while (iter != end) {
             const std::vector<char>::const_iterator next_newline(std::find(iter, end, '\n'));
             const std::vector<char>::const_iterator after_line_end(next_newline == end ? next_newline : next_newline + 1);

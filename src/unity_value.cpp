@@ -42,11 +42,6 @@ namespace zizany {
     }
 
     bool
-    unity_value::equals(const std::string &/*value*/) const {
-        return false;
-    }
-
-    bool
     unity_value::equals(const guid &/*value*/) const {
         return false;
     }
