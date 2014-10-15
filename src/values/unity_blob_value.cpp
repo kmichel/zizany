@@ -13,7 +13,7 @@ namespace zizany {
     unity_blob_value::print(json_writer &writer) const {
         writer.start_array();
         char line_buffer[40];
-        int line_index(0);
+        std::size_t line_index(0);
         for (std::size_t buffer_index = 0; buffer_index < data.size(); ++buffer_index) {
             std::snprintf(line_buffer + line_index, 3, "%02x", data[buffer_index]);
             line_index += 2;
@@ -23,6 +23,11 @@ namespace zizany {
                 writer.add_string(line_buffer, sizeof(line_buffer) - 1);
                 line_index = 0;
             }
+        }
+        if (line_index != 0) {
+            while (line_index < sizeof(line_buffer))
+                line_buffer[line_index++] = ' ';
+            writer.add_string(line_buffer, sizeof(line_buffer) - 1);
         }
         writer.end_array();
     }
