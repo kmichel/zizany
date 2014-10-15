@@ -23,21 +23,6 @@ namespace zizany {
               script_asset(script_asset_) {
     }
 
-    const unity_type *
-    type_identity::resolve(const unity_file &file) const {
-        if (is_script) {
-            for (std::size_t type_index = 0; type_index < file.types.size(); ++type_index) {
-                const int file_type_id(file.types.get_id_at(type_index));
-                const unity_type &type(file.types.at(type_index));
-                if (file_type_id < 0 && *this == get_type_identity(file, file_type_id))
-                    return &type;
-            }
-        } else if (file.types.has_id(type_id)) {
-            return &file.types.get_by_id(type_id);
-        }
-        return nullptr;
-    }
-
     void
     type_identity::print(json_writer &writer) const {
         writer.start_object();

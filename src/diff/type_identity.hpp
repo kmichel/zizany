@@ -20,8 +20,6 @@ namespace zizany {
 
         explicit type_identity(const asset_reference &script_asset_);
 
-        const unity_type *resolve(const unity_file &file) const;
-
         void print(json_writer &writer) const;
     };
 
