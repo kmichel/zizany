@@ -14,13 +14,12 @@ namespace zizany {
 
     void
     file_reference_delta::print_details(json_writer &writer) const {
-        // XXX: guids MUST be equal, they shouldn't appear twice
         writer.start_object();
+        writer.add_key("file_guid");
+        old_reference.file_guid.print(writer);
         writer.add_key("old_reference");
         {
             writer.start_object();
-            writer.add_key("file_guid");
-            old_reference.file_guid.print(writer);
             writer.add_key("path");
             writer.add_string(old_reference.path);
             writer.add_key("magic_byte_1");
@@ -32,8 +31,6 @@ namespace zizany {
         writer.add_key("new_reference");
         {
             writer.start_object();
-            writer.add_key("file_guid");
-            new_reference.file_guid.print(writer);
             writer.add_key("path");
             writer.add_string(new_reference.path);
             writer.add_key("magic_byte_1");
