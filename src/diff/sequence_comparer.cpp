@@ -1,7 +1,8 @@
 #include "sequence_comparer.hpp"
 
-#include "../delta_store.hpp"
+#include "delta_store.hpp"
 #include "../values/unity_array_value.hpp"
+
 #include <vector>
 
 namespace zizany {

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "unity_value.hpp"
+#include "../unity_value.hpp"
 #include "../asset_reference.hpp"
 
 namespace zizany {

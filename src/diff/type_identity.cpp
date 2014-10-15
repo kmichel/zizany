@@ -5,9 +5,9 @@
 #include "../unity_file.hpp"
 #include "../unity_file_reference.hpp"
 #include "../unity_type.hpp"
+#include "../unity_value.hpp"
 #include "../values/unity_asset_reference_value.hpp"
 #include "../values/unity_composite_value.hpp"
-#include "../values/unity_value.hpp"
 
 #include <stdexcept>
 

@@ -1,8 +1,8 @@
 #include "unity_array_value.hpp"
 
 #include "../json_writer.hpp"
+#include "../diff/reverse_delta_store.hpp"
 #include "../diff/sequence_comparer.hpp"
-#include "../reverse_delta_store.hpp"
 
 namespace zizany {
     unity_array_value::unity_array_value()

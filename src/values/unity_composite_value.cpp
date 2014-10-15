@@ -1,7 +1,7 @@
 #include "unity_composite_value.hpp"
 
-#include "../delta_store.hpp"
-#include "../reverse_delta_store.hpp"
+#include "../diff/delta_store.hpp"
+#include "../diff/reverse_delta_store.hpp"
 
 namespace zizany {
     unity_composite_value::unity_composite_value()

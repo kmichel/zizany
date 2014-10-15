@@ -1,5 +1,5 @@
 #include "type_comparer.hpp"
-#include "../delta_store.hpp"
+#include "delta_store.hpp"
 #include "../unity_type.hpp"
 
 namespace zizany {

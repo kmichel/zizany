@@ -1,16 +1,17 @@
-#include "../delta_store.hpp"
+#include "file_comparer.hpp"
+
+#include "delta_store.hpp"
+#include "file_reference_comparer.hpp"
+#include "preview_comparer.hpp"
+#include "type_comparer.hpp"
+#include "identified_type.hpp"
 #include "../guid.hpp"
 #include "../unity_asset.hpp"
 #include "../unity_file.hpp"
 #include "../unity_file_reference.hpp"
 #include "../unity_preview.hpp"
 #include "../unity_type.hpp"
-#include "../values/unity_value.hpp"
-#include "file_comparer.hpp"
-#include "file_reference_comparer.hpp"
-#include "preview_comparer.hpp"
-#include "type_comparer.hpp"
-#include "identified_type.hpp"
+#include "../unity_value.hpp"
 
 namespace zizany {
 

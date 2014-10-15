@@ -1,7 +1,7 @@
 #include "unity_value_members.hpp"
 
 #include "json_writer.hpp"
-#include "values/unity_value.hpp"
+#include "unity_value.hpp"
 
 namespace zizany {
     unity_value_members::unity_value_members()

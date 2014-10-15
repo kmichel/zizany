@@ -6,9 +6,7 @@
 #include "unity_file_reference.hpp"
 #include "unity_preview.hpp"
 #include "unity_type.hpp"
-#include "values/unity_value.hpp"
-
-#include <cstdio>
+#include "unity_value.hpp"
 
 namespace zizany {
     void

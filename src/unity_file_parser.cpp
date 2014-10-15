@@ -8,7 +8,7 @@
 #include "unity_preview.hpp"
 #include "unity_type.hpp"
 #include "unity_value_parser.hpp"
-#include "values/unity_value.hpp"
+#include "unity_value.hpp"
 #include "values/unity_blob_value.hpp"
 
 namespace zizany {

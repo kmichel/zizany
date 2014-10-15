@@ -1,10 +1,10 @@
-#include "deltas/delta.hpp"
+#include "diff/delta.hpp"
 #include "diff/file_comparer.hpp"
+#include "diff/simple_delta_store.hpp"
 #include "file_lock.hpp"
 #include "json_writer.hpp"
 #include "parser_exception.hpp"
 #include "program_options.hpp"
-#include "simple_delta_store.hpp"
 #include "unity_asset.hpp"
 #include "unity_file.hpp"
 #include "unity_file_printer.hpp"
@@ -12,7 +12,7 @@
 #include "unity_file_parser.hpp"
 #include "unity_preview.hpp"
 #include "unity_type.hpp"
-#include "values/unity_value.hpp"
+#include "unity_value.hpp"
 
 #include <iostream>
 #include <fstream>

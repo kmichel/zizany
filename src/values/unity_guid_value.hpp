@@ -1,7 +1,7 @@
 #pragma once
 
-#include "unity_value.hpp"
 #include "../guid.hpp"
+#include "../unity_value.hpp"
 
 namespace zizany {
 

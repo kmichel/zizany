@@ -1,6 +1,6 @@
 #pragma once
 
-#include "unity_value.hpp"
+#include "../unity_value.hpp"
 
 namespace zizany {
     class unity_bool_value : public unity_value {

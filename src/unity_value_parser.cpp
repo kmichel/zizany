@@ -3,6 +3,7 @@
 #include "stream_parser.hpp"
 #include "parser_exception.hpp"
 #include "unity_type.hpp"
+#include "unity_value.hpp"
 #include "values/unity_array_value.hpp"
 #include "values/unity_asset_reference_value.hpp"
 #include "values/unity_bool_value.hpp"
@@ -14,7 +15,6 @@
 #include "values/unity_integer_value.hpp"
 #include "values/unity_multiline_string_value.hpp"
 #include "values/unity_string_value.hpp"
-#include "values/unity_value.hpp"
 
 namespace zizany {
     template<typename value_type>
