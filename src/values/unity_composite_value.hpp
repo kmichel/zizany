@@ -15,7 +15,7 @@ namespace zizany {
 
         virtual bool equals(const unity_value &value) const;
 
-        virtual bool member_equals(const std::string &member_name, const unity_value &value) const;
+        virtual bool equals(const unity_composite_value &value) const;
 
         virtual void compare(const unity_value &value, delta_store &store) const;
 

@@ -62,17 +62,12 @@ namespace zizany {
     }
 
     bool
-    unity_value::member_equals(const std::string &/*member_name*/, const unity_value &/*value*/) const {
+    unity_value::equals(const unity_array_value &/*value*/) const {
         return false;
     }
 
     bool
-    unity_value::size_equals(std::size_t /*size*/) const {
-        return false;
-    }
-
-    bool
-    unity_value::item_equals(std::size_t /*index*/, const unity_value &/*value*/) const {
+    unity_value::equals(const unity_composite_value &/*value*/) const {
         return false;
     }
 

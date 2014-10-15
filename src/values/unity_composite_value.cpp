@@ -15,20 +15,20 @@ namespace zizany {
 
     bool
     unity_composite_value::equals(const unity_value &value) const {
-        for (const unity_value_member &member : members)
-            if (!value.member_equals(member.name, *member.value))
-                return false;
-        return true;
+        return value.equals(*this);
     }
 
     bool
-    unity_composite_value::member_equals(const std::string &member_name, const unity_value &value) const {
-        // Because we iterate on both side of the double dispatch, we have an O(n^2) hidden here.
-        // We shouldn't expert large composite values though.
-        const unity_value *member_value(members.get_by_name(member_name));
-        if (member_value != nullptr)
-            return member_value->equals(value);
-        return false;
+    unity_composite_value::equals(const unity_composite_value &value) const {
+        for (const unity_value_member &member : members) {
+            const unity_value *other_member(value.members.get_by_name(member.name));
+            if (other_member == nullptr || !other_member->equals(*member.value))
+                return false;
+        }
+        for (const unity_value_member &member : value.members)
+            if (members.get_by_name(member.name) == nullptr)
+                return false;
+        return true;
     }
 
     void
