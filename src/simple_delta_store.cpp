@@ -3,6 +3,8 @@
 #include "deltas/delta.hpp"
 #include "deltas/assets_delta.hpp"
 #include "deltas/asset_delta.hpp"
+#include "deltas/asset_type_delta.hpp"
+#include "deltas/asset_type_2_delta.hpp"
 #include "deltas/asset_members_delta.hpp"
 #include "deltas/file_endianness_delta.hpp"
 #include "deltas/file_layout_delta.hpp"
@@ -72,6 +74,16 @@ namespace zizany {
     void
     simple_delta_store::remove_asset(const int asset_id, const type_identity &type, const unity_value &value) {
         deltas.add(new assets_delta(delta_set_operation::remove, asset_id, type, value));
+    }
+
+    void
+    simple_delta_store::modify_asset_type(const int asset_id, const type_identity &old_type, const type_identity &new_type) {
+        deltas.add(new asset_type_delta(asset_id, old_type, new_type));
+    }
+
+    void
+    simple_delta_store::modify_asset_type_2(const int asset_id, const int old_type_2, const int new_type_2) {
+        deltas.add(new asset_type_2_delta(asset_id, old_type_2, new_type_2));
     }
 
     void

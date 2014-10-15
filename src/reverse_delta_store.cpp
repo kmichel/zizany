@@ -44,6 +44,16 @@ namespace zizany {
     }
 
     void
+    reverse_delta_store::modify_asset_type(const int asset_id, const type_identity &old_type, const type_identity &new_type) {
+        delegate_store.modify_asset_type(asset_id, new_type, old_type);
+    }
+
+    void
+    reverse_delta_store::modify_asset_type_2(const int asset_id, const int old_type_2, const int new_type_2) {
+        delegate_store.modify_asset_type_2(asset_id, new_type_2, old_type_2);
+    }
+
+    void
     reverse_delta_store::modify_value(const unity_value &old_value, const unity_value &new_value) {
         delegate_store.modify_value(new_value, old_value);
     }

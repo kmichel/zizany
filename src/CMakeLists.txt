@@ -11,6 +11,8 @@ set(SOURCE_FILES
     delta_store.cpp
     deltas/delta.cpp
     deltas/asset_delta.cpp
+    deltas/asset_type_delta.cpp
+    deltas/asset_type_2_delta.cpp
     deltas/asset_members_delta.cpp
     deltas/assets_delta.cpp
     deltas/file_endianness_delta.cpp

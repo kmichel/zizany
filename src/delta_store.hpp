@@ -43,6 +43,10 @@ namespace zizany {
 
         virtual void remove_asset(const int asset_id, const type_identity &type, const unity_value &value) = 0;
 
+        virtual void modify_asset_type(const int asset_id, const type_identity &old_type, const type_identity &new_type) = 0;
+
+        virtual void modify_asset_type_2(const int asset_id, const int old_type_2, const int new_type_2) = 0;
+
         virtual void modify_value(const unity_value &old_value, const unity_value &new_value) = 0;
 
         virtual void add_value_member(const std::string &member_name, const unity_value &value) = 0;
