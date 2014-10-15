@@ -12,7 +12,7 @@ namespace zizany {
 
         file_references_delta(delta_set_operation operation_, const unity_file_reference &reference_);
 
-        virtual void print_action(json_writer &action) const;
+        virtual void print_action(json_writer &writer) const;
 
         virtual void print_details(json_writer &writer) const;
     };

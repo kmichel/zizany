@@ -11,7 +11,7 @@ namespace zizany {
 
         preview_delta(const unity_preview &old_preview_, const unity_preview &new_preview_);
 
-        virtual void print_action(json_writer &action) const;
+        virtual void print_action(json_writer &writer) const;
 
         virtual void print_details(json_writer &writer) const;
     };

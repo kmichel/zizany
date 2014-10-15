@@ -7,7 +7,7 @@ namespace zizany {
     public:
         file_layout_delta();
 
-        virtual void print_action(json_writer &action) const;
+        virtual void print_action(json_writer &writer) const;
 
         virtual void print_details(json_writer &writer) const;
     };

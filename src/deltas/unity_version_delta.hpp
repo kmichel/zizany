@@ -12,7 +12,7 @@ namespace zizany {
 
         unity_version_delta(const std::string &old_version_, const std::string &new_version_);
 
-        virtual void print_action(json_writer &action) const;
+        virtual void print_action(json_writer &writer) const;
 
         virtual void print_details(json_writer &writer) const;
     };

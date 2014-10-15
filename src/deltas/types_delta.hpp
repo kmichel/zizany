@@ -15,7 +15,7 @@ namespace zizany {
 
         types_delta(const delta_set_operation operation_, const type_identity &identity_, const unity_type &type_);
 
-        virtual void print_action(json_writer &action) const;
+        virtual void print_action(json_writer &writer) const;
 
         virtual void print_details(json_writer &writer) const;
     };

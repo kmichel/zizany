@@ -17,7 +17,7 @@ namespace zizany {
 
         sequence_delta(const delta_sequence_operation operation_, const int asset_id_, const member_path &path_, const int position_, const unity_value &value_);
 
-        virtual void print_action(json_writer &action) const;
+        virtual void print_action(json_writer &writer) const;
 
         virtual void print_details(json_writer &writer) const;
     };

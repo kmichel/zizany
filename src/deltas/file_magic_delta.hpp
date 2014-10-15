@@ -11,7 +11,7 @@ namespace zizany {
 
         file_magic_delta(const int magic_id_, const int old_value_, const int new_value_);
 
-        virtual void print_action(json_writer &action) const;
+        virtual void print_action(json_writer &writer) const;
 
         virtual void print_details(json_writer &writer) const;
     };
