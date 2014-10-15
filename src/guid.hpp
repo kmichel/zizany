@@ -15,4 +15,6 @@ namespace zizany {
     };
 
     bool operator==(const guid &lhs, const guid &rhs);
+
+    bool operator!=(const guid &lhs, const guid &rhs);
 }
