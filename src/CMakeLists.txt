@@ -11,6 +11,7 @@ if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra")
 endif()
 set(SOURCE_FILES
+    asset_reference.cpp
     diff/delta.cpp
     diff/delta_store.cpp
     diff/deltas/asset_delta.cpp

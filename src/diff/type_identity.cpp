@@ -14,13 +14,13 @@ namespace zizany {
     type_identity::type_identity(const int type_id_)
             : is_script(false),
               type_id(type_id_),
-              script({{0, 0, 0, 0}, 0}) {
+              script_asset() {
     }
 
-    type_identity::type_identity(const guid &file_guid_, const int asset_id_)
+    type_identity::type_identity(const asset_reference &script_asset_)
             : is_script(true),
               type_id(0),
-              script({file_guid_, asset_id_}) {
+              script_asset(script_asset_) {
     }
 
     const unity_type *
@@ -45,10 +45,8 @@ namespace zizany {
             writer.add_key("is_script");
             writer.add_bool(is_script);
             if (is_script) {
-                writer.add_key("file_guid");
-                script.file_guid.print(writer);
-                writer.add_key("asset_id");
-                writer.add_number(script.asset_id);
+                writer.add_key("script_asset");
+                script_asset.print(writer);
             } else {
                 writer.add_key("type_id");
                 writer.add_number(type_id);
@@ -61,7 +59,7 @@ namespace zizany {
         if (!lhs.is_script && !rhs.is_script)
             return lhs.type_id == rhs.type_id;
         if (lhs.is_script == rhs.is_script)
-            return lhs.script.file_guid == rhs.script.file_guid && lhs.script.asset_id == rhs.script.asset_id;
+            return lhs.script_asset == rhs.script_asset;
         return false;
     }
 
@@ -79,7 +77,8 @@ namespace zizany {
                 const unity_value *asset_script(find_member_named(*asset->value, "m_Script"));
                 if (asset_script != nullptr) {
                     const unity_asset_reference_value *asset_script_reference(dynamic_cast<const unity_asset_reference_value *>(asset_script));
-                    return type_identity(asset_script_reference->value.file_guid, asset_script_reference->value.asset_id);
+                    if (asset_script_reference != nullptr)
+                        return type_identity(asset_script_reference->value);
                 }
             }
         }

@@ -1,7 +1,7 @@
 #pragma once
 
-#include "../guid.hpp"
 
+#include "../asset_reference.hpp"
 #include <vector>
 
 namespace zizany {
@@ -14,15 +14,11 @@ namespace zizany {
     struct type_identity {
         bool is_script;
         int type_id;
-        // TODO: use asset_reference
-        struct {
-            guid file_guid;
-            int asset_id;
-        } script;
+        asset_reference script_asset;
 
-        type_identity(const int type_id_);
+        explicit type_identity(const int type_id_);
 
-        type_identity(const guid &file_guid_, const int asset_id_);
+        explicit type_identity(const asset_reference &script_asset_);
 
         const unity_type *resolve(const unity_file &file) const;
 
