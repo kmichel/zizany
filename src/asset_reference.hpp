@@ -15,4 +15,6 @@ namespace zizany {
     };
 
     bool operator==(const asset_reference &lhs, const asset_reference &rhs);
+
+    bool operator!=(const asset_reference &lhs, const asset_reference &rhs);
 }

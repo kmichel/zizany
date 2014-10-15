@@ -26,4 +26,12 @@ namespace zizany {
             return false;
         return lhs.asset_id == rhs.asset_id;
     }
+
+    bool operator!=(const asset_reference &lhs, const asset_reference &rhs) {
+        if (lhs.is_local != rhs.is_local)
+            return true;
+        if (!lhs.is_local && !rhs.is_local && (lhs.file_guid != rhs.file_guid))
+            return true;
+        return lhs.asset_id != rhs.asset_id;
+    }
 }

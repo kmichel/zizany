@@ -28,4 +28,6 @@ namespace zizany {
     type_identity get_type_identity(const unity_file &file, const int type_id);
 
     bool operator==(const type_identity &lhs, const type_identity &rhs);
+
+    bool operator!=(const type_identity &lhs, const type_identity &rhs);
 }

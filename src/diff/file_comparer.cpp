@@ -81,7 +81,7 @@ namespace zizany {
                     const type_identity &base_asset_identity(get_type_identity(base, base_asset.type_id));
                     const type_identity &other_asset_identity(get_type_identity(other, other_asset.type_id));
                     store.set_current_asset(base_asset_id);
-                    if (!(base_asset_identity == other_asset_identity))
+                    if (base_asset_identity != other_asset_identity)
                         store.modify_asset_type(base_asset_id, base_asset_identity, other_asset_identity);
                     if (base_asset.type_id_2 != other_asset.type_id_2)
                         store.modify_asset_type_2(base_asset_id, base_asset.type_id_2, other_asset.type_id_2);

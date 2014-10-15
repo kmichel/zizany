@@ -63,6 +63,14 @@ namespace zizany {
         return false;
     }
 
+    bool operator!=(const type_identity &lhs, const type_identity &rhs) {
+        if (!lhs.is_script && !rhs.is_script)
+            return lhs.type_id != rhs.type_id;
+        if (lhs.is_script == rhs.is_script)
+            return lhs.script_asset != rhs.script_asset;
+        return true;
+    }
+
     static const unity_asset *get_asset_of_type(const unity_file &file, const int type_id);
 
     static const unity_value *find_member_named(const unity_value &value, const std::string &name);
