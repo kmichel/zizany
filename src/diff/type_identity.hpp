@@ -1,8 +1,6 @@
 #pragma once
 
-
 #include "../asset_reference.hpp"
-#include <vector>
 
 namespace zizany {
     class json_writer;
@@ -11,8 +9,13 @@ namespace zizany {
 
     class unity_type;
 
+    enum class type_kind {
+        builtin_type,
+        script_type
+    };
+
     struct type_identity {
-        bool is_script;
+        type_kind kind;
         int type_id;
         asset_reference script_asset;
 

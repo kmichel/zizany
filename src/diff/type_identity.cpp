@@ -12,14 +12,14 @@
 
 namespace zizany {
     type_identity::type_identity(const int type_id_)
-            : is_script(false),
+            : kind(type_kind::builtin_type),
               type_id(type_id_),
               script_asset() {
     }
 
     type_identity::type_identity(const asset_reference &script_asset_)
-            : is_script(true),
-              type_id(0),
+            : kind(type_kind::script_type),
+              type_id(),
               script_asset(script_asset_) {
     }
 
@@ -27,33 +27,43 @@ namespace zizany {
     type_identity::print(json_writer &writer) const {
         writer.start_object();
         {
-            writer.add_key("is_script");
-            writer.add_bool(is_script);
-            if (is_script) {
-                writer.add_key("script_asset");
-                script_asset.print(writer);
-            } else {
-                writer.add_key("type_id");
-                writer.add_number(type_id);
+            writer.add_key("kind");
+            switch (kind) {
+                case type_kind::builtin_type:
+                    writer.add_string("builtin");
+                    writer.add_key("type_id");
+                    writer.add_number(type_id);
+                    break;
+                case type_kind::script_type:
+                    writer.add_string("script");
+                    writer.add_key("script_asset");
+                    script_asset.print(writer);
+                    break;
             }
         }
         writer.end_object();
     }
 
     bool operator==(const type_identity &lhs, const type_identity &rhs) {
-        if (!lhs.is_script && !rhs.is_script)
-            return lhs.type_id == rhs.type_id;
-        if (lhs.is_script == rhs.is_script)
-            return lhs.script_asset == rhs.script_asset;
-        return false;
+        if (lhs.kind != rhs.kind)
+            return false;
+        switch (lhs.kind) {
+            case type_kind::builtin_type:
+                return lhs.type_id == rhs.type_id;
+            case type_kind::script_type:
+                return lhs.script_asset == rhs.script_asset;
+        }
     }
 
     bool operator!=(const type_identity &lhs, const type_identity &rhs) {
-        if (!lhs.is_script && !rhs.is_script)
-            return lhs.type_id != rhs.type_id;
-        if (lhs.is_script == rhs.is_script)
-            return lhs.script_asset != rhs.script_asset;
-        return true;
+        if (lhs.kind != rhs.kind)
+            return true;
+        switch (lhs.kind) {
+            case type_kind::builtin_type:
+                return lhs.type_id != rhs.type_id;
+            case type_kind::script_type:
+                return lhs.script_asset != rhs.script_asset;
+        }
     }
 
     static const unity_asset *get_asset_of_type(const unity_file &file, const int type_id);
@@ -70,6 +80,11 @@ namespace zizany {
                 const unity_value *asset_script(find_member_named(*asset->value, "m_Script"));
                 if (asset_script != nullptr) {
                     const unity_asset_reference_value *asset_script_reference(dynamic_cast<const unity_asset_reference_value *>(asset_script));
+                    // XXX: on release files, the reference is not durable enough
+                    // All scripts are bundled together in a large bundle where asset_id change
+                    // between releases for a given script.
+                    // However, we can open the referenced file, parse the MonoScript asset
+                    // And from this we can get the class name and namespace.
                     if (asset_script_reference != nullptr)
                         return type_identity(asset_script_reference->value);
                 }
