@@ -8,17 +8,26 @@ namespace zizany {
               name(),
               size(),
               magic_int_1(),
-              magic_bitset_2() {
+              magic_bitset_2(),
+              is_array(false) {
     }
 
     bool
     unity_type::requires_padding() const {
-        return (magic_bitset_2 & 0x4000) != 0;
+        return (magic_bitset_2 & 0x4000u) != 0;
+    }
+
+    void
+    unity_type::set_requires_padding(bool requires_padding) {
+        if (requires_padding)
+            magic_bitset_2 |= 0x4000u;
+        else
+            magic_bitset_2 &= ~0x4000u;
     }
 
     bool
     unity_type::is_simple() const {
-        return members.size() == 0 && size != 0;
+        return members.size() == 0 && size > 0;
     }
 
     void
@@ -33,6 +42,10 @@ namespace zizany {
         if (size != -1 || print_defaults) {
             writer.add_key("size");
             writer.add_number(size);
+        }
+        if (requires_padding() || print_defaults) {
+            writer.add_key("requires_padding");
+            writer.add_bool(requires_padding());
         }
         if (print_magic) {
             writer.add_key("magic_int_1");

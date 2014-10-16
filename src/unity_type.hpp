@@ -25,6 +25,8 @@ namespace zizany {
 
         bool requires_padding() const;
 
+        void set_requires_padding(bool requires_padding);
+
         bool is_simple() const;
 
         void print(json_writer &writer, bool print_defauts, bool print_magic) const;
