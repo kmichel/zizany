@@ -1,10 +1,12 @@
 #pragma once
 
+#include "range_checker.hpp"
+#include "registry.hpp"
+#include "unity_type.hpp"
+
 #include <cstdint>
 #include <iosfwd>
 #include <memory>
-
-#include "range_checker.hpp"
 
 namespace zizany {
     class stream_parser;
@@ -17,13 +19,12 @@ namespace zizany {
 
     class unity_preview;
 
-    class unity_type;
-
     class unity_type_member;
 
     class unity_file_parser {
         unity_file &file;
         range_checker checker;
+        registry<unity_type> fallback_types;
     public:
         explicit unity_file_parser(unity_file &file_);
 

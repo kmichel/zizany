@@ -49,6 +49,7 @@ set(SOURCE_FILES
     program_options.cpp
     range_checker.cpp
     stream_parser.cpp
+    type_factory.cpp
     unity_asset.cpp
     unity_file.cpp
     unity_file_parser.cpp

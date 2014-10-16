@@ -2,18 +2,19 @@
 
 #include "parser_exception.hpp"
 #include "stream_parser.hpp"
+#include "type_factory.hpp"
 #include "unity_asset.hpp"
 #include "unity_file.hpp"
 #include "unity_file_reference.hpp"
 #include "unity_preview.hpp"
-#include "unity_type.hpp"
 #include "unity_value_parser.hpp"
 #include "unity_value.hpp"
 #include "values/unity_blob_value.hpp"
+#include "values/unity_composite_value.hpp"
 
 namespace zizany {
     unity_file_parser::unity_file_parser(unity_file &file_)
-            : file(file_), checker() {
+            : file(file_), checker(), fallback_types() {
     }
 
     void
@@ -26,6 +27,15 @@ namespace zizany {
             // structure when serializing objects of known type.
             file.magic_int_2 = parser.parse<std::int32_t>();
             parse_types(parser);
+            if (file.magic_int_2 != -2) {
+                // For release files, we include some basic definitions in order to be able
+                // to resolve type identities during diff. It would be nice to have more definitions,
+                // however we can't use those found in normal files, some members, mostly related
+                // to editor behavior are missing or different.
+                fallback_types.add(1, std::unique_ptr<unity_type>(new unity_type(create_release_gameobject_type())));
+                fallback_types.add(114, std::unique_ptr<unity_type>(new unity_type(create_release_monobehaviour_type())));
+                fallback_types.add(115, std::unique_ptr<unity_type>(new unity_type(create_release_monoscript_type())));
+            }
             file.magic_int_3 = parser.parse<std::int32_t>();
             if (file.magic_int_3 != 0)
                 throw parser_exception("magic_int_3 value should be zero");
@@ -115,7 +125,7 @@ namespace zizany {
         asset->file_layout.offset = parser.parse<std::uint32_t>();
         asset->file_layout.size = parser.parse<std::uint32_t>();
         asset->type_id = parser.parse<std::int32_t>();
-        // usually type_id == type_id_2, except for monobehavior, type_id < 0 && type_id_2 = 114
+        // usually type_id == type_id_2, except for MonoBehaviour, type_id < 0 && type_id_2 = 114
         asset->type_id_2 = parser.parse<std::int32_t>();
         return asset;
     }
@@ -125,7 +135,19 @@ namespace zizany {
         parser.seek(file.file_layout.assets_start + asset.file_layout.offset);
         if (file.types.has_id(asset.type_id))
             asset.value = parse_value(parser, file.types.get_by_id(asset.type_id), "", file.file_references);
-        else {
+        else if (fallback_types.has_id(asset.type_id_2)) {
+            // Here we use type_id_2 in order to parse MonoBehaviour
+            std::unique_ptr<unity_composite_value> composite_value(parse_composite(parser, fallback_types.get_by_id(asset.type_id_2), file.file_references));
+            const std::int64_t expected_end = file.file_layout.assets_start + asset.file_layout.offset + asset.file_layout.size;
+            const std::int64_t leftover = expected_end - parser.tell();
+            if (leftover > 0) {
+                std::unique_ptr<unity_blob_value> blob(new unity_blob_value);
+                parser.parse(blob->data, static_cast<std::size_t>(leftover));
+                // XXX: We should ensure the name is available
+                composite_value->members.add("magic_extra_bytes", std::move(blob));
+            }
+            asset.value = std::move(composite_value);
+        } else {
             std::unique_ptr<unity_blob_value> blob(new unity_blob_value);
             parser.parse(blob->data, asset.file_layout.size);
             asset.value = std::move(blob);

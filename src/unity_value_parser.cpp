@@ -83,7 +83,6 @@ namespace zizany {
         return elements_value;
     }
 
-    static
     std::unique_ptr<unity_composite_value>
     parse_composite(stream_parser &parser, const unity_type &type, const registry<unity_file_reference> &file_references) {
         std::unique_ptr<unity_composite_value> composite_value(new unity_composite_value());
@@ -96,11 +95,12 @@ namespace zizany {
         return composite_value;
     }
 
-
     std::unique_ptr<unity_value>
     parse_value(stream_parser &parser, const unity_type &type, const std::string &member_name, const registry<unity_file_reference> &file_references) {
         std::unique_ptr<unity_value> ret;
         if (type.is_array) {
+            if (type.members.size() != 2)
+                throw parser_exception("array type should have two members");
             const unity_type &length_type(type.members.at(0).type);
             if (length_type.name != "int" && length_type.name != "SInt32")
                 throw parser_exception("type of length for array should be int or SInt32");
