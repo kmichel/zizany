@@ -72,9 +72,9 @@ add_custom_command(
     PRE_BUILD
     OUTPUT ${EXTRACTED_FILES}
     COMMAND tar -mxf ${gdtoa_BINARY_DIR}/gdtoa.tgz
-    COMMAND sh gdtoa/fix_header.sh gdtoa/gdtoa.h
+    COMMAND sh gdtoa/fix_header.sh gdtoa/gdtoa.h gdtoa/g_ffmt.c gdtoa/g_dfmt.c
     WORKING_DIRECTORY ${gdtoa_SOURCE_DIR}/..
-    DEPENDS ${gdtoa_BINARY_DIR}/gdtoa.tgz
+    DEPENDS fix_header.sh ${gdtoa_BINARY_DIR}/gdtoa.tgz
 )
 
 add_custom_command(

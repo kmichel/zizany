@@ -7,8 +7,8 @@
 namespace zizany {
     class unity_version_delta : public delta {
     public:
-        std::string old_version;
-        std::string new_version;
+        const std::string old_version;
+        const std::string new_version;
 
         unity_version_delta(const std::string &old_version_, const std::string &new_version_);
 

@@ -5,7 +5,7 @@ namespace zizany {
             : runtime_error(what_) {
     }
 
-    parser_exception::parser_exception(const char *what_)
+    parser_exception::parser_exception(const char *const what_)
             : runtime_error(what_) {
     }
 

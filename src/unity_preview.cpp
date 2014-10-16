@@ -13,7 +13,7 @@ namespace zizany {
     }
 
     void
-    unity_preview::print(json_writer &writer, bool print_layout, bool print_magic) const {
+    unity_preview::print(json_writer &writer, const bool print_layout, const bool print_magic) const {
         writer.start_object();
         writer.add_key("asset_id");
         writer.add_number(asset_id);

@@ -12,7 +12,7 @@ namespace zizany {
             after_value,
             after_key
         };
-        FILE *output;
+        FILE *const output;
         const int indent_width;
 
         int indent_level;
@@ -23,18 +23,18 @@ namespace zizany {
 
         void insert_newline();
 
-        void start_composite(char marker, bool force_inline);
+        void start_composite(const char marker, const bool force_inline);
 
-        void end_composite(char marker);
+        void end_composite(const char marker);
 
         void print_quoted_string(const std::string &string);
 
-        void print_quoted_string(const char *string);
+        void print_quoted_string(const char *const string);
 
-        void print_quoted_string(const char *string, const std::size_t length);
+        void print_quoted_string(const char *const string, const std::size_t length);
 
     public:
-        json_writer(FILE *output_, const int indent_width_ = 3);
+        json_writer(FILE *const output_, const int indent_width_ = 3);
 
         json_writer(const json_writer &) = delete;
 
@@ -42,33 +42,33 @@ namespace zizany {
 
         void add_string(const std::string &value);
 
-        void add_string(const char *chars, const std::size_t length);
+        void add_string(const char *const chars, const std::size_t length);
 
-        void add_number(std::int32_t value);
+        void add_number(const std::int32_t value);
 
-        void add_number(std::uint32_t value);
+        void add_number(const std::uint32_t value);
 
-        void add_number(std::int64_t value);
+        void add_number(const std::int64_t value);
 
-        void add_number(std::uint64_t value);
+        void add_number(const std::uint64_t value);
 
-        void add_number(float value);
+        void add_number(const float value);
 
-        void add_number(double value);
+        void add_number(const double value);
 
-        void add_bool(bool value);
+        void add_bool(const bool value);
 
         void add_null();
 
-        void start_object(bool force_inline = false);
+        void start_object(const bool force_inline = false);
 
-        void add_key(const char *key);
+        void add_key(const char *const key);
 
         void add_key(const std::string &key);
 
         void end_object();
 
-        void start_array(bool force_inline = false);
+        void start_array(const bool force_inline = false);
 
         void end_array();
 

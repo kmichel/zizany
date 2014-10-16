@@ -12,7 +12,7 @@ namespace zizany {
     }
 
     program_options
-    program_options::parse(int argc, char **argv) {
+    program_options::parse(const int argc, const char *const *const argv) {
         program_options options;
 
         if (argc < 2) {
@@ -42,7 +42,7 @@ namespace zizany {
     }
 
     void
-    program_options::parse_dump_options(program_options &options, int argc, char **argv) {
+    program_options::parse_dump_options(program_options &options, const int argc, const char *const *const argv) {
         bool allow_options(true);
         for (int argument_index = 0; argument_index < argc; ++argument_index) {
             const std::string argument(argv[argument_index]);
@@ -114,7 +114,7 @@ namespace zizany {
     }
 
     void
-    program_options::parse_diff_options(program_options &options, int argc, char **argv) {
+    program_options::parse_diff_options(program_options &options, const int argc, const char *const *const argv) {
         bool allow_options(true);
         for (int argument_index = 0; argument_index < argc; ++argument_index) {
             const std::string argument(argv[argument_index]);
@@ -145,7 +145,7 @@ namespace zizany {
     }
 
     void
-    program_options::parse_extract_previews_options(program_options &options, int argc, char **argv) {
+    program_options::parse_extract_previews_options(program_options &options, const int argc, const char *const *const argv) {
         bool allow_options(true);
         bool expecting_output_dir(false);
         for (int argument_index = 0; argument_index < argc; ++argument_index) {

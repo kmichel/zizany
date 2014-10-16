@@ -4,7 +4,7 @@
 
 namespace zizany {
 
-    unity_bool_value::unity_bool_value(bool value_)
+    unity_bool_value::unity_bool_value(const bool value_)
             : unity_value(), value(value_) {
     }
 
@@ -19,7 +19,7 @@ namespace zizany {
     }
 
     bool
-    unity_bool_value::equals(bool value_) const {
+    unity_bool_value::equals(const bool value_) const {
         return value_ == value;
     }
 }

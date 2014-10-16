@@ -9,10 +9,10 @@ namespace zizany {
 
     class sequence_delta : public delta {
     public:
-        delta_sequence_operation operation;
-        int asset_id;
-        member_path path;
-        int position;
+        const delta_sequence_operation operation;
+        const int asset_id;
+        const member_path path;
+        const int position;
         const unity_value &value;
 
         sequence_delta(const delta_sequence_operation operation_, const int asset_id_, const member_path &path_, const int position_, const unity_value &value_);

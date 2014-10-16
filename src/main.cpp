@@ -169,9 +169,9 @@ show_help() {
 }
 
 int
-main(const int argc, char **argv) {
+main(const int argc, const char *const *const argv) {
     try {
-        zizany::program_options options(zizany::program_options::parse(argc, argv));
+        const zizany::program_options options(zizany::program_options::parse(argc, argv));
         switch (options.program_command) {
             case zizany::program_options::command::show_help:
                 show_help();

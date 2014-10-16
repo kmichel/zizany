@@ -65,6 +65,7 @@ namespace zizany {
         pair_type.name = "pair";
         pair_type.size = 12;
         pair_type.members.reserve(2);
+        // XXX: this one is a type_id
         pair_type.members.push_back({"first", create_simple_type("int")});
         pair_type.members.push_back({"second", create_asset_reference_type("Component")});
         unity_type vector_type;

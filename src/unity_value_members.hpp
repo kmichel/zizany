@@ -28,7 +28,7 @@ namespace zizany {
         class const_iterator {
             typename std::vector<unity_value_member>::const_iterator members_iterator;
         public:
-            const_iterator(typename std::vector<unity_value_member>::const_iterator members_iterator_)
+            const_iterator(const typename std::vector<unity_value_member>::const_iterator members_iterator_)
                     : members_iterator(members_iterator_) {
             }
 

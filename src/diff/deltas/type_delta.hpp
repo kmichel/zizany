@@ -10,8 +10,8 @@ namespace zizany {
     class type_delta : public delta {
 
     public:
-        type_identity identity;
-        member_path path;
+        const type_identity identity;
+        const member_path path;
         const unity_type &old_definition;
         const unity_type &new_definition;
 

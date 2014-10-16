@@ -20,6 +20,6 @@ namespace zizany {
 
         unity_preview();
 
-        void print(json_writer &writer, bool print_layout, bool print_magic) const;
+        void print(json_writer &writer, const bool print_layout, const bool print_magic) const;
     };
 }

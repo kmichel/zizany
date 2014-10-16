@@ -9,9 +9,9 @@ namespace zizany {
 
     class types_delta : public delta {
     public:
-        delta_set_operation operation;
-        type_identity identity;
-        unity_type type;
+        const delta_set_operation operation;
+        const type_identity identity;
+        const unity_type type;
 
         types_delta(const delta_set_operation operation_, const type_identity &identity_, const unity_type &type_);
 

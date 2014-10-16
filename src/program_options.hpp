@@ -22,15 +22,15 @@ namespace zizany {
         program_options();
 
         static
-        program_options parse(int argc, char **argv);
+        program_options parse(const int argc, const char *const *const argv);
 
         static
-        void parse_dump_options(program_options &options, int argc, char **argv);
+        void parse_dump_options(program_options &options, const int argc, const char *const *const argv);
 
         static
-        void parse_diff_options(program_options &options, int argc, char **argv);
+        void parse_diff_options(program_options &options, const int argc, const char *const *const argv);
 
         static
-        void parse_extract_previews_options(program_options &options, int argc, char **argv);
+        void parse_extract_previews_options(program_options &options, const int argc, const char *const *const argv);
     };
 }

@@ -11,8 +11,8 @@ namespace zizany {
     class asset_delta : public delta {
 
     public:
-        int asset_id;
-        member_path path;
+        const int asset_id;
+        const member_path path;
         const unity_value &old_value;
         const unity_value &new_value;
 

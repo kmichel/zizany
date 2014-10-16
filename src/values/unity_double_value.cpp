@@ -5,7 +5,7 @@
 #include <cmath>
 
 namespace zizany {
-    unity_double_value::unity_double_value(double value_)
+    unity_double_value::unity_double_value(const double value_)
             : unity_value(), value(value_) {
     }
 
@@ -20,7 +20,7 @@ namespace zizany {
     }
 
     bool
-    unity_double_value::equals(double value_) const {
+    unity_double_value::equals(const double value_) const {
         // We really want to compare doubles exactly
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wfloat-equal"

@@ -7,7 +7,7 @@ namespace zizany {
     public:
         float value;
 
-        unity_float_value(float value_);
+        unity_float_value(const float value_);
 
         virtual void print(json_writer &writer) const;
 
@@ -15,7 +15,7 @@ namespace zizany {
 
         // XXX: we should also implement equality with integers
 
-        virtual bool equals(float value_) const;
+        virtual bool equals(const float value_) const;
     };
 
 }

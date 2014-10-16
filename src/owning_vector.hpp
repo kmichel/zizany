@@ -30,7 +30,7 @@ namespace zizany {
             elements.push_back(std::move(member));
         }
 
-        void add(element_type *member) {
+        void add(element_type *const member) {
             elements.push_back(std::unique_ptr<element_type>(member));
         }
 

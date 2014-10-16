@@ -34,17 +34,17 @@ namespace zizany {
 
         virtual bool equals(const unity_value &value) const = 0;
 
-        virtual bool equals(bool value) const;
+        virtual bool equals(const bool value) const;
 
-        virtual bool equals(char value) const;
+        virtual bool equals(const char value) const;
 
-        virtual bool equals(std::int64_t value) const;
+        virtual bool equals(const std::int64_t value) const;
 
-        virtual bool equals(std::uint64_t value) const;
+        virtual bool equals(const std::uint64_t value) const;
 
-        virtual bool equals(float value) const;
+        virtual bool equals(const float value) const;
 
-        virtual bool equals(double value) const;
+        virtual bool equals(const double value) const;
 
         virtual bool equals(const guid &value) const;
 

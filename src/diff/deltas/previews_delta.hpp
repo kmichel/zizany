@@ -7,8 +7,8 @@
 namespace zizany {
     class previews_delta : public delta {
     public:
-        delta_set_operation operation;
-        unity_preview preview;
+        const delta_set_operation operation;
+        const unity_preview preview;
 
         previews_delta(const delta_set_operation operation_, const unity_preview &preview_);
 

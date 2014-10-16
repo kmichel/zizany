@@ -11,7 +11,7 @@ namespace zizany {
     public:
         value_type value;
 
-        unity_integer_value(value_type value_)
+        unity_integer_value(const value_type value_)
                 : unity_value(), value(value_) {
         }
 
@@ -26,14 +26,14 @@ namespace zizany {
                 return value_.equals(static_cast<std::int64_t>(value));
         }
 
-        virtual bool equals(std::int64_t value_) const {
+        virtual bool equals(const std::int64_t value_) const {
             if (value > std::numeric_limits<std::int64_t>::max())
                 return false;
             else
                 return value_ == static_cast<std::int64_t>(value);
         }
 
-        virtual bool equals(std::uint64_t value_) const {
+        virtual bool equals(const std::uint64_t value_) const {
             if (value < 0)
                 return false;
             else

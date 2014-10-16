@@ -45,25 +45,25 @@ namespace zizany {
     }
 
     bool operator==(const type_identity &lhs, const type_identity &rhs) {
-        if (lhs.kind != rhs.kind)
-            return false;
-        switch (lhs.kind) {
-            case type_kind::builtin_type:
-                return lhs.type_id == rhs.type_id;
-            case type_kind::script_type:
-                return lhs.script_asset == rhs.script_asset;
-        }
+        if (lhs.kind == rhs.kind)
+            switch (lhs.kind) {
+                case type_kind::builtin_type:
+                    return lhs.type_id == rhs.type_id;
+                case type_kind::script_type:
+                    return lhs.script_asset == rhs.script_asset;
+            }
+        return false;
     }
 
     bool operator!=(const type_identity &lhs, const type_identity &rhs) {
-        if (lhs.kind != rhs.kind)
-            return true;
-        switch (lhs.kind) {
-            case type_kind::builtin_type:
-                return lhs.type_id != rhs.type_id;
-            case type_kind::script_type:
-                return lhs.script_asset != rhs.script_asset;
-        }
+        if (lhs.kind == rhs.kind)
+            switch (lhs.kind) {
+                case type_kind::builtin_type:
+                    return lhs.type_id != rhs.type_id;
+                case type_kind::script_type:
+                    return lhs.script_asset != rhs.script_asset;
+            }
+        return true;
     }
 
     static const unity_asset *get_asset_of_type(const unity_file &file, const int type_id);
@@ -75,11 +75,11 @@ namespace zizany {
         if (type_id > 0) {
             return type_identity(type_id);
         } else if (type_id < 0) {
-            const unity_asset *asset(get_asset_of_type(file, type_id));
+            const unity_asset *const asset(get_asset_of_type(file, type_id));
             if (asset != nullptr) {
-                const unity_value *asset_script(find_member_named(*asset->value, "m_Script"));
+                const unity_value *const asset_script(find_member_named(*asset->value, "m_Script"));
                 if (asset_script != nullptr) {
-                    const unity_asset_reference_value *asset_script_reference(dynamic_cast<const unity_asset_reference_value *>(asset_script));
+                    const unity_asset_reference_value *const asset_script_reference(dynamic_cast<const unity_asset_reference_value *>(asset_script));
                     // XXX: on release files, the reference is not durable enough
                     // All scripts are bundled together in a large bundle where asset_id change
                     // between releases for a given script.
@@ -105,7 +105,7 @@ namespace zizany {
 
     static
     const unity_value *find_member_named(const unity_value &value, const std::string &name) {
-        const unity_composite_value *composite_value(dynamic_cast<const unity_composite_value *>(&value));
+        const unity_composite_value *const composite_value(dynamic_cast<const unity_composite_value *>(&value));
         if (composite_value != nullptr)
             return composite_value->members.get_by_name(name);
         return nullptr;

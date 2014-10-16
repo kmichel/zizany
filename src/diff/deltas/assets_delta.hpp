@@ -8,9 +8,9 @@
 namespace zizany {
     class assets_delta : public delta {
     public:
-        delta_set_operation operation;
-        int asset_id;
-        type_identity type;
+        const delta_set_operation operation;
+        const int asset_id;
+        const type_identity type;
         const unity_value &value;
 
         assets_delta(const delta_set_operation operation_, const int asset_id_, const type_identity &type_, const unity_value &value_);

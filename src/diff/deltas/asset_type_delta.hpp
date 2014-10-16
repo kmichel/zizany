@@ -6,9 +6,9 @@
 namespace zizany {
     class asset_type_delta : public delta {
     public:
-        int asset_id;
-        type_identity old_type;
-        type_identity new_type;
+        const int asset_id;
+        const type_identity old_type;
+        const type_identity new_type;
 
         asset_type_delta(const int asset_id_, const type_identity &old_type_, const type_identity &new_type_);
 

@@ -5,9 +5,9 @@
 namespace zizany {
     class file_magic_delta : public delta {
     public:
-        int magic_id;
-        int old_value;
-        int new_value;
+        const int magic_id;
+        const int old_value;
+        const int new_value;
 
         file_magic_delta(const int magic_id_, const int old_value_, const int new_value_);
 

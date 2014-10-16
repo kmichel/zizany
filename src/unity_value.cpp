@@ -12,32 +12,32 @@ namespace zizany {
     }
 
     bool
-    unity_value::equals(bool /*value*/) const {
+    unity_value::equals(const bool /*value*/) const {
         return false;
     }
 
     bool
-    unity_value::equals(char /*value*/) const {
+    unity_value::equals(const char /*value*/) const {
         return false;
     }
 
     bool
-    unity_value::equals(std::int64_t /*value*/) const {
+    unity_value::equals(const std::int64_t /*value*/) const {
         return false;
     }
 
     bool
-    unity_value::equals(std::uint64_t /*value*/) const {
+    unity_value::equals(const std::uint64_t /*value*/) const {
         return false;
     }
 
     bool
-    unity_value::equals(float /*value*/) const {
+    unity_value::equals(const float /*value*/) const {
         return false;
     }
 
     bool
-    unity_value::equals(double /*value*/) const {
+    unity_value::equals(const double /*value*/) const {
         return false;
     }
 

@@ -12,7 +12,7 @@
 namespace zizany {
     static
     void
-    putc_unlocked_checked(int c, FILE *output) {
+    putc_unlocked_checked(const int c, FILE *const output) {
         const int putc_status(putc_unlocked(c, output));
         if (putc_status == EOF)
             throw std::runtime_error(strerror(errno));
@@ -20,14 +20,14 @@ namespace zizany {
 
     static
     void
-    fputs_unlocked_(const char *str, FILE *output) {
-        while (*str != 0)
-            putc_unlocked_checked(*str++, output);
+    fputs_unlocked_(const char *const str, FILE *const output) {
+        for (const char *iter(str); *iter != 0; ++iter)
+            putc_unlocked_checked(*iter, output);
     }
 
     static
     void
-    print_with_leading_zero(const char *buffer, FILE *output) {
+    print_with_leading_zero(const char *const buffer, FILE *const output) {
         if (buffer[0] == '-' && buffer[1] == '.') {
             putc_unlocked_checked('-', output);
             putc_unlocked_checked('0', output);
@@ -39,7 +39,7 @@ namespace zizany {
         }
     }
 
-    json_writer::json_writer(FILE *output_, const int indent_width_)
+    json_writer::json_writer(FILE *const output_, const int indent_width_)
             : output(output_),
               indent_width(indent_width_),
               indent_level(0),
@@ -55,14 +55,14 @@ namespace zizany {
     }
 
     void
-    json_writer::add_string(const char *chars, const std::size_t length) {
+    json_writer::add_string(const char *const chars, const std::size_t length) {
         insert_separator_if_needed();
         print_quoted_string(chars, length);
         state = writer_state::after_value;
     }
 
     void
-    json_writer::add_number(std::int32_t value) {
+    json_writer::add_number(const std::int32_t value) {
         insert_separator_if_needed();
         char buffer[32];
         const int snprintf_status(snprintf(buffer, sizeof(buffer), "%" PRIi32, value));
@@ -73,7 +73,7 @@ namespace zizany {
     }
 
     void
-    json_writer::add_number(std::uint32_t value) {
+    json_writer::add_number(const std::uint32_t value) {
         insert_separator_if_needed();
         char buffer[32];
         const int snprintf_status(snprintf(buffer, sizeof(buffer), "%" PRIu32, value));
@@ -84,7 +84,7 @@ namespace zizany {
     }
 
     void
-    json_writer::add_number(std::int64_t value) {
+    json_writer::add_number(const std::int64_t value) {
         insert_separator_if_needed();
         char buffer[32];
         const int snprintf_status(snprintf(buffer, 32, "%" PRIi64, value));
@@ -95,7 +95,7 @@ namespace zizany {
     }
 
     void
-    json_writer::add_number(std::uint64_t value) {
+    json_writer::add_number(const std::uint64_t value) {
         insert_separator_if_needed();
         char buffer[32];
         const int snprintf_status(snprintf(buffer, 32, "%" PRIu64, value));
@@ -106,7 +106,7 @@ namespace zizany {
     }
 
     void
-    json_writer::add_number(float value) {
+    json_writer::add_number(const float value) {
         insert_separator_if_needed();
         if (std::isnan(value) || std::isinf(value))
             fputs_unlocked_("null", output);
@@ -121,7 +121,7 @@ namespace zizany {
     }
 
     void
-    json_writer::add_number(double value) {
+    json_writer::add_number(const double value) {
         insert_separator_if_needed();
         if (std::isnan(value) || std::isinf(value))
             fputs_unlocked_("null", output);
@@ -136,7 +136,7 @@ namespace zizany {
     }
 
     void
-    json_writer::add_bool(bool value) {
+    json_writer::add_bool(const bool value) {
         insert_separator_if_needed();
         fputs_unlocked_(value ? "true" : "false", output);
         state = writer_state::after_value;
@@ -150,12 +150,12 @@ namespace zizany {
     }
 
     void
-    json_writer::start_object(bool force_inline) {
+    json_writer::start_object(const bool force_inline) {
         start_composite('{', force_inline);
     }
 
     void
-    json_writer::add_key(const char *key) {
+    json_writer::add_key(const char *const key) {
         insert_separator_if_needed();
         print_quoted_string(key);
         fputs_unlocked_(": ", output);
@@ -176,7 +176,7 @@ namespace zizany {
     }
 
     void
-    json_writer::start_array(bool force_inline) {
+    json_writer::start_array(const bool force_inline) {
         start_composite('[', force_inline);
     }
 
@@ -192,7 +192,7 @@ namespace zizany {
     }
 
     void
-    json_writer::start_composite(char marker, bool force_inline) {
+    json_writer::start_composite(const char marker, const bool force_inline) {
         insert_separator_if_needed();
         putc_unlocked_checked(marker, output);
         if (force_inline)
@@ -202,7 +202,7 @@ namespace zizany {
     }
 
     void
-    json_writer::end_composite(char marker) {
+    json_writer::end_composite(const char marker) {
         indent_level -= 1;
         if (state == writer_state::after_value && indent_level < inline_level)
             insert_newline();
@@ -232,7 +232,7 @@ namespace zizany {
     }
 
     inline
-    void print_quoted_character(FILE *output, const char character) {
+    void print_quoted_character(FILE *const output, const char character) {
         const char hex[16] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'};
         switch (character) {
             case '\b':
@@ -286,15 +286,15 @@ namespace zizany {
     }
 
     void
-    json_writer::print_quoted_string(const char *string) {
+    json_writer::print_quoted_string(const char *const string) {
         putc_unlocked_checked('"', output);
-        while (*string != 0)
-            print_quoted_character(output, *string++);
+        for (const char *iter(string); *iter != 0; ++iter)
+            print_quoted_character(output, *iter);
         putc_unlocked_checked('"', output);
     }
 
     void
-    json_writer::print_quoted_string(const char *string, const std::size_t length) {
+    json_writer::print_quoted_string(const char *const string, const std::size_t length) {
         putc_unlocked_checked('"', output);
         for (std::size_t index = 0; index < length; ++index)
             print_quoted_character(output, string[index]);

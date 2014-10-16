@@ -18,7 +18,7 @@ namespace zizany {
     }
 
     void
-    unity_type::set_requires_padding(bool requires_padding) {
+    unity_type::set_requires_padding(const bool requires_padding) {
         if (requires_padding)
             magic_bitset_2 |= 0x4000u;
         else
@@ -31,7 +31,7 @@ namespace zizany {
     }
 
     void
-    unity_type::print(json_writer &writer, bool print_defaults, bool print_magic) const {
+    unity_type::print(json_writer &writer, const bool print_defaults, const bool print_magic) const {
         writer.start_object();
         writer.add_key("name");
         writer.add_string(name);

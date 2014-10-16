@@ -21,7 +21,7 @@ namespace zizany {
     bool
     unity_composite_value::equals(const unity_composite_value &value) const {
         for (const unity_value_member &member : members) {
-            const unity_value *other_member(value.members.get_by_name(member.name));
+            const unity_value *const other_member(value.members.get_by_name(member.name));
             if (other_member == nullptr || !other_member->equals(*member.value))
                 return false;
         }
@@ -40,7 +40,7 @@ namespace zizany {
     void
     unity_composite_value::compare(const unity_composite_value &value, delta_store &store) const {
         for (const unity_value_member &member : members) {
-            const unity_value *other_member(value.members.get_by_name(member.name));
+            const unity_value *const other_member(value.members.get_by_name(member.name));
             if (other_member == nullptr)
                 store.add_value_member(member.name, *member.value);
             else {

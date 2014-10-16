@@ -4,9 +4,9 @@
 
 namespace zizany {
     class file_lock {
-        FILE *file;
+        FILE *const file;
     public:
-        file_lock(FILE *file_);
+        file_lock(FILE *const file_);
 
         file_lock(const file_lock &) = delete;
 

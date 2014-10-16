@@ -75,7 +75,7 @@ namespace zizany {
         class iterator {
             typename owning_vector<entry_type>::iterator entries_iterator;
         public:
-            iterator(typename owning_vector<entry_type>::iterator entries_iterator_)
+            iterator(const typename owning_vector<entry_type>::iterator entries_iterator_)
                     : entries_iterator(entries_iterator_) {
             }
 
@@ -96,7 +96,7 @@ namespace zizany {
         class const_iterator {
             typename owning_vector<entry_type>::const_iterator entries_iterator;
         public:
-            const_iterator(typename owning_vector<entry_type>::const_iterator entries_iterator_)
+            const_iterator(const typename owning_vector<entry_type>::const_iterator entries_iterator_)
                     : entries_iterator(entries_iterator_) {
             }
 
