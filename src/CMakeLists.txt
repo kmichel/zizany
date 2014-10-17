@@ -63,6 +63,7 @@ set(SOURCE_FILES
     value_parser.cpp
     value_parsers/array_value_parser.cpp
     value_parsers/asset_reference_value_parser.cpp
+    value_parsers/blob_value_parser.cpp
     value_parsers/bool_value_parser.cpp
     value_parsers/composite_value_parser.cpp
     value_parsers/double_value_parser.cpp

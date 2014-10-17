@@ -3,6 +3,7 @@
 #include "json_writer.hpp"
 #include "value_parsers/array_value_parser.hpp"
 #include "value_parsers/asset_reference_value_parser.hpp"
+#include "value_parsers/blob_value_parser.hpp"
 #include "value_parsers/bool_value_parser.hpp"
 #include "value_parsers/composite_value_parser.hpp"
 #include "value_parsers/double_value_parser.hpp"
@@ -90,9 +91,12 @@ namespace zizany {
             ret.reset(new tail_blob_value_parser);
         } else if (is_array) {
             const unity_type &element_type(members.at(1).type);
-            if (element_type.is_simple())
-                ret.reset(new inline_array_value_parser(element_type.get_value_parser()));
-            else
+            if (element_type.is_simple()) {
+                if (element_type.size == 1)
+                    ret.reset(new blob_value_parser);
+                else
+                    ret.reset(new inline_array_value_parser(element_type.get_value_parser()));
+            } else
                 ret.reset(new array_value_parser(element_type.get_value_parser()));
         } else if (is_simple()) {
             if (name == "bool")
