@@ -73,7 +73,7 @@ namespace zizany {
         pair_type.name = "pair";
         pair_type.size = 12;
         pair_type.members.reserve(2);
-        // XXX: this one is a type_id
+        // This int is a type_id, but always a positive one, so there's no need to convert it to a durable type_identity
         pair_type.members.push_back({"first", create_simple_type("int")});
         pair_type.members.push_back({"second", create_asset_reference_type("Component")});
         unity_type vector_type;
