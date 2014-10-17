@@ -67,6 +67,7 @@ set(SOURCE_FILES
     value_parsers/bool_value_parser.cpp
     value_parsers/composite_value_parser.cpp
     value_parsers/double_value_parser.cpp
+    value_parsers/fixed_size_blob_value_parser.cpp
     value_parsers/float_value_parser.cpp
     value_parsers/guid_value_parser.cpp
     value_parsers/inline_array_value_parser.cpp

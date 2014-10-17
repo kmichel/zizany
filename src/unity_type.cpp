@@ -7,6 +7,7 @@
 #include "value_parsers/bool_value_parser.hpp"
 #include "value_parsers/composite_value_parser.hpp"
 #include "value_parsers/double_value_parser.hpp"
+#include "value_parsers/fixed_size_blob_value_parser.hpp"
 #include "value_parsers/float_value_parser.hpp"
 #include "value_parsers/guid_value_parser.hpp"
 #include "value_parsers/inline_array_value_parser.hpp"
@@ -126,8 +127,7 @@ namespace zizany {
             else if (name == "double")
                 ret.reset(new double_value_parser());
             else
-                // XXX: we could simple parse it as a small fixed-size blob
-                throw std::runtime_error("unexpected simple type");
+                ret.reset(new fixed_size_blob_value_parser(static_cast<std::size_t>(size)));
         } else if (name == "string") {
             // XXX: we should check that the type named "string" is actually what we expect
             if (member_name != nullptr && *member_name == "m_Script")
