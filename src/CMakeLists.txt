@@ -87,13 +87,13 @@ set(SOURCE_FILES
     values/unity_string_value.cpp
 )
 
-# Workaround for headers missing from project in CLion
-# See: https://youtrack.jetbrains.com/issue/CPP-270
-file(GLOB_RECURSE ALL_HEADER_FILES ${CMAKE_CURRENT_SOURCE_DIR}/*.hpp)
-set_source_files_properties(${ALL_HEADER_FILES} PROPERTIES LANGUAGE CXX)
-set_source_files_properties(${ALL_HEADER_FILES} PROPERTIES HEADER_FILE_ONLY TRUE)
-set(SOURCE_FILES ${SOURCE_FILES} ${ALL_HEADER_FILES})
-
 add_executable(zizany ${SOURCE_FILES} $<TARGET_OBJECTS:gdtoa>)
 
 install(TARGETS zizany RUNTIME DESTINATION bin)
+
+# Workaround for headers missing from project in CLion
+# See: https://youtrack.jetbrains.com/issue/CPP-270
+file(GLOB_RECURSE ALL_HEADER_FILES ${CMAKE_CURRENT_SOURCE_DIR}/*.hpp)
+add_custom_target(clion_header_fix
+    SOURCES ${ALL_HEADER_FILES}
+)
