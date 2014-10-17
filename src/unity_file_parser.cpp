@@ -7,10 +7,9 @@
 #include "unity_file.hpp"
 #include "unity_file_reference.hpp"
 #include "unity_preview.hpp"
-#include "unity_value_parser.hpp"
 #include "unity_value.hpp"
+#include "value_parser.hpp"
 #include "values/unity_blob_value.hpp"
-#include "values/unity_composite_value.hpp"
 
 namespace zizany {
     unity_file_parser::unity_file_parser(unity_file &file_)
@@ -133,21 +132,13 @@ namespace zizany {
     void
     unity_file_parser::parse_asset_value(stream_parser &parser, unity_asset &asset) {
         parser.seek(file.file_layout.assets_start + asset.file_layout.offset);
+        const std::int64_t expected_end = file.file_layout.assets_start + asset.file_layout.offset + asset.file_layout.size;
+        // XXX: we should cache the value parser, but this would be easier if unity_type were immutables
         if (file.types.has_id(asset.type_id))
-            asset.value = parse_value(parser, file.types.get_by_id(asset.type_id), "", file.file_references);
-        else if (fallback_types.has_id(asset.type_id_2)) {
-            // Here we use type_id_2 in order to parse MonoBehaviour
-            std::unique_ptr<unity_composite_value> composite_value(parse_composite(parser, fallback_types.get_by_id(asset.type_id_2), file.file_references));
-            const std::int64_t expected_end = file.file_layout.assets_start + asset.file_layout.offset + asset.file_layout.size;
-            const std::int64_t leftover = expected_end - parser.tell();
-            if (leftover > 0) {
-                std::unique_ptr<unity_blob_value> blob(new unity_blob_value);
-                parser.parse(blob->data, static_cast<std::size_t>(leftover));
-                // XXX: We should ensure the name is available
-                composite_value->members.add("magic_extra_bytes", std::move(blob));
-            }
-            asset.value = std::move(composite_value);
-        } else {
+            asset.value = file.types.get_by_id(asset.type_id).get_value_parser()->parse_value(parser, file.file_references, expected_end);
+        else if (fallback_types.has_id(asset.type_id_2))
+            asset.value = fallback_types.get_by_id(asset.type_id_2).get_value_parser()->parse_value(parser, file.file_references, expected_end);
+        else {
             std::unique_ptr<unity_blob_value> blob(new unity_blob_value);
             parser.parse(blob->data, asset.file_layout.size);
             asset.value = std::move(blob);

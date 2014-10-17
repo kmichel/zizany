@@ -12,6 +12,8 @@ namespace zizany {
 
     class unity_type_member;
 
+    class value_parser;
+
     class unity_type {
     public:
         std::vector<unity_type_member> members;
@@ -20,6 +22,7 @@ namespace zizany {
         std::int32_t magic_int_1;
         std::uint32_t magic_bitset_2;
         bool is_array;
+        bool is_tail_blob;
 
         unity_type();
 
@@ -30,6 +33,8 @@ namespace zizany {
         bool is_simple() const;
 
         void print(json_writer &writer, const bool print_defauts, const bool print_magic) const;
+
+        std::unique_ptr<value_parser> get_value_parser(const std::string *const member_name = nullptr) const;
     };
 
     class unity_type_member {

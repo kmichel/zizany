@@ -60,7 +60,19 @@ set(SOURCE_FILES
     unity_value.cpp
     unity_value_member.cpp
     unity_value_members.cpp
-    unity_value_parser.cpp
+    value_parser.cpp
+    value_parsers/array_value_parser.cpp
+    value_parsers/asset_reference_value_parser.cpp
+    value_parsers/bool_value_parser.cpp
+    value_parsers/composite_value_parser.cpp
+    value_parsers/double_value_parser.cpp
+    value_parsers/float_value_parser.cpp
+    value_parsers/guid_value_parser.cpp
+    value_parsers/inline_array_value_parser.cpp
+    value_parsers/multiline_string_value_parser.cpp
+    value_parsers/padded_value_parser.cpp
+    value_parsers/string_value_parser.cpp
+    value_parsers/tail_blob_value_parser.cpp
     values/unity_array_value.cpp
     values/unity_asset_reference_value.cpp
     values/unity_blob_value.cpp
@@ -73,13 +85,14 @@ set(SOURCE_FILES
     values/unity_multiline_string_value.cpp
     values/unity_string_value.cpp
 )
-add_executable(zizany ${SOURCE_FILES} $<TARGET_OBJECTS:gdtoa>)
-
-install(TARGETS zizany RUNTIME DESTINATION bin)
 
 # Workaround for headers missing from project in CLion
 # See: https://youtrack.jetbrains.com/issue/CPP-270
 file(GLOB_RECURSE ALL_HEADER_FILES ${CMAKE_CURRENT_SOURCE_DIR}/*.hpp)
-add_custom_target(clion_header_fix
-    SOURCES ${ALL_HEADER_FILES}
-)
+set_source_files_properties(${ALL_HEADER_FILES} PROPERTIES LANGUAGE CXX)
+set_source_files_properties(${ALL_HEADER_FILES} PROPERTIES HEADER_FILE_ONLY TRUE)
+set(SOURCE_FILES ${SOURCE_FILES} ${ALL_HEADER_FILES})
+
+add_executable(zizany ${SOURCE_FILES} $<TARGET_OBJECTS:gdtoa>)
+
+install(TARGETS zizany RUNTIME DESTINATION bin)

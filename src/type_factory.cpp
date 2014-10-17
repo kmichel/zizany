@@ -57,6 +57,14 @@ namespace zizany {
         return type;
     }
 
+    unity_type create_tail_blob_type() {
+        unity_type type;
+        type.name = "blob";
+        type.size = -1;
+        type.is_tail_blob = true;
+        return type;
+    }
+
     unity_type create_release_gameobject_type() {
         unity_type type;
         type.name = "GameObject";
@@ -90,10 +98,11 @@ namespace zizany {
         unity_type type;
         type.name = "MonoBehaviour";
         type.size = 20;
-        type.members.reserve(3);
+        type.members.reserve(4);
         type.members.push_back({"m_GameObject", create_asset_reference_type("GameObject")});
         type.members.push_back({"m_Enabled", create_simple_type("UInt8", /*requires_padding:*/true)});
         type.members.push_back({"m_Script", create_asset_reference_type("MonoScript")});
+        type.members.push_back({"magic_bytes", create_tail_blob_type()});
         return type;
     }
 

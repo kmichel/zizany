@@ -1,6 +1,19 @@
 #include "unity_type.hpp"
 
 #include "json_writer.hpp"
+#include "value_parsers/array_value_parser.hpp"
+#include "value_parsers/asset_reference_value_parser.hpp"
+#include "value_parsers/bool_value_parser.hpp"
+#include "value_parsers/composite_value_parser.hpp"
+#include "value_parsers/double_value_parser.hpp"
+#include "value_parsers/float_value_parser.hpp"
+#include "value_parsers/guid_value_parser.hpp"
+#include "value_parsers/inline_array_value_parser.hpp"
+#include "value_parsers/integer_value_parser.hpp"
+#include "value_parsers/multiline_string_value_parser.hpp"
+#include "value_parsers/padded_value_parser.hpp"
+#include "value_parsers/string_value_parser.hpp"
+#include "value_parsers/tail_blob_value_parser.hpp"
 
 namespace zizany {
     unity_type::unity_type()
@@ -9,7 +22,8 @@ namespace zizany {
               size(),
               magic_int_1(),
               magic_bitset_2(),
-              is_array(false) {
+              is_array(false),
+              is_tail_blob(false) {
     }
 
     bool
@@ -67,5 +81,70 @@ namespace zizany {
             writer.end_array();
         }
         writer.end_object();
+    }
+
+    std::unique_ptr<value_parser>
+    unity_type::get_value_parser(const std::string *const member_name) const {
+        std::unique_ptr<value_parser> ret;
+        if (is_tail_blob) {
+            ret.reset(new tail_blob_value_parser);
+        } else if (is_array) {
+            const unity_type &element_type(members.at(1).type);
+            if (element_type.is_simple())
+                ret.reset(new inline_array_value_parser(element_type.get_value_parser()));
+            else
+                ret.reset(new array_value_parser(element_type.get_value_parser()));
+        } else if (is_simple()) {
+            if (name == "bool")
+                ret.reset(new bool_value_parser);
+            else if (name == "char")
+                ret.reset(new integer_value_parser<char>);
+            else if (name == "unsigned char")
+                ret.reset(new integer_value_parser<unsigned char>);
+            else if (name == "byte" || name == "SInt8")
+                ret.reset(new integer_value_parser<std::int8_t>);
+            else if (name == "unsigned byte" || name == "UInt8")
+                ret.reset(new integer_value_parser<std::uint8_t>);
+            else if (name == "short" || name == "SInt16")
+                ret.reset(new integer_value_parser<std::int16_t>);
+            else if (name == "unsigned short" || name == "UInt16")
+                ret.reset(new integer_value_parser<std::uint16_t>);
+            else if (name == "int" || name == "SInt32")
+                ret.reset(new integer_value_parser<std::int32_t>);
+            else if (name == "unsigned int" || name == "UInt32")
+                ret.reset(new integer_value_parser<std::uint32_t>);
+            else if (name == "SInt64")
+                ret.reset(new integer_value_parser<std::int64_t>);
+            else if (name == "UInt64")
+                ret.reset(new integer_value_parser<std::uint64_t>);
+            else if (name == "float")
+                ret.reset(new float_value_parser());
+            else if (name == "double")
+                ret.reset(new double_value_parser());
+            else
+                // XXX: we could simple parse it as a small fixed-size blob
+                throw std::runtime_error("unexpected simple type");
+        } else if (name == "string") {
+            // XXX: we should check that the type named "string" is actually what we expect
+            if (member_name != nullptr && *member_name == "m_Script")
+                ret.reset(new multiline_string_value_parser);
+            else
+                ret.reset(new string_value_parser);
+        } else if (name == "GUID") {
+            // XXX: we should check that the type named "GUID" is actually what we expect
+            ret.reset(new guid_value_parser);
+        } else if (name.find("PPtr<") == 0 && name.at(name.size() - 1) == '>') {
+            // XXX: we should check that the type named "PPtr<*>" is actually what we expect
+            ret.reset(new asset_reference_value_parser);
+        } else {
+            std::unique_ptr<composite_value_parser> composite_parser(new composite_value_parser);
+            composite_parser->reserve(members.size());
+            for (const unity_type_member &member : members)
+                composite_parser->add_member(member.name, member.type.get_value_parser(&member.name));
+            ret = std::move(composite_parser);
+        }
+        if (requires_padding())
+            ret = std::unique_ptr<value_parser>(new padded_value_parser(std::move(ret)));
+        return std::move(ret);
     }
 }

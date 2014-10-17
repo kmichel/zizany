@@ -13,6 +13,8 @@ namespace zizany {
 
     unity_type create_asset_reference_type(const std::string &target_type);
 
+    unity_type create_tail_blob_type();
+
     unity_type create_release_gameobject_type();
 
     unity_type create_release_monobehaviour_type();
