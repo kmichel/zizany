@@ -1,7 +1,6 @@
 #include "file_comparer.hpp"
 
 #include "delta_store.hpp"
-#include "file_reference_comparer.hpp"
 #include "preview_comparer.hpp"
 #include "type_comparer.hpp"
 #include "identified_type.hpp"
@@ -108,7 +107,7 @@ namespace zizany {
                 for (const unity_file_reference &other_file_reference : other.file_references)
                     if (base_file_reference.file_guid == other_file_reference.file_guid) {
                         match_found = true;
-                        if (!are_file_references_equal(base_file_reference, other_file_reference))
+                        if (base_file_reference != other_file_reference)
                             store.modify_file_reference(base_file_reference, other_file_reference);
                         break;
                     }

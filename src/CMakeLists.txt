@@ -32,7 +32,6 @@ set(SOURCE_FILES
     diff/deltas/types_delta.cpp
     diff/deltas/unity_version_delta.cpp
     diff/file_comparer.cpp
-    diff/file_reference_comparer.cpp
     diff/identified_type.cpp
     diff/member_path.cpp
     diff/preview_comparer.cpp

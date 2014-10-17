@@ -15,4 +15,8 @@ namespace zizany {
 
         unity_file_reference();
     };
+
+    bool operator==(const unity_file_reference &lhs, const unity_file_reference &rhs);
+
+    bool operator!=(const unity_file_reference &lhs, const unity_file_reference &rhs);
 }
