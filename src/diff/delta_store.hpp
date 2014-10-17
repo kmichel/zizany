@@ -7,11 +7,15 @@
 namespace zizany {
     class delta;
 
+    struct guid;
+
     class json_writer;
 
     struct type_identity;
 
     class unity_file_reference;
+
+    class unity_file_reference_properties;
 
     class unity_preview;
 
@@ -71,7 +75,7 @@ namespace zizany {
 
         virtual void remove_file_reference(const unity_file_reference &reference) = 0;
 
-        virtual void modify_file_reference(const unity_file_reference &old_reference, const unity_file_reference &new_reference) = 0;
+        virtual void modify_file_reference(const guid &file_guid, const unity_file_reference_properties &old_properties, const unity_file_reference_properties &new_properties) = 0;
 
         virtual void add_preview(const unity_preview &preview) = 0;
 

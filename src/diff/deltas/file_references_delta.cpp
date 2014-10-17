@@ -22,12 +22,8 @@ namespace zizany {
             writer.start_object();
             writer.add_key("file_guid");
             reference.file_guid.print(writer);
-            writer.add_key("path");
-            writer.add_string(reference.path);
-            writer.add_key("magic_byte_1");
-            writer.add_number(reference.magic_byte_1);
-            writer.add_key("magic_int_2");
-            writer.add_number(reference.magic_int_2);
+            writer.add_key("properties");
+            reference.properties.print(writer, /*print_magic:*/true);
             writer.end_object();
         }
         writer.end_object();

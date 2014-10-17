@@ -147,8 +147,8 @@ namespace zizany {
     }
 
     void
-    simple_delta_store::modify_file_reference(const unity_file_reference &old_reference, const unity_file_reference &new_reference) {
-        deltas.add(new file_reference_delta(old_reference, new_reference));
+    simple_delta_store::modify_file_reference(const guid &file_guid, const unity_file_reference_properties &old_properties, const unity_file_reference_properties &new_properties) {
+        deltas.add(new file_reference_delta(file_guid, old_properties, new_properties));
     }
 
     void

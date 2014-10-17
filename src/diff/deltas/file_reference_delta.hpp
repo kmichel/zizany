@@ -1,15 +1,17 @@
 #pragma once
 
 #include "../delta.hpp"
-#include "../../unity_file_reference.hpp"
+#include "../../guid.hpp"
+#include "../../unity_file_reference_properties.hpp"
 
 namespace zizany {
     class file_reference_delta : public delta {
     public:
-        const unity_file_reference old_reference;
-        const unity_file_reference new_reference;
+        const guid file_guid;
+        const unity_file_reference_properties old_properties;
+        const unity_file_reference_properties new_properties;
 
-        file_reference_delta(const unity_file_reference &old_reference_, const unity_file_reference &new_reference_);
+        file_reference_delta(const guid &file_guid_, const unity_file_reference_properties &old_properties_, const unity_file_reference_properties &new_properties_);
 
         virtual void print_action(json_writer &writer) const;
 

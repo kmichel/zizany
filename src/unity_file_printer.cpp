@@ -83,14 +83,8 @@ namespace zizany {
                 writer.add_number(file_reference_id);
                 writer.add_key("guid");
                 file_reference.file_guid.print(writer);
-                writer.add_key("path");
-                writer.add_string(file_reference.path);
-                if (options.print_magic) {
-                    writer.add_key("magic_byte_1");
-                    writer.add_number(file_reference.magic_byte_1);
-                    writer.add_key("magic_int_2");
-                    writer.add_number(file_reference.magic_int_2);
-                }
+                writer.add_key("properties");
+                file_reference.properties.print(writer, options.print_magic);
                 writer.end_object();
             }
             writer.end_array();

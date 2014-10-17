@@ -54,6 +54,7 @@ set(SOURCE_FILES
     unity_file_parser.cpp
     unity_file_printer.cpp
     unity_file_reference.cpp
+    unity_file_reference_properties.cpp
     unity_preview.cpp
     unity_type.cpp
     unity_value.cpp

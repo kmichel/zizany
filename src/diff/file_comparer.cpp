@@ -107,8 +107,8 @@ namespace zizany {
                 for (const unity_file_reference &other_file_reference : other.file_references)
                     if (base_file_reference.file_guid == other_file_reference.file_guid) {
                         match_found = true;
-                        if (base_file_reference != other_file_reference)
-                            store.modify_file_reference(base_file_reference, other_file_reference);
+                        if (base_file_reference.properties != other_file_reference.properties)
+                            store.modify_file_reference(base_file_reference.file_guid, base_file_reference.properties, other_file_reference.properties);
                         break;
                     }
                 if (!match_found)

@@ -56,7 +56,7 @@ namespace zizany {
 
         virtual void remove_file_reference(const unity_file_reference &reference);
 
-        virtual void modify_file_reference(const unity_file_reference &old_reference, const unity_file_reference &new_reference);
+        virtual void modify_file_reference(const guid &file_guid, const unity_file_reference_properties &old_properties, const unity_file_reference_properties &new_properties);
 
         virtual void add_preview(const unity_preview &preview);
 

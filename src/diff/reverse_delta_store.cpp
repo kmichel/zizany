@@ -120,8 +120,8 @@ namespace zizany {
     }
 
     void
-    reverse_delta_store::modify_file_reference(const unity_file_reference &old_reference, const unity_file_reference &new_reference) {
-        delegate_store.modify_file_reference(new_reference, old_reference);
+    reverse_delta_store::modify_file_reference(const guid &file_guid, const unity_file_reference_properties &old_properties, const unity_file_reference_properties &new_properties) {
+        delegate_store.modify_file_reference(file_guid, new_properties, old_properties);
     }
 
     void

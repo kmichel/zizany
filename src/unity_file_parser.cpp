@@ -156,15 +156,13 @@ namespace zizany {
     std::unique_ptr<unity_file_reference>
     unity_file_parser::parse_file_reference(stream_parser &parser) {
         std::unique_ptr<unity_file_reference> file_reference(new unity_file_reference);
-        file_reference->magic_byte_1 = parser.parse<unsigned char>();
-        if (file_reference->magic_byte_1 != 0)
-            throw parser_exception("magic_byte_1 value should be zero");
+        file_reference->properties.magic_byte_1 = parser.parse<unsigned char>();
         file_reference->file_guid.a = parser.parse<std::uint32_t>();
         file_reference->file_guid.b = parser.parse<std::uint32_t>();
         file_reference->file_guid.c = parser.parse<std::uint32_t>();
         file_reference->file_guid.d = parser.parse<std::uint32_t>();
-        file_reference->magic_int_2 = parser.parse<std::int32_t>();
-        file_reference->path = parser.parse_string();
+        file_reference->properties.magic_int_2 = parser.parse<std::int32_t>();
+        file_reference->properties.path = parser.parse_string();
         return file_reference;
     }
 
