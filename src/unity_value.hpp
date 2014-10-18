@@ -1,6 +1,7 @@
 #pragma once
 
 #include "owning_vector.hpp"
+#include "pod_vector.hpp"
 
 #include <cstdint>
 #include <string>
@@ -50,7 +51,7 @@ namespace zizany {
 
         virtual bool equals(const asset_reference &value) const;
 
-        virtual bool equals(const std::vector<char> &value) const;
+        virtual bool equals(const pod_vector<char> &value) const;
 
         virtual bool equals(const unity_array_value &value) const;
 

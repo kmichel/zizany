@@ -1,7 +1,8 @@
 #pragma once
 
+#include "pod_vector.hpp"
+
 #include <cstdint>
-#include <vector>
 
 namespace zizany {
     class json_writer;
@@ -12,7 +13,7 @@ namespace zizany {
         std::int32_t magic_int_1;
         std::int32_t magic_int_2;
         std::int32_t magic_int_3;
-        std::vector<unsigned char> data;
+        pod_vector<unsigned char> data;
         struct {
             std::uint32_t offset;
             std::uint32_t size;

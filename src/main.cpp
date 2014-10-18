@@ -4,6 +4,7 @@
 #include "file_lock.hpp"
 #include "json_writer.hpp"
 #include "parser_exception.hpp"
+#include "pod_vector.hpp"
 #include "program_options.hpp"
 #include "unity_asset.hpp"
 #include "unity_file.hpp"
@@ -124,8 +125,8 @@ extract_previews(const std::string &output_dir, const std::string &filename) {
                 << "_" << unity_file.previews.get_id_at(index)
                 << "_" << preview.asset_id << ".png";
         std::fstream preview_stream(previews_filename.str(), std::ios_base::out | std::ios_base::binary);
-        const std::vector<unsigned char> &data(unity_file.previews.at(index).data);
-        preview_stream.write(reinterpret_cast<const char *>(data.data()), static_cast<long>(data.size()));
+        const zizany::pod_vector<unsigned char> &data(unity_file.previews.at(index).data);
+        preview_stream.write(data.data(), static_cast<long>(data.data_size()));
     }
 }
 

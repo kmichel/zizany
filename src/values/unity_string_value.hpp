@@ -2,8 +2,6 @@
 
 #include "unity_blob_value.hpp"
 
-#include <vector>
-
 namespace zizany {
     class unity_string_value : public unity_blob_value {
     public:

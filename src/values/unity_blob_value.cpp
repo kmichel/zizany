@@ -38,7 +38,7 @@ namespace zizany {
     }
 
     bool
-    unity_blob_value::equals(const std::vector<char> &value) const {
+    unity_blob_value::equals(const pod_vector<char> &value) const {
         if (data.size() != value.size())
             return false;
         for (std::size_t index = 0; index < data.size(); ++index)

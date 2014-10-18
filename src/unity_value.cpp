@@ -52,7 +52,7 @@ namespace zizany {
     }
 
     bool
-    unity_value::equals(const std::vector<char> &/*value*/) const {
+    unity_value::equals(const pod_vector<char> &/*value*/) const {
         return false;
     }
 

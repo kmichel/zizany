@@ -1,6 +1,7 @@
 #include "unity_file_parser.hpp"
 
 #include "parser_exception.hpp"
+#include "pod_vector.hpp"
 #include "stream_parser.hpp"
 #include "type_factory.hpp"
 #include "unity_asset.hpp"
@@ -174,7 +175,7 @@ namespace zizany {
             const std::size_t marker_length(sizeof(expected_marker) - 1);
             const std::size_t count_length(sizeof(std::int32_t));
             parser.seek_from_end(-static_cast<std::int64_t>(marker_length + count_length));
-            std::vector<char> marker;
+            pod_vector<char> marker;
             parser.parse(marker, marker_length);
             for (std::size_t index = 0; index < marker_length; ++index)
                 if (marker[index] != expected_marker[index])

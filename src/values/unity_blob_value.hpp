@@ -1,13 +1,12 @@
 #pragma once
 
+#include "../pod_vector.hpp"
 #include "../unity_value.hpp"
-
-#include <vector>
 
 namespace zizany {
     class unity_blob_value : public unity_value {
     public:
-        std::vector<char> data;
+        pod_vector<char> data;
 
         unity_blob_value();
 
@@ -15,6 +14,6 @@ namespace zizany {
 
         virtual bool equals(const unity_value &value) const;
 
-        virtual bool equals(const std::vector<char> &value) const;
+        virtual bool equals(const pod_vector<char> &value) const;
     };
 }
