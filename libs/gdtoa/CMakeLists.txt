@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 2.8.4)
 project(gdtoa)
 set(CMAKE_VERBOSE_MAKEFILE ON)
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=c99")
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=c99 -fvisibility=hidden")
 
 set(CMAKE_C_FLAGS_LIST ${CMAKE_C_FLAGS})
 separate_arguments(CMAKE_C_FLAGS_LIST)
