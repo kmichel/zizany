@@ -3,10 +3,17 @@
 namespace zizany {
     file_lock::file_lock(FILE *file_)
             : file(file_) {
-        flockfile(file);
+        if (file != nullptr)
+            flockfile(file);
+    }
+
+    file_lock::file_lock(file_lock &&that)
+            : file(that.file) {
+        that.file = nullptr;
     }
 
     file_lock::~file_lock() {
-        funlockfile(file);
+        if (file != nullptr)
+            funlockfile(file);
     }
 }

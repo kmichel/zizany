@@ -40,6 +40,7 @@ set(SOURCE_FILES
     diff/simple_delta_store.cpp
     diff/type_comparer.cpp
     diff/type_identity.cpp
+    file_stream.cpp
     file_lock.cpp
     guid.cpp
     json_writer.cpp

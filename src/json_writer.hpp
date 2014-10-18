@@ -1,10 +1,11 @@
 #pragma once
 
 #include <cstdint>
-#include <cstdio>
 #include <string>
 
 namespace zizany {
+    class file_stream;
+
     class json_writer {
         enum class writer_state {
             after_start,
@@ -12,7 +13,7 @@ namespace zizany {
             after_value,
             after_key
         };
-        FILE *const output;
+        file_stream &stream;
         const int indent_width;
 
         int indent_level;
@@ -34,7 +35,7 @@ namespace zizany {
         void print_quoted_string(const char *const string, const std::size_t length);
 
     public:
-        json_writer(FILE *const output_, const int indent_width_ = 3);
+        json_writer(file_stream &stream_, const int indent_width_ = 3);
 
         json_writer(const json_writer &) = delete;
 

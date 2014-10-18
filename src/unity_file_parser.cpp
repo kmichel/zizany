@@ -1,5 +1,6 @@
 #include "unity_file_parser.hpp"
 
+#include "file_stream.hpp"
 #include "parser_exception.hpp"
 #include "pod_vector.hpp"
 #include "stream_parser.hpp"
@@ -18,7 +19,7 @@ namespace zizany {
     }
 
     void
-    unity_file_parser::parse(std::istream &stream, range_checker::overlapping_ranges_callback overlapping_ranges_callback) {
+    unity_file_parser::parse(file_stream &stream, range_checker::overlapping_ranges_callback overlapping_ranges_callback) {
         parse_header(stream);
         {
             stream_parser parser(stream, file.file_layout.file_endianness, checker);
@@ -51,10 +52,10 @@ namespace zizany {
                 parse_preview_data(parser, preview);
         }
         checker.check([&stream](std::int64_t start, std::int64_t end) {
-            stream.seekg(start, std::ios_base::beg);
+            stream.seek(start, SEEK_SET);
             const std::size_t size(static_cast<std::size_t>(end - start));
             std::unique_ptr<char[]> buffer(new char[size]);
-            stream.read(buffer.get(), end - start);
+            stream.read(buffer.get(), size, 1);
             for (std::size_t index = 0; index < size; ++index)
                 if (buffer[index] != 0)
                     throw parser_exception("padding should be filled with zeroes");
@@ -62,7 +63,7 @@ namespace zizany {
     }
 
     void
-    unity_file_parser::parse_header(std::istream &stream) {
+    unity_file_parser::parse_header(file_stream &stream) {
         stream_parser big_endian_parser(stream, endianness::big_endian, checker);
         file.file_layout.metadata_size = big_endian_parser.parse<std::uint32_t>();
         file.file_layout.previews_start = big_endian_parser.parse<std::uint32_t>();

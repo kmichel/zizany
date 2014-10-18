@@ -1,5 +1,6 @@
 #include "json_writer.hpp"
 
+#include "file_stream.hpp"
 #include "../libs/gdtoa/gdtoa.h"
 
 #include <limits>
@@ -7,40 +8,24 @@
 #include <cmath>
 #include <cstring>
 #include <stdexcept>
-#include <sys/errno.h>
 
 namespace zizany {
     static
     void
-    putc_unlocked_checked(const int c, FILE *const output) {
-        const int putc_status(putc_unlocked(c, output));
-        if (putc_status == EOF)
-            throw std::runtime_error(strerror(errno));
-    }
-
-    static
-    void
-    fputs_unlocked_(const char *const str, FILE *const output) {
-        for (const char *iter(str); *iter != 0; ++iter)
-            putc_unlocked_checked(*iter, output);
-    }
-
-    static
-    void
-    print_with_leading_zero(const char *const buffer, FILE *const output) {
+    print_with_leading_zero(const char *const buffer, file_stream &stream) {
         if (buffer[0] == '-' && buffer[1] == '.') {
-            putc_unlocked_checked('-', output);
-            putc_unlocked_checked('0', output);
-            fputs_unlocked_(buffer + 1, output);
+            stream.putc('-');
+            stream.putc('0');
+            stream.puts(buffer + 1);
         } else {
             if (buffer[0] == '.')
-                putc_unlocked_checked('0', output);
-            fputs_unlocked_(buffer, output);
+                stream.putc('0');
+            stream.puts(buffer);
         }
     }
 
-    json_writer::json_writer(FILE *const output_, const int indent_width_)
-            : output(output_),
+    json_writer::json_writer(file_stream &stream_, const int indent_width_)
+            : stream(stream_),
               indent_width(indent_width_),
               indent_level(0),
               inline_level(std::numeric_limits<int>::max()),
@@ -68,7 +53,7 @@ namespace zizany {
         const int snprintf_status(snprintf(buffer, sizeof(buffer), "%" PRIi32, value));
         if (snprintf_status >= static_cast<int>(sizeof(buffer)))
             throw std::runtime_error("unexpected large number");
-        fputs_unlocked_(buffer, output);
+        stream.puts(buffer);
         state = writer_state::after_value;
     }
 
@@ -79,7 +64,7 @@ namespace zizany {
         const int snprintf_status(snprintf(buffer, sizeof(buffer), "%" PRIu32, value));
         if (snprintf_status >= static_cast<int>(sizeof(buffer)))
             throw std::runtime_error("unexpected large number");
-        fputs_unlocked_(buffer, output);
+        stream.puts(buffer);
         state = writer_state::after_value;
     }
 
@@ -90,7 +75,7 @@ namespace zizany {
         const int snprintf_status(snprintf(buffer, 32, "%" PRIi64, value));
         if (snprintf_status >= static_cast<int>(sizeof(buffer)))
             throw std::runtime_error("unexpected large number");
-        fputs_unlocked_(buffer, output);
+        stream.puts(buffer);
         state = writer_state::after_value;
     }
 
@@ -101,7 +86,7 @@ namespace zizany {
         const int snprintf_status(snprintf(buffer, 32, "%" PRIu64, value));
         if (snprintf_status >= static_cast<int>(sizeof(buffer)))
             throw std::runtime_error("unexpected large number");
-        fputs_unlocked_(buffer, output);
+        stream.puts(buffer);
         state = writer_state::after_value;
     }
 
@@ -109,13 +94,13 @@ namespace zizany {
     json_writer::add_number(const float value) {
         insert_separator_if_needed();
         if (std::isnan(value) || std::isinf(value))
-            fputs_unlocked_("null", output);
+            stream.puts("null");
         else {
             char buffer[32];
             const char *g_ffmt_status(g_ffmt(buffer, &value, -1, sizeof(buffer)));
             if (g_ffmt_status == nullptr)
                 throw std::runtime_error("unexpected large number");
-            print_with_leading_zero(buffer, output);
+            print_with_leading_zero(buffer, stream);
         }
         state = writer_state::after_value;
     }
@@ -124,13 +109,13 @@ namespace zizany {
     json_writer::add_number(const double value) {
         insert_separator_if_needed();
         if (std::isnan(value) || std::isinf(value))
-            fputs_unlocked_("null", output);
+            stream.puts("null");
         else {
             char buffer[32];
             const char *g_dfmt_status(g_dfmt(buffer, &value, -1, sizeof(buffer)));
             if (g_dfmt_status == nullptr)
                 throw std::runtime_error("unexpected large number");
-            print_with_leading_zero(buffer, output);
+            print_with_leading_zero(buffer, stream);
         }
         state = writer_state::after_value;
     }
@@ -138,14 +123,14 @@ namespace zizany {
     void
     json_writer::add_bool(const bool value) {
         insert_separator_if_needed();
-        fputs_unlocked_(value ? "true" : "false", output);
+        stream.puts(value ? "true" : "false");
         state = writer_state::after_value;
     }
 
     void
     json_writer::add_null() {
         insert_separator_if_needed();
-        fputs_unlocked_("null", output);
+        stream.puts("null");
         state = writer_state::after_value;
     }
 
@@ -158,7 +143,7 @@ namespace zizany {
     json_writer::add_key(const char *const key) {
         insert_separator_if_needed();
         print_quoted_string(key);
-        fputs_unlocked_(": ", output);
+        stream.puts(": ");
         state = writer_state::after_key;
     }
 
@@ -166,7 +151,7 @@ namespace zizany {
     json_writer::add_key(const std::string &key) {
         insert_separator_if_needed();
         print_quoted_string(key);
-        fputs_unlocked_(": ", output);
+        stream.puts(": ");
         state = writer_state::after_key;
     }
 
@@ -194,7 +179,7 @@ namespace zizany {
     void
     json_writer::start_composite(const char marker, const bool force_inline) {
         insert_separator_if_needed();
-        putc_unlocked_checked(marker, output);
+        stream.putc(marker);
         if (force_inline)
             inline_level = std::min(inline_level, indent_level);
         indent_level += 1;
@@ -206,7 +191,7 @@ namespace zizany {
         indent_level -= 1;
         if (state == writer_state::after_value && indent_level < inline_level)
             insert_newline();
-        putc_unlocked_checked(marker, output);
+        stream.putc(marker);
         state = writer_state::after_value;
         if (indent_level == inline_level)
             inline_level = std::numeric_limits<int>::max();
@@ -215,89 +200,89 @@ namespace zizany {
     void
     json_writer::insert_separator_if_needed() {
         if (state == writer_state::after_value)
-            putc_unlocked_checked(',', output);
+            stream.putc(',');
         if (state != writer_state::after_key) {
             if (state != writer_state::after_start && indent_level < inline_level)
                 insert_newline();
             else if (state == writer_state::after_value)
-                putc_unlocked_checked(' ', output);
+                stream.putc(' ');
         }
     }
 
     void
     json_writer::insert_newline() {
-        putc_unlocked_checked('\n', output);
+        stream.putc('\n');
         for (int i = 0; i < indent_width * indent_level; ++i)
-            putc_unlocked_checked(' ', output);
+            stream.putc(' ');
     }
 
     inline
-    void print_quoted_character(FILE *const output, const char character) {
+    void print_quoted_character(file_stream &stream, const char character) {
         const char hex[16] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'};
         switch (character) {
             case '\b':
-                putc_unlocked_checked('\\', output);
-                putc_unlocked_checked('b', output);
+                stream.putc('\\');
+                stream.putc('b');
                 break;
             case '\f':
-                putc_unlocked_checked('\\', output);
-                putc_unlocked_checked('f', output);
+                stream.putc('\\');
+                stream.putc('f');
                 break;
             case '\n':
-                putc_unlocked_checked('\\', output);
-                putc_unlocked_checked('n', output);
+                stream.putc('\\');
+                stream.putc('n');
                 break;
             case '\r':
-                putc_unlocked_checked('\\', output);
-                putc_unlocked_checked('r', output);
+                stream.putc('\\');
+                stream.putc('r');
                 break;
             case '\t':
-                putc_unlocked_checked('\\', output);
-                putc_unlocked_checked('t', output);
+                stream.putc('\\');
+                stream.putc('t');
                 break;
             case '\\':
-                putc_unlocked_checked('\\', output);
-                putc_unlocked_checked('\\', output);
+                stream.putc('\\');
+                stream.putc('\\');
                 break;
             case '\"':
-                putc_unlocked_checked('\\', output);
-                putc_unlocked_checked('"', output);
+                stream.putc('\\');
+                stream.putc('"');
                 break;
             default:
                 if (character > 0 && character < 32) {
-                    putc_unlocked_checked('\\', output);
-                    putc_unlocked_checked('u', output);
-                    putc_unlocked_checked('0', output);
-                    putc_unlocked_checked('0', output);
-                    putc_unlocked_checked(hex[character >> 4], output);
-                    putc_unlocked_checked(hex[character & 0xf], output);
+                    stream.putc('\\');
+                    stream.putc('u');
+                    stream.putc('0');
+                    stream.putc('0');
+                    stream.putc(hex[character >> 4]);
+                    stream.putc(hex[character & 0xf]);
                 } else {
-                    putc_unlocked_checked(character, output);
+                    stream.putc(character);
                 }
         }
     }
 
     void
     json_writer::print_quoted_string(const std::string &string) {
-        putc_unlocked_checked('"', output);
-        for (std::size_t index = 0; index < string.size(); ++index)
-            print_quoted_character(output, string[index]);
-        putc_unlocked_checked('"', output);
+        stream.putc('"');
+        for (const char c : string)
+            print_quoted_character(stream, c);
+        stream.putc('"');
     }
 
     void
     json_writer::print_quoted_string(const char *const string) {
-        putc_unlocked_checked('"', output);
+        stream.putc('"');
         for (const char *iter(string); *iter != 0; ++iter)
-            print_quoted_character(output, *iter);
-        putc_unlocked_checked('"', output);
+            print_quoted_character(stream, *iter);
+        stream.putc('"');
     }
 
     void
     json_writer::print_quoted_string(const char *const string, const std::size_t length) {
-        putc_unlocked_checked('"', output);
+        stream.putc('"');
         for (std::size_t index = 0; index < length; ++index)
-            print_quoted_character(output, string[index]);
-        putc_unlocked_checked('"', output);
+            print_quoted_character(stream, string[index]);
+        stream.putc('"');
     }
 }

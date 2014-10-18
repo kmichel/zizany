@@ -1,6 +1,5 @@
 #include "program_options.hpp"
 
-#include <sstream>
 #include <stdexcept>
 
 namespace zizany {
@@ -31,11 +30,7 @@ namespace zizany {
                 options.program_command = program_options::command::diff;
                 parse_diff_options(options, argc - 2, argv + 2);
             } else {
-                std::stringstream buffer;
-                buffer
-                        << "unknown command: '" << command << "'\n"
-                        << "Type 'zizany help' for usage.";
-                throw std::runtime_error(buffer.str());
+                throw std::runtime_error("unknown command: '" + command + "'\nType 'zizany help' for usage.");
             }
         }
         return options;
@@ -65,11 +60,8 @@ namespace zizany {
                         options.printer_options.print_layout = true;
                     else if (option_name == "magic")
                         options.printer_options.print_magic = true;
-                    else {
-                        std::stringstream buffer;
-                        buffer << "invalid argument: '" << argument << '\'';
-                        throw std::runtime_error(buffer.str());
-                    }
+                    else
+                        throw std::runtime_error("invalid argument: '" + argument + "'");
                 } else {
                     for (std::size_t char_index = 1; char_index < argument.size(); ++char_index) {
                         switch (argument.at(char_index)) {
@@ -95,12 +87,15 @@ namespace zizany {
                                 options.printer_options.print_magic = true;
                                 break;
                             default: {
-                                std::stringstream buffer;
-                                buffer << "invalid argument: ";
-                                if (argument.size() != 2)
-                                    buffer << '\'' << argument.at(char_index) << "' in ";
-                                buffer << '\'' << argument << '\'';
-                                throw std::runtime_error(buffer.str());
+                                std::string message;
+                                message += "invalid argument: '";
+                                if (argument.size() != 2) {
+                                    message += argument.at(char_index);
+                                    message += "' in '";
+                                }
+                                message += argument;
+                                message += "'";
+                                throw std::runtime_error(message);
                             }
                         }
                     }
@@ -123,18 +118,18 @@ namespace zizany {
                     const std::string option_name = argument.substr(2, std::string::npos);
                     if (option_name.size() == 0)
                         allow_options = false;
-                    else {
-                        std::stringstream buffer;
-                        buffer << "invalid argument: '" << argument << '\'';
-                        throw std::runtime_error(buffer.str());
-                    }
+                    else
+                        throw std::runtime_error("invalid argument: '" + argument + "'");
                 } else {
-                    std::stringstream buffer;
-                    buffer << "invalid argument: ";
-                    if (argument.size() != 2)
-                        buffer << '\'' << argument.at(1) << "' in ";
-                    buffer << '\'' << argument << '\'';
-                    throw std::runtime_error(buffer.str());
+                    std::string message;
+                    message += "invalid argument: '";
+                    if (argument.size() != 2) {
+                        message += argument.at(1);
+                        message += "' in '";
+                    }
+                    message += argument;
+                    message += "'";
+                    throw std::runtime_error(message);
                 }
             } else {
                 options.filenames.push_back(argument);
@@ -158,13 +153,10 @@ namespace zizany {
                     const std::string option_name(argument.substr(2, std::string::npos));
                     if (option_name.size() == 0)
                         allow_options = false;
-                    else if (option_name.find("output-dir=") == 0) {
+                    else if (option_name.find("output-dir=") == 0)
                         options.output_dir = option_name.substr(11);
-                    } else {
-                        std::stringstream buffer;
-                        buffer << "invalid argument: '" << argument << '\'';
-                        throw std::runtime_error(buffer.str());
-                    }
+                    else
+                        throw std::runtime_error("invalid argument: '" + argument + "'");
                 } else {
                     // short opts
                     for (std::size_t char_index = 1; char_index < argument.size(); ++char_index) {
@@ -172,22 +164,21 @@ namespace zizany {
                             case 'o':
                                 // next argument is the filename and we should stop expecting short options
                                 expecting_output_dir = true;
-                                if (char_index != argument.size() - 1) {
-                                    std::stringstream buffer;
-                                    buffer
-                                            << "unexpected short option '"
-                                            << argument.substr(char_index + 1, 1)
-                                            << "' after 'o' in '" << argument << '\'';
-                                    throw std::runtime_error(buffer.str());
-                                }
+                                if (char_index != argument.size() - 1)
+                                    throw std::runtime_error(
+                                            "unexpected short option '" + argument.substr(char_index + 1, 1) +
+                                                    "' after 'o' in '" + argument + "'");
                                 break;
                             default: {
-                                std::stringstream buffer;
-                                buffer << "invalid argument: ";
-                                if (argument.size() != 2)
-                                    buffer << '\'' << argument.at(char_index) << "' in ";
-                                buffer << '\'' << argument << '\'';
-                                throw std::runtime_error(buffer.str());
+                                std::string message;
+                                message += "invalid argument: '";
+                                if (argument.size() != 2) {
+                                    message += argument.at(char_index);
+                                    message += "' in '";
+                                }
+                                message += argument;
+                                message += "'";
+                                throw std::runtime_error(message);
                             }
                         }
                     }

@@ -5,10 +5,11 @@
 #include "unity_type.hpp"
 
 #include <cstdint>
-#include <iosfwd>
 #include <memory>
 
 namespace zizany {
+    class file_stream;
+
     class stream_parser;
 
     class unity_asset;
@@ -32,9 +33,9 @@ namespace zizany {
 
         unity_file_parser &operator=(const unity_file_parser &) = delete;
 
-        void parse(std::istream &stream, range_checker::overlapping_ranges_callback overlapping_ranges_callback);
+        void parse(file_stream &stream, range_checker::overlapping_ranges_callback overlapping_ranges_callback);
 
-        void parse_header(std::istream &stream);
+        void parse_header(file_stream &stream);
 
         void parse_types(stream_parser &parser);
 

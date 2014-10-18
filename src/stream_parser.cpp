@@ -13,12 +13,11 @@ namespace zizany {
         return endianness_detector.bytes[0] == 1;
     }
 
-    stream_parser::stream_parser(std::istream &stream_, const endianness endianness_, range_checker &checker_)
+    stream_parser::stream_parser(file_stream &stream_, const endianness endianness_, range_checker &checker_)
             : stream(stream_),
               must_swap_bytes((endianness_ == endianness::little_endian) ^ is_little_endian()),
               last_seek(tell()),
               checker(checker_) {
-        stream.exceptions(std::istream::badbit | std::istream::eofbit | std::istream::failbit);
     }
 
     stream_parser::~stream_parser() {
@@ -28,13 +27,18 @@ namespace zizany {
     std::string
     stream_parser::parse_string() {
         std::string string;
-        std::getline(stream, string, '\0');
-        return string;
+        while (true) {
+            const int c(stream.getc());
+            if (c == 0)
+                return string;
+            else
+                string += static_cast<char>(c);
+        }
     }
 
     void
     stream_parser::align(const int stride) {
-        const int excess(static_cast<int>(stream.tellg() % stride));
+        const int excess(static_cast<int>(tell() % stride));
         if (excess != 0) {
             for (int i = excess; i < stride; ++i) {
                 const char value(parse<char>());
@@ -46,20 +50,20 @@ namespace zizany {
 
     std::int64_t
     stream_parser::tell() const {
-        return stream.tellg();
+        return stream.tell();
     }
 
     void
     stream_parser::seek(std::int64_t position) {
         checker.add_range(last_seek, tell());
-        stream.seekg(position, std::ios_base::beg);
+        stream.seek(position, SEEK_SET);
         last_seek = position;
     }
 
     void
     stream_parser::seek_from_end(std::int64_t position) {
         checker.add_range(last_seek, tell());
-        stream.seekg(position, std::ios_base::end);
+        stream.seek(position, SEEK_END);
         last_seek = tell();
     }
 }
